@@ -32,15 +32,12 @@
 			$c = $totals['country'];
 			$development = [];
 
-			$time_day_before_yesterday = strtotime('now -3 days');
 			foreach ($totals['history'] as $date => $amount)
 			{
-				$time = strtotime($date);
-				if ($time >= $time_day_before_yesterday)
-				{
-					$development[] = $amount;
-				}
+				$development[strtotime($date)] = $amount;
 			}
+
+			ksort($development);
 
 			$last = array_pop($development);
 			$prev_to_last = array_pop($development);
@@ -85,14 +82,13 @@
 		
 		foreach ($infections as $country => $amount_infections)
 		{
-			$population          =  $populations["$country"] ?? 0;
-			$amount_fatalities   =  $fatalities["$country"] ?? 0;
-			$fatality_rate       =  $amount_infections > 0 ? ($amount_fatalities / $amount_infections) : 0;
-			$chance_of_infection =  $population > 0 ? ($amount_infections / $population) : 0;
-			$chance_of_death_1   =  $chance_of_infection * $fatality_rate;
-			$chance_of_death_10  = ($chance_of_infection * 10) * $fatality_rate;
-			$chance_of_death_50  = ($chance_of_infection * 50) * $fatality_rate;
-			$chance_of_death_100 = ($chance_of_infection * 100) * $fatality_rate;
+			$population          	 =  $populations["$country"] ?? 0;
+			$amount_fatalities   	 =  $fatalities["$country"] ?? 0;
+			$fatality_rate       	 =  $amount_infections > 0 ? ($amount_fatalities / $amount_infections) : 0;
+			$chance_of_infection 	 =  $population > 0 ? ($amount_infections / $population) : 0;
+			$chance_of_infection_10  = ($chance_of_infection * 10);
+			$chance_of_infection_50  = ($chance_of_infection * 50);
+			$chance_of_infection_100 = ($chance_of_infection * 100);
 
 			$data["$country"] = [
 				"population" => $population,
@@ -100,12 +96,11 @@
 				"infections" => $amount_infections,
 				"fatality" => round($fatality_rate * 100, 6),
 				"chances" => [
-					"infection" => round($chance_of_infection * 100, 8),
-					"death" => [
-						"1" => round($chance_of_death_1 * 100, 8),
-						"10" => round($chance_of_death_10 * 100, 8),
-						"50" => round($chance_of_death_50 * 100, 8),
-						"100" => round($chance_of_death_100 * 100, 8)
+					"infection" => [
+						"1" => round($chance_of_infection * 100, 8),
+						"10" => round($chance_of_infection_10 * 100, 8),
+						"50" => round($chance_of_infection_50 * 100, 8),
+						"100" => round($chance_of_infection_100 * 100, 8)
 					]
 				],
 				"changes" => [
@@ -117,5 +112,6 @@
 		file_put_contents('data.json', json_encode($data, JSON_PRETTY_PRINT));
 		return $data;
 	}
+	
 	make_dataset();
 ?>

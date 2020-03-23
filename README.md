@@ -1,1 +1,4 @@
-# corona
+# Corona Info
+
+## Depedencies
+Stupidtable JS

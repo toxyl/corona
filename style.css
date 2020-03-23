@@ -1,0 +1,37 @@
+table {
+	border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width:100%;
+}
+
+th, td {
+	padding: 5px 10px;
+	border: 1px solid #999;
+	font-family: monospace;
+}
+
+th {
+	background-color: #eee;
+}
+
+th[data-sort]{
+	cursor:pointer;
+}
+
+#total {
+	background-color: #CCC;
+}
+
+td.high {
+	background-color: #CCC;
+}
+
+tr:hover {
+	background-color: #DDD;
+}
+
+body {
+	text-align: center;
+	font-family: sans-serif;
+}
