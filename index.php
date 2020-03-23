@@ -78,7 +78,7 @@ change of fatalities = ((fatalities today / fatalities yesterday) - 1) * 100
 			</pre>
 		</p>				
 		<script>
-			document.querySelector('#search').addEventListener('keyup', filterTable, false);
+			document.querySelector('#search').addEventListener('keyup', filterTable, false); 
 			filterTable({ type: "keyup", target: document.querySelector('#search') });
 		</script>
 	</body>
