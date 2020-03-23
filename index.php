@@ -33,11 +33,11 @@
 					"<thead>".
 						"<th data-sort='string'>Country<br><br><input type='text' id='search' placeholder='filter' autofocus value='$search'></input></th>".
 						"<th data-sort='int'>Population</th>".
-						"<th data-sort='int'>Infections</th>".
-						"<th data-sort='int'>Fatalities</th>".
-						"<th data-sort='float'>Fatality</th>".
+						"<th data-sort='int'>Infections<br>(absolute)</th>".
 						"<th data-sort='int'>Infections<br>(change)</th>".
+						"<th data-sort='int'>Fatalities<br>(absolute)</th>".
 						"<th data-sort='int'>Fatalities<br>(change)</th>".
+						"<th data-sort='float'>Fatality</th>".
 						"<th data-sort='float'>Chance Of Infection<br>(1 person met)</th>".
 						"<th data-sort='float'>Chance Of Infection<br>(10 persons met)</th>".
 						"<th data-sort='float'>Chance Of Infection<br>(50 persons met)</th>".
@@ -81,10 +81,10 @@
 					"<td>$country</td>".
 				 	"<td>" . $data["population"] . "</td>".
 				 	"<td>" . $data["infections"] . "</td>".
-					"<td>" . $data["fatalities"] . "</td>".
-					"<td>" . sprintf('%.1f', $data["fatality"])  . "%</td>".
 					"<td>" . sprintf('%d', $data["changes"]["infections"])  . "%</td>".
+					"<td>" . $data["fatalities"] . "</td>".
 					"<td>" . sprintf('%d', $data["changes"]["fatalities"])  . "%</td>".
+					"<td>" . sprintf('%.1f', $data["fatality"])  . "%</td>".
 					"<td>" . sprintf('%.2f', $data["chances"]["infection"]["1"])  . "%</td>".
 					"<td>" . sprintf('%.2f', $data["chances"]["infection"]["10"])  . "%</td>".
 					"<td>" . sprintf('%.2f', $data["chances"]["infection"]["50"])  . "%</td>".
