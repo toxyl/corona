@@ -20,12 +20,12 @@
 		</p>
 		<?php
 			require_once "data.php";
-			
+
 			$list = json_decode(make_dataset(), true);
 			$headers = array_shift($list);
 
 			uasort($list, function($a, $b) {
-			    return $a[8] <=> $b[8];
+			    return floatval($a[8]) <=> floatval($b[8]);
 			});
 
 			$search = $_GET['c'] ?? '';
