@@ -19,7 +19,9 @@
 		You can search for multiple countries by separating the (partial) names with commas.
 		</p>
 		<?php
-			$list = json_decode(file_get_contents('data_html.json'), true);
+			require_once "data.php";
+			
+			$list = json_decode(make_dataset(), true);
 			$headers = array_shift($list);
 
 			uasort($list, function($a, $b) {

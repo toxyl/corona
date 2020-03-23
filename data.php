@@ -237,6 +237,4 @@
 
 		return file_get_contents('data_html.json');
 	}
-
-	echo make_dataset();
 ?>
