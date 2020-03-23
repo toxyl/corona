@@ -110,15 +110,15 @@
 				$this->population,
 				$this->infections,
 				$this->infections_last(),
-				round($this->infections_change() * 100, 4) . '%',
+				sprintf('%.4f%%', round($this->infections_change() * 100, 4)),
 				$this->fatalities,
 				$this->fatalities_last(),
-				round($this->fatalities_change() * 100, 4) . '%',
-				round($this->fatality_rate() * 100, 4) . '%',
-				round($this->infection_chance(1) * 100, 4) . "%",
-				round($this->infection_chance(10) * 100, 4) . "%",
-				round($this->infection_chance(50) * 100, 4) . "%",
-				round($this->infection_chance(100) * 100, 4) . "%",
+				sprintf('%.4f%%', round($this->fatalities_change() * 100, 4)),
+				sprintf('%.4f%%', round($this->fatality_rate() * 100, 4)),
+				sprintf('%.4f%%', round($this->infection_chance(1) * 100, 4)),
+				sprintf('%.4f%%', round($this->infection_chance(10) * 100, 4)),
+				sprintf('%.4f%%', round($this->infection_chance(50) * 100, 4)),
+				sprintf('%.4f%%', round($this->infection_chance(100) * 100, 4)),
 			];
 		}
 
