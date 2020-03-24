@@ -25,7 +25,19 @@ th[data-sort]{
 }
 
 td.high {
-	background-color: #CCC;
+	background-color: #ff8a8a;
+}
+
+td.medium {
+	background-color: #f5ca5d;
+}
+
+td.low {
+	background-color: #fff987;
+}
+
+td.zero {
+	color: #CCC;
 }
 
 tr:hover {

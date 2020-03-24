@@ -1,6 +1,12 @@
 <?php
 	require_once "data.php";
 
+	function get_css_class($value, $low = 1, $medium = 25, $high = 50)
+	{
+		$v = floatval($value);
+		return $v >= $high ? 'high' : ($v >= $medium ? 'medium' : ($v >= $low ? 'low' : 'zero'));
+	}
+
 	$table = '';
 
 	$list = json_decode(make_dataset(), true);
@@ -35,17 +41,17 @@
 		$table .= "\t\t<tr>\n".
 			 "\t\t\t<td>".$data[0]."</td>\n".
 			 "\t\t\t<td>".$data[1]."</td>\n".
-			 "\t\t\t<td>".$data[2]."</td>\n".
-			 "\t\t\t<td>".$data[3]."</td>\n".
-			 "\t\t\t<td>".$data[4]."</td>\n".
-			 "\t\t\t<td>".$data[5]."</td>\n".
-			 "\t\t\t<td>".$data[6]."</td>\n".
-			 "\t\t\t<td>".$data[7]."</td>\n".
-			 "\t\t\t<td>".$data[8]."</td>\n".
-			 "\t\t\t<td>".$data[9]."</td>\n".
-			 "\t\t\t<td>".$data[10]."</td>\n".
-			 "\t\t\t<td>".$data[11]."</td>\n".
-			 "\t\t\t<td>".$data[12]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[2], 100, 1000, 10000)."'>".$data[2]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[3], 100, 1000, 10000)."'>".$data[3]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[4])."'>".$data[4]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[5], 100, 1000, 10000)."'>".$data[5]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[6], 100, 1000, 10000)."'>".$data[6]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[7])."'>".$data[7]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[8], 1, 10, 25)."'>".$data[8]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[9])."'>".$data[9]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[10])."'>".$data[10]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[11])."'>".$data[11]."</td>\n".
+			 "\t\t\t<td class='".get_css_class($data[12])."'>".$data[12]."</td>\n".
 		 	 "\t\t</tr>\n";
 	}
 

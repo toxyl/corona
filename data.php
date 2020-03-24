@@ -233,6 +233,11 @@
 	
 			file_put_contents('data.json', json_encode($objs, JSON_PRETTY_PRINT));
 			file_put_contents('data_html.json', json_encode($html_data, JSON_PRETTY_PRINT));
+
+			chmod('data.json', 0766);
+			chmod('data_html.json', 0766);
+			chmod('deaths.json', 0766);
+			chmod('infected.json', 0766);
 		}
 
 		return file_get_contents('data_html.json');
