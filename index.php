@@ -63,7 +63,7 @@
 	<head>
 		<title>Corona Stats <?= date(DATE_ATOM) ?></title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="stupidtable.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/stupidtable/1.1.3/stupidtable.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="corona.js"></script>
 	</head>
