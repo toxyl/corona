@@ -160,7 +160,7 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists('data_html.json') || filemtime('data.json') < (time() - 1000 * 60 * 60))
+		if (!file_exists('data_html.json') || filemtime('data.json') < (time() - 60 * 60))
 		{
 			file_put_contents('infected.json', file_get_contents('https://coronavirus-tracker-api.herokuapp.com/confirmed'));
 			file_put_contents('deaths.json',   file_get_contents('https://coronavirus-tracker-api.herokuapp.com/deaths'));
