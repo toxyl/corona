@@ -1,3 +1,58 @@
+<?php
+	require_once "data.php";
+
+	$table = '';
+
+	$list = json_decode(make_dataset(), true);
+	$headers = array_shift($list);
+
+	uasort($list, function($a, $b) {
+	    return floatval($a[8]) <=> floatval($b[8]);
+	});
+
+	$search = $_GET['c'] ?? '';
+	
+	$table .= "\n<table id='data'>\n".
+			"\t<thead>\n".
+			"\t\t<th data-sort='string'>".$headers[0]."<br><br><input type='text' id='search' placeholder='filter' autofocus value='$search'></input></th>\n".
+			"\t\t<th data-sort='int'>".$headers[1]."</th>\n".
+			"\t\t<th data-sort='int'>".$headers[2]."</th>\n".
+			"\t\t<th data-sort='int'>".$headers[3]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[4]."</th>\n".
+			"\t\t<th data-sort='int'>".$headers[5]."</th>\n".
+			"\t\t<th data-sort='int'>".$headers[6]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[7]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[8]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[9]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[10]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[11]."</th>\n".
+			"\t\t<th data-sort='float'>".$headers[12]."</th>\n".
+			"\t</thead>\n".
+			"\t<tbody>\n";
+
+	while ($data = array_pop($list))
+	{
+		$table .= "\t\t<tr>\n".
+			 "\t\t\t<td>".$data[0]."</td>\n".
+			 "\t\t\t<td>".$data[1]."</td>\n".
+			 "\t\t\t<td>".$data[2]."</td>\n".
+			 "\t\t\t<td>".$data[3]."</td>\n".
+			 "\t\t\t<td>".$data[4]."</td>\n".
+			 "\t\t\t<td>".$data[5]."</td>\n".
+			 "\t\t\t<td>".$data[6]."</td>\n".
+			 "\t\t\t<td>".$data[7]."</td>\n".
+			 "\t\t\t<td>".$data[8]."</td>\n".
+			 "\t\t\t<td>".$data[9]."</td>\n".
+			 "\t\t\t<td>".$data[10]."</td>\n".
+			 "\t\t\t<td>".$data[11]."</td>\n".
+			 "\t\t\t<td>".$data[12]."</td>\n".
+		 	 "\t\t</tr>\n";
+	}
+
+	$table .= "\t</tbody>\n</table>";
+?>
+
+
 <html>
 	<head>
 		<title>Corona Stats <?= date(DATE_ATOM) ?></title>
@@ -18,57 +73,7 @@
 		Click on the column headers to change the sorting (default is fatality).<br>
 		You can search for multiple countries by separating the (partial) names with commas.
 		</p>
-		<?php
-			require_once "data.php";
-
-			$list = json_decode(make_dataset(), true);
-			$headers = array_shift($list);
-
-			uasort($list, function($a, $b) {
-			    return floatval($a[8]) <=> floatval($b[8]);
-			});
-
-			$search = $_GET['c'] ?? '';
-			
-			echo "\n<table id='data'>\n".
-					"\t<thead>\n".
-					"\t\t<th data-sort='string'>".$headers[0]."<br><br><input type='text' id='search' placeholder='filter' autofocus value='$search'></input></th>\n".
-					"\t\t<th data-sort='int'>".$headers[1]."</th>\n".
-					"\t\t<th data-sort='int'>".$headers[2]."</th>\n".
-					"\t\t<th data-sort='int'>".$headers[3]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[4]."</th>\n".
-					"\t\t<th data-sort='int'>".$headers[5]."</th>\n".
-					"\t\t<th data-sort='int'>".$headers[6]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[7]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[8]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[9]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[10]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[11]."</th>\n".
-					"\t\t<th data-sort='float'>".$headers[12]."</th>\n".
-					"\t</thead>\n".
-					"\t<tbody>\n";
-
-			while ($data = array_pop($list))
-			{
-				echo "\t\t<tr>\n".
-					 "\t\t\t<td>".$data[0]."</td>\n".
-					 "\t\t\t<td>".$data[1]."</td>\n".
-					 "\t\t\t<td>".$data[2]."</td>\n".
-					 "\t\t\t<td>".$data[3]."</td>\n".
-					 "\t\t\t<td>".$data[4]."</td>\n".
-					 "\t\t\t<td>".$data[5]."</td>\n".
-					 "\t\t\t<td>".$data[6]."</td>\n".
-					 "\t\t\t<td>".$data[7]."</td>\n".
-					 "\t\t\t<td>".$data[8]."</td>\n".
-					 "\t\t\t<td>".$data[9]."</td>\n".
-					 "\t\t\t<td>".$data[10]."</td>\n".
-					 "\t\t\t<td>".$data[11]."</td>\n".
-					 "\t\t\t<td>".$data[12]."</td>\n".
-				 	 "\t\t</tr>\n";
-			}
-
-			echo "\t</tbody>\n</table>";
-		?>
+		<?= $table ?>
 		<p>The data is retrieved using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API</a> and calculated using these formulas:<br>
 			<pre>
 fatality = (fatalities / infected) * 100
