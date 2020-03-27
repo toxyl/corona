@@ -18,9 +18,9 @@
 
 	$search = $_GET['c'] ?? '';
 	
-	$table .= "\n<table id='data'>\n".
+	$table .= "\n<table id='data' class='shadow full-width'>\n".
 			"\t<thead>\n".
-			"\t\t<th data-sort='string'>".$headers[0]."<br><br><input type='text' id='search' placeholder='filter' autofocus value='$search'></input></th>\n".
+			"\t\t<th><input type='text' id='search' placeholder='filter' autofocus value='$search'></input></th>\n".
 			"\t\t<th data-sort='int'>".$headers[1]."</th>\n".
 			"\t\t<th data-sort='int'>".$headers[2]."</th>\n".
 			"\t\t<th data-sort='int'>".$headers[3]."</th>\n".
@@ -61,36 +61,46 @@
 
 <html>
 	<head>
-		<title>Corona Stats <?= date(DATE_ATOM) ?></title>
+		<title>COVID-19 Data</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stupidtable/1.1.3/stupidtable.min.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Zilla+Slab+Highlight&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Overpass+Mono&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="corona.js"></script>
 	</head>
 	<body>
-		<h1>Coronavirus Stats<h1>
-		<h3><?= date(DATE_ATOM, filemtime('data.json')) ?></h3>
-		<p>
-		Be aware that all percentages are only estimates and <b>will not</b> reflect the entire reality of it.<br>
-		The chance of infection is based on meeting <b>one</b> person. Therefore the more people you meet, the higher your risk becomes.  This is what you can see reflected in the <b>Chance Of Infection</b> columns.<br>
-		The given fatality is based on data reported by medical institutions world-wide, it <b>does not</b> say anything about the fatality if medical care is not available.<br>
-		Changes are in regards to the previous data point. In countries where the virus is just starting to spread these numbers won't be very accurate.<br>
-		<br>
-		Click on the column headers to change the sorting (default is fatality).<br>
-		You can search for multiple countries by separating the (partial) names with commas.
+		<h1 class="full-width shadow">COVID-19 Data</h1>
+		<p class="full-width black-box-header shadow">
+			Click on the column headers to change the sorting (default is <b>fatality rate</b>).<br>
+			You can search for multiple countries by separating the (partial) names with commas.
+			<br>
+			<br>
 		</p>
 		<?= $table ?>
-		<p>The data is retrieved using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API</a> and calculated using these formulas:<br>
-			<pre>
-fatality = (fatalities / infected) * 100
-chance of infection = ((infected / population) * people met) * 100
-change of infections = ((infections today / infections yesterday) - 1) * 100
-change of fatalities = ((fatalities today / fatalities yesterday) - 1) * 100
+		<div class="full-width shadow" style="background-color: #6b6b6b; height: 122px;">
+			<p style="float: left;text-align: right;padding-left: 20px;">
+				Be aware that all percentages are only estimates and <b>will not</b> reflect the entire reality of it.<br>
+				The <i>chance of infection</i> is based on meeting <b>one</b> person, but the more you meet, the higher your risk becomes (see <b>Infection Chance</b> columns).<br>
+				The given <i>fatality</i> is based on data reported by medical institutions world-wide, it <b>does not</b> say anything about the <i>fatality</i> if medical care is not available.<br>
+				Changes are in regards to the previous data point. In countries where the virus is just starting to spread these numbers won't be very accurate.<br>
+				The data is updated every hour using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API</a>.
+			</p>
+			<pre style="float: left;text-align: left;padding-left: 20px;">
+Formulas Used
+----------------------------------------------------------------------------	
+fatality rate        =  (fatalities / infected) * 100
+chance of infection  = ((infected / population) * people met) * 100
+change of infections = ((infections current / infections last) - 1) * 100
+change of fatalities = ((fatalities current / fatalities last) - 1) * 100
 			</pre>
-		</p>				
+		</div>
 		<script>
-			document.querySelector('#search').addEventListener('keyup', filterTable, false); 
-			filterTable({ type: "keyup", target: document.querySelector('#search') });
+			// document.querySelector('#search').addEventListener('keyup', filterTable, false); 
+			// filterTable({ type: "keyup", target: document.querySelector('#search') });
+			refreshData();
 		</script>
 	</body>
 </html>

@@ -1,8 +1,18 @@
+.shadow {
+	-moz-box-shadow:     0 0 8px 0px #00000033;
+    -webkit-box-shadow:  0 0 8px 0px #00000033;
+    box-shadow:          0 0 8px 0px #00000033;
+}
+
+.full-width {
+	margin-left: 3%;
+    margin-right: 3%;
+    width: 94%;	
+}
+
 table {
 	border-collapse: collapse;
-    margin-left: auto;
-    margin-right: auto;
-    width:100%;
+	background-color: #fff;
 }
 
 th, td {
@@ -14,10 +24,26 @@ th, td {
 
 th {
 	background-color: #eee;
+	font-family: 'Open Sans';
+	font-size:11px;
+	text-align:center;
 }
 
 th[data-sort]{
 	cursor:pointer;
+}
+
+td {
+    font-size: 11px;
+}
+
+td:first-child {
+	font-family: 'Open Sans';
+	font-weight: bold;
+}
+
+th:first-child {
+	width: 173px;
 }
 
 #total {
@@ -25,26 +51,72 @@ th[data-sort]{
 }
 
 td.high {
-	background-color: #ff8a8a;
+	background-color: #ff8a8a7f;
 }
 
 td.medium {
-	background-color: #f5ca5d;
+	background-color: #f5ca5d7f;
 }
 
 td.low {
-	background-color: #fff987;
+	background-color: #fff9877f;
 }
 
 td.zero {
-	color: #CCC;
+	color: #aaa;
 }
 
-tr:hover {
-	background-color: #DDD;
+tbody > tr:hover {
+	background-color: #ddd;
+	border-left: 2px solid red;
+	border-right: 2px solid red;
+}
+
+th:hover {
+	background-color: #ddd;	
 }
 
 body {
 	text-align: center;
-	font-family: sans-serif;
+	font-family: 'Open Sans', sans-serif;
+    background: rgb(64,64,64);
+    background: linear-gradient(0deg, rgba(64,64,64,1) 0%, rgba(128,128,128,1) 100%);
+    font-size: 13px;
+	margin: 0;
+}
+
+h1 {
+	/* font-family: 'Zilla Slab Highlight', cursive; */
+	font-family: 'Libre Barcode 39 Text', cursive;
+    font-size: 73px;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    width: 33% !important;
+    text-align: center;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    background-color: black;
+    color: #eee;
+	font-weight: 100;
+    padding-top: 20px;
+    padding-bottom: 11px;
+}
+
+#search {
+	width: auto;
+}
+
+.sorting-desc {
+	color:red;
+}
+
+.sorting-asc {
+	color:green;
+}
+
+.black-box-header {
+	background-color: black;
+    color: white;
+    margin-top: -25px;
+    margin-bottom: -8px;
 }
