@@ -31,6 +31,9 @@ function findRowIDs()
 
 function updateCell(row, col, val)
 {
+	if (Number.isFinite(row))
+		row = getRow(row);
+		
 	$cell = getCol(row, col);
 	$cell.text(val);
 	$cell.updateSortVal(val);
@@ -38,12 +41,18 @@ function updateCell(row, col, val)
 
 function toPercent(value)
 {
-	return Number(value * 100).toFixed(4) + '%';
+	value = Number(value * 100);
+	if (Number.isNaN(value))
+		value = 0;
+	else if (!Number.isFinite(value))
+		value = 100;
+	return value.toFixed(4) + '%';
 }
 
 function updateRow(row)
 {
-	$row = getRow(row);
+	if (Number.isFinite(row))
+		row = getRow(row);
 	
 	population = getCol(row, 1).text();
 	infCurr = getCol(row, 2).text();
@@ -79,8 +88,9 @@ function updateColors(row, cell, low, mid, high)
 		$cell[0].className = val < low ? 'zero' : (val < mid ? 'low' : (val < high ? 'medium' : 'high'));
 }
 
-function updateData(row, infections, infectionsLast, fatalities, fatalitiesLast)
+function updateData(row, population, infections, infectionsLast, fatalities, fatalitiesLast)
 {
+	updateCell(row, 1, population);
 	updateCell(row, 2, infections);
 	updateCell(row, 3, infectionsLast);
 	updateCell(row, 5, fatalities);
@@ -96,7 +106,8 @@ function refreshData()
 	  var rowIDs = findRowIDs();
 	  $.each( data, function( key, val ) {
 	    row = rowIDs.indexOf(val[0]);
-	    updateData(row, val[2], val[3], val[5], val[6]);
+	    updateData(row, val[1], val[2], val[3], val[5], val[6]);
+	    setLink();
 	  });
 	  $('#data').stupidtable_build();
 	  $('#search').keyup();
@@ -104,6 +115,14 @@ function refreshData()
 }
 
 function filterTable(event) {
+	var totals = {
+		population: 0,
+		infected: 0,
+		infected_last: 0,
+		dead: 0,
+		dead_last: 0
+	};
+	
     var filter = event.target.value.toUpperCase();
     var rows = document.querySelector("#data tbody").rows;
 
@@ -113,17 +132,44 @@ function filterTable(event) {
         if (inList(rows[i].cells[0].textContent.toUpperCase(), filter)) 
         {
             rows[i].style.display = "";
+            totals.population += Number(rows[i].cells[1].textContent);
+            totals.infected += Number(rows[i].cells[2].textContent);
+            totals.infected_last += Number(rows[i].cells[3].textContent);
+            totals.dead += Number(rows[i].cells[5].textContent);
+            totals.dead_last += Number(rows[i].cells[6].textContent);
         } 
         else 
         {
             rows[i].style.display = "none";
         }      
     }
+    
+	updateData(
+		document.querySelector("#datatotals tbody").rows[0], 
+		totals.population, 
+		totals.infected,
+		totals.infected_last,
+		totals.dead,
+		totals.dead_last
+	);
+	
+	setLink();
+}
+
+function setLink()
+{
+	var asc = $('[class=sorting-asc]').index();
+	var sortDirection = asc > -1 ? 'asc' : 'desc';
+	var sortCol = Math.max(asc, $('[class=sorting-desc]').index());
+	if (sortCol == -1) sortCol = 8;
+	$('#url').text(location.href.replace(/\?.*/, '') + 
+					'?c=' + $('#search').val() + 
+					'&s=' + sortCol + 
+					'&d=' + sortDirection);
 }
 
 function waitForUpdate(time)
 {
-	console.log('Waiting '+time+'s before next update...');
 	setTimeout(function(){
 		console.log('Running update...');
 		refreshData();		
@@ -135,6 +181,12 @@ $(function(){
 	$table = $('#data');
 	$table.stupidtable_settings({
 	    "will_manually_build_table": true
+	});
+	$table.bind('aftertablesort', function (event, data) {
+		$('#url').text(location.href.replace(/\?.*/, '') + 
+			'?c=' + $('#search').val() + 
+			'&s=' + data.column + 
+			'&d=' + data.direction);
 	});
 	$('#search').keyup(filterTable);
 	waitForUpdate(60000*60); // 60 minutes

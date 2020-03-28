@@ -2,12 +2,8 @@
 	require_once "data.php";
 
 	$list = json_decode(make_dataset(), true);
-	$headers = array_shift($list);
+	array_shift($list);
 	$data = [];
-
-	uasort($list, function($a, $b) {
-	    return $a[0] <=> $b[0];
-	});
 
 	foreach ($list as $id => $item)
 	{

@@ -85,25 +85,7 @@
 			return $i < 1 || $values[$i - 1] == 0 ? 0 : ($values[$i] / $values[$i - 1]) - 1;
 		}
 
-		public function print()
-		{
-			if ($this->population == 0 || $this->infections == 0)
-				return;
-
-			echo "---------------------------------------------\n";
-			echo $this->name . "\n";
-			echo "---------------------------------------------\n";
-			echo "Population:                         " . $this->population . "\n";
-			echo "Infections:                         " . $this->infections . " (was " . $this->infections_last() . " = " . round($this->infections_change() * 100,4). "%)\n";
-			echo "Fatalities:                         " . $this->fatalities . " (was " . $this->fatalities_last() . " = " . round($this->fatalities_change() * 100,4). "%)\n";
-			echo "Fatality:                           " . round($this->fatality_rate()*100,4) . "%\n";
-			echo "Infection chance (  1 person  met): " . round($this->infection_chance(1)*100,4) . "%\n";
-			echo "Infection chance ( 10 persons met): " . round($this->infection_chance(10)*100,4) . "%\n";
-			echo "Infection chance ( 50 persons met): " . round($this->infection_chance(50)*100,4) . "%\n";
-			echo "Infection chance (100 persons met): " . round($this->infection_chance(100)*100,4) . "%\n";
-		}
-
-		public function html_data()
+		public function calculate()
 		{
 			return [
 				$this->name,
@@ -160,7 +142,7 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists('data_html.json') || filemtime('data.json') < (time() - 60 * 60))
+		if (!file_exists('data.json') || filemtime('data.json') < (time() - 60 * 60))
 		{
 			file_put_contents('infected.json', file_get_contents('https://coronavirus-tracker-api.herokuapp.com/confirmed'));
 			file_put_contents('deaths.json',   file_get_contents('https://coronavirus-tracker-api.herokuapp.com/deaths'));
@@ -170,7 +152,6 @@
 			$infections = get_totals('infected.json');
 
 			$objs = [];
-			$objs["World Wide"] = new CountryData('World Wide');
 			
 			foreach ($infections as $country => $country_data)
 			{
@@ -192,35 +173,30 @@
 				foreach ($fatalities["$c"]['history'] as $key => $value) 
 				{
 					$objs["$country"]->add_fatalities_to_history($key, $value);
-					$objs["World Wide"]->add_fatalities_to_history($key, $value);
 				}
 
 				foreach ($infections["$c"]['history'] as $key => $value) 
 				{
 					$objs["$country"]->add_infections_to_history($key, $value);
-					$objs["World Wide"]->add_infections_to_history($key, $value);
 				}
-
-				$objs["World Wide"]->add_population($population);
-				$objs["World Wide"]->add_infections($amount_infections);
-				$objs["World Wide"]->add_fatalities($amount_fatalities);
 			}
 
-			$html_data = [];
-			$html_data[] = [ 
-				"Country",	
-				"Population",
-				"Infections<br>(current)",
-				"Infections<br>(last)",
-				"Infections<br>(change)",
-				"Fatalities<br>(current)",
-				"Fatalities<br>(last)",
-				"Fatalities<br>(change)",
-				"Fatality Rate",
-				"Infection Chance<br>(1 person met)",
-				"Infection Chance<br>(10 persons met)",
-				"Infection Chance<br>(50 persons met)",
-				"Infection Chance<br>(100 persons met)"	
+			$dataset = [
+				[ 
+					"Country",	
+					"Population",
+					"Infections<br>(current)",
+					"Infections<br>(last)",
+					"Infections<br>(change)",
+					"Fatalities<br>(current)",
+					"Fatalities<br>(last)",
+					"Fatalities<br>(change)",
+					"Fatality Rate",
+					"Infection Chance<br>(1 person met)",
+					"Infection Chance<br>(10 persons met)",
+					"Infection Chance<br>(50 persons met)",
+					"Infection Chance<br>(100 persons met)"	
+				]
 			];
 	
 			foreach ($objs as $country => $data) 
@@ -228,18 +204,16 @@
 				if ($data->population <= 0)
 					continue;
 
-				$html_data[] = $data->html_data();
+				$dataset[] = $data->calculate();
 			}
 	
-			file_put_contents('data.json', json_encode($objs, JSON_PRETTY_PRINT));
-			file_put_contents('data_html.json', json_encode($html_data, JSON_PRETTY_PRINT));
+			file_put_contents('data.json', json_encode($dataset, JSON_PRETTY_PRINT));
 
 			chmod('data.json', 0766);
-			chmod('data_html.json', 0766);
 			chmod('deaths.json', 0766);
 			chmod('infected.json', 0766);
 		}
 
-		return file_get_contents('data_html.json');
+		return file_get_contents('data.json');
 	}
 ?>
