@@ -42,7 +42,7 @@ td:first-child {
 	font-weight: bold;
 }
 
-th:first-child {
+th:first-child, td:first-child {
 	width: 173px;
 }
 
