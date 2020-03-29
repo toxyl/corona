@@ -120,9 +120,9 @@ function adjustTotalsCellWidths()
 	var w=0;
 	for (var i=0; i < ths.length; i++) 
 	{
-		w = $(ths[i]).width();
+		w = $(ths[i]).innerWidth();
 		cell = $('#datatotals').find('td')[i];
-		$(cell).width(w); 
+		$(cell).innerWidth(w); 
 	}
 }
 
@@ -201,6 +201,8 @@ $(function(){
 			'?c=' + $('#search').val() + 
 			'&s=' + data.column + 
 			'&d=' + data.direction);
+
+		adjustTotalsCellWidths();
 	});
 	$('#search').keyup(filterTable);
 	waitForUpdate(60000*60); // 60 minutes
