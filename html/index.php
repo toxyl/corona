@@ -1,5 +1,5 @@
 <?php
-	require_once "data.php";
+	require_once realpath(dirname(__FILE__)) . "/../data.php";
 
 	$search = preg_replace('/[^a-zA-Z-\s\',]/', '', $_GET['c'] ?? '');
 	$sort_col = preg_replace('/\D/', '', $_GET['s'] ?? 8);
