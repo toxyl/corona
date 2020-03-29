@@ -1,0 +1,3 @@
+#!/bin/bash
+wcd-corona git checkout master
+wcd-corona git pull

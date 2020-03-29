@@ -1,0 +1,6 @@
+#!/bin/bash
+git add .
+git commit -m 'automated test'
+git push
+wcd-corona git checkout feature/misc
+wcd-corona git pull
