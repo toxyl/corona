@@ -143,22 +143,6 @@ function adjustTotalsCellWidths()
 	}
 }
 
-function adjustTotalsCellWidths()
-{
-	var ths=$('#data').find('th'); 
-	var cell;
-	var cellSrc;
-	var w=0;
-	for (var i=0; i < ths.length; i++) 
-	{
-		cellSrc = $(ths[i]);
-		w = cellSrc.outerWidth();
-		cell = $($('#datatotals').find('td')[i]);
-		cell.outerWidth(w); 
-		cellSrc.outerWidth(w); 
-	}
-}
-
 function filterTable(event) {
 	var totals = {
 		population: 0,
