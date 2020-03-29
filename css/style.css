@@ -71,7 +71,7 @@ td.zero {
 
 #data > td:hover {
 	background-color: #ddd;	
-	border: 2px solid darkgrey;
+	border: 2px solid blue;
 }
 
 body {
