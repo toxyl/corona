@@ -69,7 +69,7 @@ td.zero {
 	background-color: #ddd;	
 }
 
-#data > tbody  > td:hover {
+#data > tbody > tr > td:hover {
 	background-color: #ddd;	
 	border: 2px solid blue;
 }
