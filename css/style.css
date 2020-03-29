@@ -39,6 +39,8 @@ td:first-child {
 	font-family: 'Open Sans';
 	font-weight: bold;
 	width: 16%;
+	min-width: 16%;
+	max-width: 16%;
 }
 
 #total {
