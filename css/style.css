@@ -43,10 +43,6 @@ td:first-child {
 	max-width: 16%;
 }
 
-#total {
-	background-color: #CCC;
-}
-
 td.high {
 	background-color: #ff8a8a7f;
 }
@@ -63,13 +59,13 @@ td.zero {
 	color: #aaa;
 }
 
-#total > tbody > tr:hover {
+#data > tbody > tr:hover {
 	background-color: #ddd;
 	border-left: 2px solid red;
 	border-right: 2px solid red;
 }
 
-#total > th:hover {
+#data > th:hover {
 	background-color: #ddd;	
 }
 
