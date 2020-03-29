@@ -50,9 +50,9 @@
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Overpass+Mono&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="corona.js"></script>
-		<script src="copy_button.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/corona.js"></script>
+		<script src="js/copy_button.js"></script>
 	</head>
 	<body>
 		<h1 class="full-width shadow">COVID-19 Data</h1>

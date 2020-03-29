@@ -1,4 +1,15 @@
 <?php
+	class DataFiles
+	{
+		static const $country_names_map 	= 'json/country_names_map.json';
+		static const $data 					= 'json/data.json';
+		static const $population 			= 'json/population.json';
+		static const $deaths 				= 'json/deaths.json';
+		static const $infected 				= 'json/infected.json';
+		static const $deaths_url 			= 'https://coronavirus-tracker-api.herokuapp.com/deaths';
+		static const $infected_url 			= 'https://coronavirus-tracker-api.herokuapp.com/confirmed';
+	}
+
 	class CountryData
 	{
 		public static $country_names_map = null;
@@ -6,7 +17,7 @@
 		public static function map_country_name(&$name)
 		{
 			if (self::$country_names_map == null)
-				self::$country_names_map = json_decode(file_get_contents('country_names_map.json'), true);
+				self::$country_names_map = json_decode(file_get_contents(DataFiles::$country_names_map), true);
 
 			if (in_array($name, array_keys(self::$country_names_map)))
 				$name = self::$country_names_map["$name"];
@@ -142,14 +153,14 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists('data.json') || filemtime('data.json') < (time() - 60 * 60))
+		if (!file_exists(DataFiles::$data) || filemtime(DataFiles::$data) < (time() - 60 * 60))
 		{
-			file_put_contents('infected.json', file_get_contents('https://coronavirus-tracker-api.herokuapp.com/confirmed'));
-			file_put_contents('deaths.json',   file_get_contents('https://coronavirus-tracker-api.herokuapp.com/deaths'));
+			file_put_contents(DataFiles::$infected, file_get_contents(DataFiles::$infected_url));
+			file_put_contents(DataFiles::$deaths,   file_get_contents(DataFiles::$deaths_url));
 
-			$populations = json_decode(file_get_contents('population.json'), true);
-			$fatalities = get_totals('deaths.json');
-			$infections = get_totals('infected.json');
+			$populations = json_decode(file_get_contents(DataFiles::$population), true);
+			$fatalities = get_totals(DataFiles::$deaths);
+			$infections = get_totals(DataFiles::$infected);
 
 			$objs = [];
 			
@@ -207,13 +218,13 @@
 				$dataset[] = $data->calculate();
 			}
 	
-			file_put_contents('data.json', json_encode($dataset, JSON_PRETTY_PRINT));
+			file_put_contents(DataFiles::$data, json_encode($dataset, JSON_PRETTY_PRINT));
 
-			chmod('data.json', 0766);
-			chmod('deaths.json', 0766);
-			chmod('infected.json', 0766);
+			chmod(DataFiles::$data, 0766);
+			chmod(DataFiles::$deaths, 0766);
+			chmod(DataFiles::$infected, 0766);
 		}
 
-		return file_get_contents('data.json');
+		return file_get_contents(DataFiles::$data);
 	}
 ?>
