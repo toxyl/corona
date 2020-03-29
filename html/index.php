@@ -26,12 +26,6 @@
 	# TOTALS table #
 	################
 	echo "<table id='datatotals' style='width:100%' class='shadow'>\n"; 
-	// echo "<thead><th>Country</th>";
-	// for ($i = 1; $i < count($headers); $i++)
-	// {
-	// 	echo "<th>".$headers[$i]."</th>";
-	// }
-	// echo "</thead>\n";
 	echo "<tbody><tr><td>TOTAL</td>".str_repeat("<td></td>", 12)."</tr></tbody>\n</table>\n";
 
 	##############
