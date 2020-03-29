@@ -1,11 +1,12 @@
 <?php
+	define('BASEDIR', realpath(dirname(__FILE__)));
 	class DataFiles
 	{
-		const COUNTRY_NAMES_MAP 	= 'json/country_names_map.json';
-		const DATA 					= 'json/data.json';
-		const POPULATION 			= 'json/population.json';
-		const DEATHS 				= 'json/deaths.json';
-		const INFECTED 				= 'json/infected.json';
+		const COUNTRY_NAMES_MAP 	= BASEDIR . '/json/country_names_map.json';
+		const DATA 					= BASEDIR . '/json/data.json';
+		const POPULATION 			= BASEDIR . '/json/population.json';
+		const DEATHS 				= BASEDIR . '/json/deaths.json';
+		const INFECTED 				= BASEDIR . '/json/infected.json';
 		const DEATHS_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/deaths';
 		const INFECTED_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/confirmed';
 	}
