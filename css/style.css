@@ -60,18 +60,15 @@ td.zero {
 }
 
 #data > tbody > tr:hover {
-	background-color: #ddd;
-	border-left: 2px solid red;
-	border-right: 2px solid red;
+	background-color: #00000021;
 }
 
-#data > thead > th:hover {
+#data > thead > tr > th:hover {
 	background-color: #ddd;	
 }
 
 #data > tbody > tr > td:hover {
-	background-color: #ddd;	
-	border: 2px solid blue;
+	box-shadow: inset 0px 0px 0px 2px #00000030;
 }
 
 body {
