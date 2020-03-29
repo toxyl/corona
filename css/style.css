@@ -63,13 +63,13 @@ td.zero {
 	color: #aaa;
 }
 
-tbody > tr:hover {
+#total > tbody > tr:hover {
 	background-color: #ddd;
 	border-left: 2px solid red;
 	border-right: 2px solid red;
 }
 
-th:hover {
+#total > th:hover {
 	background-color: #ddd;	
 }
 
