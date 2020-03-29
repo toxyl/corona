@@ -107,11 +107,23 @@ function refreshData()
 	  $.each( data, function( key, val ) {
 	    row = rowIDs.indexOf(val[0]);
 	    updateData(row, val[1], val[2], val[3], val[5], val[6]);
-	    setLink();
 	  });
 	  $('#data').stupidtable_build();
 	  $('#search').keyup();
 	});
+}
+
+function adjustTotalsCellWidths()
+{
+	var ths=$('#data').find('th'); 
+	var cell;
+	var w=0;
+	for (var i=0; i < ths.length; i++) 
+	{
+		w = $(ths[i]).width();
+		cell = $('#datatotals').find('td')[i];
+		$(cell).width(w); 
+	}
 }
 
 function filterTable(event) {
@@ -154,6 +166,8 @@ function filterTable(event) {
 	);
 	
 	setLink();
+	adjustTotalsCellWidths();
+
 }
 
 function setLink()
