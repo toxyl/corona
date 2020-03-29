@@ -37,7 +37,9 @@
 	##############
 	# DATA table #
 	##############
-	echo "<table id='data' style='width:100%;margin-top: 10px;' class='shadow'>\n<thead><th>$search</th>";
+	echo "<table id='data' style='width:100%;margin-top: 10px;' class='shadow'>\n";
+	echo "<tr><td>TOTAL</td>".str_repeat("<td></td>", 12)."</tr>\n";
+	echo "<thead><th>$search</th>";
 	for ($i = 1; $i < count($headers); $i++)
 	{
 		echo "<th data-sort='".$sort_types[$i]."'>".$headers[$i]."</th>";
