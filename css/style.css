@@ -20,12 +20,13 @@ th, td {
 	border: 1px solid #999;
 	font-family: monospace;
 	text-align: right;
+    font-size: 11px;
+	width: 7%;
 }
 
 th {
 	background-color: #eee;
 	font-family: 'Open Sans';
-	font-size:11px;
 	text-align:center;
 }
 
@@ -33,26 +34,11 @@ th[data-sort]{
 	cursor:pointer;
 }
 
-td {
-    font-size: 11px;
-}
-
+th:first-child, 
 td:first-child {
 	font-family: 'Open Sans';
 	font-weight: bold;
-	width: 173px;
-}
-
-th:first-child {
-	width: 173px;
-}
-
-th:nth-child(1), ts:nth-child(1) {
-	width: 10%;
-}
-
-th:nth-child(2), ts:nth-child(2) {
-	width: 10%;
+	width: 16%;
 }
 
 #total {
