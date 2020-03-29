@@ -65,11 +65,11 @@ td.zero {
 	border-right: 2px solid red;
 }
 
-#data > th:hover {
+#data > thead > th:hover {
 	background-color: #ddd;	
 }
 
-#data > td:hover {
+#data > tbody  > td:hover {
 	background-color: #ddd;	
 	border: 2px solid blue;
 }
