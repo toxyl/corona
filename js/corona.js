@@ -111,7 +111,7 @@ function refreshData()
 {
 	console.log('Refreshing data...');
 	$.getJSON("json/", 
-		function( data ) 
+		function(data) 
 		{
 			var items = [];
 			var rowIDs = mapRowsToIDs();

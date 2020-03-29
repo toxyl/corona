@@ -35,7 +35,7 @@
 	echo "<thead><th>$search</th>";
 	for ($i = 1; $i < count($headers); $i++)
 	{
-		echo "<th data-sort='".$sort_types[$i]."'>".$headers[$i]."</th>";
+		echo "<th data-sort='".$sort_types[$i]."'".($sort_col == $i ? ' class="sorting-'.$sort_dir.'"').">".$headers[$i]."</th>";
 	}
 	echo "</th></thead>\n<tbody>\n";
 
