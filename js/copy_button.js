@@ -3,7 +3,7 @@ function attachCopyHandler(selector)
 	$(selector).text($(selector).attr('data-clipboard-text-copy'));
 
 	var clipboard = new ClipboardJS(selector);
-	console.log(clipboard);
+	
 	clipboard.on('success', 
 		function(e) 
 		{
