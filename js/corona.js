@@ -195,6 +195,8 @@ function waitForUpdate(time)
 }
 
 $(function(){
+	$('#datacontainer').load('html/index.php');
+
 	$table = $('#data');
 	$table.stupidtable_settings({
 	    "will_manually_build_table": true
