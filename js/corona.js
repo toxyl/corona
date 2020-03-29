@@ -1,3 +1,19 @@
+var colorMaps = [
+	[ ],
+	[ ],
+	[ 100, 1000, 10000],
+	[ 100, 1000, 10000],
+	[ 1, 25, 50],
+	[ 100, 1000, 10000],
+	[ 100, 1000, 10000],
+	[ 1, 25, 50],
+	[ 1, 10, 25],
+	[ 1, 25, 25],
+	[ 1, 25, 25],
+	[ 1, 25, 25],
+	[ 1, 25, 25]
+];
+
 function inList(text, list)
 {
 	for (var i = 0; i < list.length; i++)
@@ -18,7 +34,7 @@ function getCol(row, col)
 	return $(row).find("td").eq(col);
 }
 
-function findRowIDs()
+function mapRowsToIDs()
 {
 	var rowMap = [];
 	var rows = $('#data').stupidtable()[0].rows;
@@ -67,17 +83,10 @@ function updateRow(row)
 	updateCell(row, 11, toPercent((infCurr/population) * 50));
 	updateCell(row, 12, toPercent((infCurr/population) * 100));
 
-	updateColors(row, 2, 100, 1000, 10000);
-	updateColors(row, 3, 100, 1000, 10000);
-	updateColors(row, 4, 1, 25, 50);
-	updateColors(row, 5, 100, 1000, 10000);
-	updateColors(row, 6, 100, 1000, 10000);
-	updateColors(row, 7, 1, 25, 50);
-	updateColors(row, 8, 1, 10, 25);
-	updateColors(row, 9, 1, 25, 25);
-	updateColors(row, 10, 1, 25, 25);
-	updateColors(row, 11, 1, 25, 25);
-	updateColors(row, 12, 1, 25, 25);
+	for (var i = 2; i <= 12; i++) 
+	{
+		updateColors(row, i, colorMaps[i][0], colorMaps[i][1], colorMaps[i][2]);		
+	}
 }
 
 function updateColors(row, cell, low, mid, high)
@@ -101,16 +110,21 @@ function updateData(row, population, infections, infectionsLast, fatalities, fat
 function refreshData()
 {
 	console.log('Refreshing data...');
-	$.getJSON("json/", function( data ) {
-	  var items = [];
-	  var rowIDs = findRowIDs();
-	  $.each( data, function( key, val ) {
-	    row = rowIDs.indexOf(val[0]);
-	    updateData(row, val[1], val[2], val[3], val[5], val[6]);
-	  });
-	  $('#data').stupidtable_build();
-	  $('#search').keyup();
-	});
+	$.getJSON("json/", 
+		function( data ) 
+		{
+			var items = [];
+			var rowIDs = mapRowsToIDs();
+			$.each(data, 
+				function(key, v) 
+				{
+					updateData(rowIDs.indexOf(v[0]), v[1], v[2], v[3], v[5], v[6]);
+				}
+			);
+			$('#data').stupidtable_build();
+			updateSort('#data', true);
+		}
+	);
 }
 
 function adjustTotalsCellWidths()
@@ -167,22 +181,42 @@ function filterTable(event) {
 		totals.dead,
 		totals.dead_last
 	);
-	
-	setLink();
-	adjustTotalsCellWidths();
+}
 
+function sortTable(selector, index, direction)
+{
+	$(selector).find("thead th").eq(index).stupidsort(direction);
+}
+
+function getSortInfo(selector)
+{
+	var asc = $(selector).find("thead th.sorting-desc").index();
+	var desc = $(selector).find("thead th.sorting-asc").index();
+
+	return { 
+		"index": 		index = asc == desc ? 8 : Math.max(asc, desc),  
+		"direction":   	direction = desc >= asc ? 'desc' : 'asc'
+	};
+}
+
+function updateSort(selector, dontSort)
+{
+	var sortInfo = getSortInfo(selector);
+	if (dontSort != true) sortTable(selector, sortInfo.index, sortInfo.direction);
+	updateLink($('#search').val(), sortInfo.index, sortInfo.direction);
+	$('#search').keyup();
+	adjustTotalsCellWidths();
+}
+
+function updateLink(search, index, direction)
+{
+	$('#url').text(location.href.replace(/\?.*/, '') + '?c=' + search + '&s=' + index + '&d=' + direction);
 }
 
 function setLink()
 {
-	var asc = $('[class=sorting-asc]').index();
-	var sortDirection = asc > -1 ? 'asc' : 'desc';
-	var sortCol = Math.max(asc, $('[class=sorting-desc]').index());
-	if (sortCol == -1) sortCol = 8;
-	$('#url').text(location.href.replace(/\?.*/, '') + 
-					'?c=' + $('#search').val() + 
-					'&s=' + sortCol + 
-					'&d=' + sortDirection);
+	var sortInfo = getSortInfo(selector);
+	updateLink($('#search').val(), sortInfo.index, sortInfo.direction);
 }
 
 function waitForUpdate(time)
@@ -196,17 +230,8 @@ function waitForUpdate(time)
 
 $(function(){
 	$table = $('#data');
-	$table.stupidtable_settings({
-	    "will_manually_build_table": true
-	});
-	$table.bind('aftertablesort', function (event, data) {
-		$('#url').text(location.href.replace(/\?.*/, '') + 
-			'?c=' + $('#search').val() + 
-			'&s=' + data.column + 
-			'&d=' + data.direction);
-
-		adjustTotalsCellWidths();
-	});
+	$table.stupidtable_settings({ "will_manually_build_table": true });
+	$table.bind('aftertablesort', function (event, data) { updateSort('#data', true); });
 	$('#search').keyup(filterTable);
 	$(window).on('resize', adjustTotalsCellWidths);
 	waitForUpdate(60000*60); // 60 minutes
