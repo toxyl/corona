@@ -101,7 +101,7 @@ function updateData(row, population, infections, infectionsLast, fatalities, fat
 function refreshData()
 {
 	console.log('Refreshing data...');
-	$.getJSON("data_json.php", function( data ) {
+	$.getJSON("json/", function( data ) {
 	  var items = [];
 	  var rowIDs = findRowIDs();
 	  $.each( data, function( key, val ) {

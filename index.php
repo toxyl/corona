@@ -20,7 +20,7 @@
 			<br>
 		</p>
 		<div class="full-width">
-		<?php require_once "data_html.php"; ?>
+		<?php require_once "html/index.php"; ?>
 		</div>
 		<div class="full-width shadow" style="background-color: #6b6b6b; height: 122px;margin-top: 10px;">
 			<p style="float: left;text-align: right;padding-left: 20px;">
