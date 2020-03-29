@@ -195,7 +195,7 @@ function waitForUpdate(time)
 }
 
 $(function(){
-	$('#datacontainer').load('html/index.php',
+	$('#datacontainer').load('html/index.php?' + location.href.replace(/(^.*\?)/, ''),
  		function() {
 			$table = $('#data');
 			$table.stupidtable_settings({
