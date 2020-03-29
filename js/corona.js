@@ -190,8 +190,8 @@ function sortTable(selector, index, direction)
 
 function getSortInfo(selector)
 {
-	var asc = $(selector).find("thead th.sorting-desc").index();
-	var desc = $(selector).find("thead th.sorting-asc").index();
+	var asc = $(selector).find("thead th.sorting-asc").index();
+	var desc = $(selector).find("thead th.sorting-desc").index();
 
 	return { 
 		"index": 		index = asc == desc ? 8 : Math.max(asc, desc),  
