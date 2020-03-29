@@ -122,7 +122,7 @@ function refreshData()
 				}
 			);
 			$('#data').stupidtable_build();
-			updateSort('#data', true);
+			updateSort('#data');
 		}
 	);
 }
@@ -234,5 +234,5 @@ $(function(){
 	$table.bind('aftertablesort', function (event, data) { updateSort('#data', true); });
 	$('#search').keyup(filterTable);
 	$(window).on('resize', adjustTotalsCellWidths);
-	waitForUpdate(60000*60); // 60 minutes
+	waitForUpdate(60000*15); // 15 minutes
 });
