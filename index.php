@@ -52,13 +52,14 @@
 		<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text&display=swap" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="corona.js"></script>
+		<script src="copy_button.js"></script>
 	</head>
 	<body>
 		<h1 class="full-width shadow">COVID-19 Data</h1>
 		<p class="full-width black-box-header shadow">
 			Click on the column headers to change the sorting (default is <b>fatality rate</b>).<br>
 			You can search for multiple countries by separating the (partial) names with commas.<br>
-			Share view: <span id="url"></span> <span id='cpbtn' data-clipboard-target='#url'>copy</span><br>
+			Share view: <span id="url"></span> <span id='cpbtn' data-clipboard-target='#url' data-clipboard-text-copy="copy" data-clipboard-text-copied="copied"></span><br>
 			<br>
 		</p>
 		<div class="full-width">
@@ -83,26 +84,7 @@ change of fatalities = ((fatalities current / fatalities last) - 1) * 100
 		</div>
 		<script>
 			refreshData();
-			var clipboard = new ClipboardJS('#cpbtn');
-			clipboard.on('success', 
-				function(e) 
-				{
-			    	e.clearSelection();
-			    	$("#cpbtn").animate({'opacity': 0},
-			    		100,
-			    		function() 
-			    		{
-			      			$(this).text("copied");
-			      			$(this).animate({'opacity': 0},
-					    		1500,
-					    		function() 
-					    		{
-					      			$(this).text("copy");
-					    		}
-					    	).animate({'opacity': 1}, 200);
-			    		}
-			    	).animate({'opacity': 1}, 200);
-			});
+			attachCopyHandler('#cpbtn');
 		</script>
 	</body>
 </html>
