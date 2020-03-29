@@ -40,9 +40,10 @@ td {
 td:first-child {
 	font-family: 'Open Sans';
 	font-weight: bold;
+	width: 173px;
 }
 
-th:first-child, td:first-child {
+th:first-child {
 	width: 173px;
 }
 
