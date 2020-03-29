@@ -20,12 +20,13 @@ th, td {
 	border: 1px solid #999;
 	font-family: monospace;
 	text-align: right;
+    font-size: 11px;
+	width: 7%;
 }
 
 th {
 	background-color: #eee;
 	font-family: 'Open Sans';
-	font-size:11px;
 	text-align:center;
 }
 
@@ -33,21 +34,13 @@ th[data-sort]{
 	cursor:pointer;
 }
 
-td {
-    font-size: 11px;
-}
-
+th:first-child, 
 td:first-child {
 	font-family: 'Open Sans';
 	font-weight: bold;
-}
-
-th:first-child {
-	width: 173px;
-}
-
-#total {
-	background-color: #CCC;
+	width: 16%;
+	min-width: 16%;
+	max-width: 16%;
 }
 
 td.high {
@@ -66,14 +59,16 @@ td.zero {
 	color: #aaa;
 }
 
-tbody > tr:hover {
-	background-color: #ddd;
-	border-left: 2px solid red;
-	border-right: 2px solid red;
+#data > tbody > tr:hover {
+	background-color: #00000021;
 }
 
-th:hover {
+#data > thead > tr > th:hover {
 	background-color: #ddd;	
+}
+
+#data > tbody > tr > td:hover {
+	box-shadow: inset 0px 0px 0px 2px #00000030;
 }
 
 body {
@@ -86,7 +81,6 @@ body {
 }
 
 h1 {
-	/* font-family: 'Zilla Slab Highlight', cursive; */
 	font-family: 'Libre Barcode 39 Text', cursive;
     font-size: 73px;
     margin-top: 35px;
@@ -103,7 +97,7 @@ h1 {
 }
 
 #search {
-	width: auto;
+	width: 100%;
 }
 
 .sorting-desc {

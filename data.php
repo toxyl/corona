@@ -1,4 +1,16 @@
 <?php
+	define('BASEDIR', realpath(dirname(__FILE__)));
+	class DataFiles
+	{
+		const COUNTRY_NAMES_MAP 	= BASEDIR . '/json/country_names_map.json';
+		const DATA 					= BASEDIR . '/json/data.json';
+		const POPULATION 			= BASEDIR . '/json/population.json';
+		const DEATHS 				= BASEDIR . '/json/deaths.json';
+		const INFECTED 				= BASEDIR . '/json/infected.json';
+		const DEATHS_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/deaths';
+		const INFECTED_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/confirmed';
+	}
+
 	class CountryData
 	{
 		public static $country_names_map = null;
@@ -6,7 +18,7 @@
 		public static function map_country_name(&$name)
 		{
 			if (self::$country_names_map == null)
-				self::$country_names_map = json_decode(file_get_contents('country_names_map.json'), true);
+				self::$country_names_map = json_decode(file_get_contents(DataFiles::COUNTRY_NAMES_MAP), true);
 
 			if (in_array($name, array_keys(self::$country_names_map)))
 				$name = self::$country_names_map["$name"];
@@ -142,14 +154,14 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists('data.json') || filemtime('data.json') < (time() - 60 * 60))
+		if (!file_exists(DataFiles::DATA) || filemtime(DataFiles::DATA) < (time() - 60 * 60))
 		{
-			file_put_contents('infected.json', file_get_contents('https://coronavirus-tracker-api.herokuapp.com/confirmed'));
-			file_put_contents('deaths.json',   file_get_contents('https://coronavirus-tracker-api.herokuapp.com/deaths'));
+			file_put_contents(DataFiles::INFECTED, file_get_contents(DataFiles::INFECTED_URL));
+			file_put_contents(DataFiles::DEATHS,   file_get_contents(DataFiles::DEATHS_URL));
 
-			$populations = json_decode(file_get_contents('population.json'), true);
-			$fatalities = get_totals('deaths.json');
-			$infections = get_totals('infected.json');
+			$populations = json_decode(file_get_contents(DataFiles::POPULATION), true);
+			$fatalities = get_totals(DataFiles::DEATHS);
+			$infections = get_totals(DataFiles::INFECTED);
 
 			$objs = [];
 			
@@ -207,13 +219,13 @@
 				$dataset[] = $data->calculate();
 			}
 	
-			file_put_contents('data.json', json_encode($dataset, JSON_PRETTY_PRINT));
+			file_put_contents(DataFiles::DATA, json_encode($dataset, JSON_PRETTY_PRINT));
 
-			chmod('data.json', 0766);
-			chmod('deaths.json', 0766);
-			chmod('infected.json', 0766);
+			chmod(DataFiles::DATA, 0766);
+			chmod(DataFiles::DEATHS, 0766);
+			chmod(DataFiles::INFECTED, 0766);
 		}
 
-		return file_get_contents('data.json');
+		return file_get_contents(DataFiles::DATA);
 	}
 ?>

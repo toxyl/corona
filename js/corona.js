@@ -101,17 +101,32 @@ function updateData(row, population, infections, infectionsLast, fatalities, fat
 function refreshData()
 {
 	console.log('Refreshing data...');
-	$.getJSON("data_json.php", function( data ) {
+	$.getJSON("json/", function( data ) {
 	  var items = [];
 	  var rowIDs = findRowIDs();
 	  $.each( data, function( key, val ) {
 	    row = rowIDs.indexOf(val[0]);
 	    updateData(row, val[1], val[2], val[3], val[5], val[6]);
-	    setLink();
 	  });
 	  $('#data').stupidtable_build();
 	  $('#search').keyup();
 	});
+}
+
+function adjustTotalsCellWidths()
+{
+	var ths=$('#data').find('th'); 
+	var cell;
+	var cellSrc;
+	var w=0;
+	for (var i=0; i < ths.length; i++) 
+	{
+		cellSrc = $(ths[i]);
+		w = cellSrc.outerWidth();
+		cell = $($('#datatotals').find('td')[i]);
+		cell.outerWidth(w); 
+		cellSrc.outerWidth(w); 
+	}
 }
 
 function filterTable(event) {
@@ -154,6 +169,8 @@ function filterTable(event) {
 	);
 	
 	setLink();
+	adjustTotalsCellWidths();
+
 }
 
 function setLink()
@@ -187,7 +204,10 @@ $(function(){
 			'?c=' + $('#search').val() + 
 			'&s=' + data.column + 
 			'&d=' + data.direction);
+
+		adjustTotalsCellWidths();
 	});
 	$('#search').keyup(filterTable);
+	$(window).on('resize', adjustTotalsCellWidths);
 	waitForUpdate(60000*60); // 60 minutes
 });
