@@ -1,5 +1,5 @@
 <?php
-	require_once "../data.php";
+	require_once "data.php";
 
 	$list = json_decode(make_dataset(), true);
 	array_shift($list);
