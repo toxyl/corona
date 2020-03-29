@@ -154,7 +154,7 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists(DataFiles::DATA) || filemtime(DataFiles::DATA) < (time() - 60 * 60))
+		if (!file_exists(DataFiles::DATA) || filemtime(DataFiles::DATA) < (time() - 60 * 15))
 		{
 			file_put_contents(DataFiles::INFECTED, file_get_contents(DataFiles::INFECTED_URL));
 			file_put_contents(DataFiles::DEATHS,   file_get_contents(DataFiles::DEATHS_URL));

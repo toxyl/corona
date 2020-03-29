@@ -28,7 +28,7 @@
 				The <i>chance of infection</i> is based on meeting <b>one</b> person, but the more you meet, the higher your risk becomes (see <b>Infection Chance</b> columns).<br>
 				The given <i>fatality</i> is based on data reported by medical institutions world-wide, it <b>does not</b> say anything about the <i>fatality</i> if medical care is not available.<br>
 				Changes are in regards to the previous data point. In countries where the virus is just starting to spread these numbers won't be very accurate.<br>
-				The data is updated every hour using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API</a>.
+				The data is updated every 15 minutes using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API</a>.
 			</p>
 			<pre style="float: left;text-align: left;padding-left: 20px;">
 Formulas Used
