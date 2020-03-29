@@ -142,7 +142,7 @@ function adjustTotalsCellWidths()
 		cellSrc.outerWidth(w); 
 	}
 }
-
+ 
 function filterTable(event) {
 	var totals = {
 		population: 0,
