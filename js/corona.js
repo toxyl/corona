@@ -195,21 +195,24 @@ function waitForUpdate(time)
 }
 
 $(function(){
-	$('#datacontainer').load('html/index.php');
+	$('#datacontainer').load('html/index.php',
+ 		function() {
+			$table = $('#data');
+			$table.stupidtable_settings({
+			    "will_manually_build_table": true
+			});
+			$table.bind('aftertablesort', function (event, data) {
+				$('#url').text(location.href.replace(/\?.*/, '') + 
+					'?c=' + $('#search').val() + 
+					'&s=' + data.column + 
+					'&d=' + data.direction);
 
-	$table = $('#data');
-	$table.stupidtable_settings({
-	    "will_manually_build_table": true
-	});
-	$table.bind('aftertablesort', function (event, data) {
-		$('#url').text(location.href.replace(/\?.*/, '') + 
-			'?c=' + $('#search').val() + 
-			'&s=' + data.column + 
-			'&d=' + data.direction);
+				adjustTotalsCellWidths();
+			});
+			$('#search').keyup(filterTable);
+			$(window).on('resize', adjustTotalsCellWidths);
+			waitForUpdate(60000*60); // 60 minutes
+ 		}
+	);
 
-		adjustTotalsCellWidths();
-	});
-	$('#search').keyup(filterTable);
-	$(window).on('resize', adjustTotalsCellWidths);
-	waitForUpdate(60000*60); // 60 minutes
 });
