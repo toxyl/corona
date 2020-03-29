@@ -1,13 +1,13 @@
 <?php
 	class DataFiles
 	{
-		static const $country_names_map 	= 'json/country_names_map.json';
-		static const $data 					= 'json/data.json';
-		static const $population 			= 'json/population.json';
-		static const $deaths 				= 'json/deaths.json';
-		static const $infected 				= 'json/infected.json';
-		static const $deaths_url 			= 'https://coronavirus-tracker-api.herokuapp.com/deaths';
-		static const $infected_url 			= 'https://coronavirus-tracker-api.herokuapp.com/confirmed';
+		const COUNTRY_NAMES_MAP 	= 'json/country_names_map.json';
+		const DATA 					= 'json/data.json';
+		const POPULATION 			= 'json/population.json';
+		const DEATHS 				= 'json/deaths.json';
+		const INFECTED 				= 'json/infected.json';
+		const DEATHS_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/deaths';
+		const INFECTED_URL 			= 'https://coronavirus-tracker-api.herokuapp.com/confirmed';
 	}
 
 	class CountryData
@@ -17,7 +17,7 @@
 		public static function map_country_name(&$name)
 		{
 			if (self::$country_names_map == null)
-				self::$country_names_map = json_decode(file_get_contents(DataFiles::$country_names_map), true);
+				self::$country_names_map = json_decode(file_get_contents(DataFiles::COUNTRY_NAMES_MAP), true);
 
 			if (in_array($name, array_keys(self::$country_names_map)))
 				$name = self::$country_names_map["$name"];
@@ -153,14 +153,14 @@
 	
 	function make_dataset()
 	{
-		if (!file_exists(DataFiles::$data) || filemtime(DataFiles::$data) < (time() - 60 * 60))
+		if (!file_exists(DataFiles::DATA) || filemtime(DataFiles::DATA) < (time() - 60 * 60))
 		{
-			file_put_contents(DataFiles::$infected, file_get_contents(DataFiles::$infected_url));
-			file_put_contents(DataFiles::$deaths,   file_get_contents(DataFiles::$deaths_url));
+			file_put_contents(DataFiles::INFECTED, file_get_contents(DataFiles::INFECTED_URL));
+			file_put_contents(DataFiles::DEATHS,   file_get_contents(DataFiles::DEATHS_URL));
 
-			$populations = json_decode(file_get_contents(DataFiles::$population), true);
-			$fatalities = get_totals(DataFiles::$deaths);
-			$infections = get_totals(DataFiles::$infected);
+			$populations = json_decode(file_get_contents(DataFiles::POPULATION), true);
+			$fatalities = get_totals(DataFiles::DEATHS);
+			$infections = get_totals(DataFiles::INFECTED);
 
 			$objs = [];
 			
@@ -218,13 +218,13 @@
 				$dataset[] = $data->calculate();
 			}
 	
-			file_put_contents(DataFiles::$data, json_encode($dataset, JSON_PRETTY_PRINT));
+			file_put_contents(DataFiles::DATA, json_encode($dataset, JSON_PRETTY_PRINT));
 
-			chmod(DataFiles::$data, 0766);
-			chmod(DataFiles::$deaths, 0766);
-			chmod(DataFiles::$infected, 0766);
+			chmod(DataFiles::DATA, 0766);
+			chmod(DataFiles::DEATHS, 0766);
+			chmod(DataFiles::INFECTED, 0766);
 		}
 
-		return file_get_contents(DataFiles::$data);
+		return file_get_contents(DataFiles::DATA);
 	}
 ?>
