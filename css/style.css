@@ -47,6 +47,14 @@ th:first-child {
 	width: 173px;
 }
 
+th:nth-child(1), ts:nth-child(1) {
+	width: 10%;
+}
+
+th:nth-child(2), ts:nth-child(2) {
+	width: 10%;
+}
+
 #total {
 	background-color: #CCC;
 }
