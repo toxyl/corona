@@ -1,3 +1,4 @@
+/* low, medium, high */
 var colorMaps = [
 	[ ],
 	[ ],
