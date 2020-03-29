@@ -1,3 +1,3 @@
 #!/bin/bash
 git add . && git commit -m 'automated test' && git push && \
-wcd-corona 'git checkout origin/feature/misc && git pull'
+wcd-corona 'git checkout feature/misc && git pull'
