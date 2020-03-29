@@ -143,6 +143,7 @@ function adjustTotalsCellWidths()
 	}
 }
 
+ 
 function filterTable(event) {
 	var totals = {
 		population: 0,
