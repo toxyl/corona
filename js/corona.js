@@ -208,5 +208,6 @@ $(function(){
 		adjustTotalsCellWidths();
 	});
 	$('#search').keyup(filterTable);
+	$(window).on('resize', adjustTotalsCellWidths);
 	waitForUpdate(60000*60); // 60 minutes
 });
