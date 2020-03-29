@@ -69,6 +69,11 @@ td.zero {
 	background-color: #ddd;	
 }
 
+#data > td:hover {
+	background-color: #ddd;	
+	border: 2px solid darkgrey;
+}
+
 body {
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
