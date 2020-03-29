@@ -120,9 +120,9 @@ function adjustTotalsCellWidths()
 	var w=0;
 	for (var i=0; i < ths.length; i++) 
 	{
-		w = $(ths[i]).outerWidth();
+		w = $(ths[i]).width();
 		cell = $('#datatotals').find('td')[i];
-		$(cell).outerWidth(w); 
+		$(cell).width(w); 
 	}
 }
 
