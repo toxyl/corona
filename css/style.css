@@ -1,0 +1,145 @@
+.shadow {
+	-moz-box-shadow:     0 0 8px 0px #00000033;
+    -webkit-box-shadow:  0 0 8px 0px #00000033;
+    box-shadow:          0 0 8px 0px #00000033;
+}
+
+.full-width {
+	margin-left: 3%;
+    margin-right: 3%;
+    width: 94%;	
+}
+
+table {
+	border-collapse: collapse;
+	background-color: #fff;
+}
+
+th, td {
+	padding: 5px 10px;
+	border: 1px solid #999;
+	font-family: monospace;
+	text-align: right;
+    font-size: 11px;
+	width: 7%;
+}
+
+th {
+	background-color: #eee;
+	font-family: 'Open Sans';
+	text-align:center;
+}
+
+th[data-sort]{
+	cursor:pointer;
+}
+
+th:first-child, 
+td:first-child {
+	font-family: 'Open Sans';
+	font-weight: bold;
+	width: 16%;
+	min-width: 16%;
+	max-width: 16%;
+}
+
+td.high {
+	background-color: #ff8a8a7f;
+}
+
+td.medium {
+	background-color: #f5ca5d7f;
+}
+
+td.low {
+	background-color: #fff9877f;
+}
+
+td.zero {
+	color: #aaa;
+}
+
+#data > tbody > tr:hover {
+	background-color: #00000021;
+}
+
+#data > thead > tr > th:hover {
+	background-color: #ddd;	
+}
+
+#data > tbody > tr > td:hover {
+	box-shadow: inset 0px 0px 0px 2px #00000030;
+}
+
+body {
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+    background: rgb(64,64,64);
+    background: linear-gradient(0deg, rgba(64,64,64,1) 0%, rgba(128,128,128,1) 100%);
+    font-size: 13px;
+	margin: 0;
+}
+
+h1 {
+	font-family: 'Libre Barcode 39 Text', cursive;
+    font-size: 73px;
+    margin-top: 35px;
+    margin-bottom: 25px;
+    width: 33% !important;
+    text-align: center;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    background-color: black;
+    color: #eee;
+	font-weight: 100;
+    padding-top: 20px;
+    padding-bottom: 11px;
+}
+
+#search {
+	width: 100%;
+}
+
+.sorting-desc {
+	color:red;
+}
+
+.sorting-asc {
+	color:green;
+}
+
+.black-box-header {
+	background-color: black;
+    color: white;
+    margin-top: -25px;
+    margin-bottom: 0px;
+}
+
+#cpbtn {
+    display: inline-block;
+	width: 54px;
+	cursor:pointer;
+	font-size: 12px;
+	color: #bae0f7;
+}
+
+#cpbtn:hover {
+	color: #6eaed4;
+}
+
+#url {
+	color: darkgrey;
+}
+
+.div-tooltip {
+  display: none;
+  position: absolute;
+  background-color: #000;
+  padding: 10px;
+  color: #fff;
+  font-size: 12px 'Roboto';
+  border-radius: 5px;
+  /*
+    more styles here
+  */
+}
