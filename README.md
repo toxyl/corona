@@ -1,4 +1,6 @@
 # Covid-19 Info
+Watch it live: https://www.webcodesign.de/corona
+
 The overview can be filtered by countries and sorted by any of these stats:
 - population
 - confirmed (current)
