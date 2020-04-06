@@ -1,5 +1,9 @@
 # Covid-19 Info
+
 Watch it live: https://www.webcodesign.de/corona
+
+## Data Source
+The data displayed is retrieved using the [Coronavirus Tracker API v2](https://github.com/ExpDev07/coronavirus-tracker-api).
 
 ## Filtering
 You can filter the overview by country names and/or country codes. 
