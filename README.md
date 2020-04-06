@@ -1,7 +1,18 @@
 # Covid-19 Info
 Watch it live: https://www.webcodesign.de/corona
 
-The overview can be filtered by countries and sorted by any of these stats:
+## Filtering
+You can filter the overview by country names and/or country codes. 
+Multiple search terms should be separated with commas. 
+Country codes should be wrapped in square brackets. 
+
+### Examples
+- `Neth,Erman` will show `*Neth*erlands [NL]` and `G*erman*y [DE]`
+- `[NL],Erman` will show `Netherlands *[NL]*` and `G*erman*y [DE]`
+- `[Z` will show `South Africa *[Z*A]`, `Zambia *[Z*M]` and `Zimbabwe *[Z*W]` 
+
+## Sorting
+The overview can be sorted by any of these stats:
 - population
 - confirmed (current)
 - confirmed (last)
@@ -15,24 +26,25 @@ The overview can be filtered by countries and sorted by any of these stats:
 - infection chance (50 persons met)
 - infection chance (100 persons met)
 
+## Totals
 The filtered results are consolidated in a "totals" row for convenience. 
 
-For further convenience all cells are highlighted according to four categories:
-- zero (no color)
-- low (yellow)
-- medium (orange)
-- high (red)
+## Highlighting
+For further convenience most cells are highlighted according to four categories, see the following table for the thresholds used:
 
-The thresholds for highlighting differ per stat:
-- population: no highlight
-- confirmed (current; low=100, medium=1000, high=10000)
-- confirmed (last; low=100, medium=1000, high=10000)
-- confirmed (change since last in %; low=1, medium=25, high=50)
-- deaths (current; low=100, medium=1000, high=10000)
-- deaths (last; low=100, medium=1000, high=10000)
-- deaths (change since last in %; low=1, medium=25, high=50)
-- case fatality rate (in %; ; low=1, medium=10, high=25)
-- infection chance (1 person met; low=1, medium=25, high=50)
-- infection chance (10 persons met; low=1, medium=25, high=50)
-- infection chance (50 persons met; low=1, medium=25, high=50)
-- infection chance (100 persons met; low=1, medium=25, high=50)
+| Stat | zero (no color) | low (yellow) | medium (orange) | high (red) 
+| --- | --- | --- | --- | ---
+| population | - | - | - | -
+| confirmed (current) | <100 | 100 | 1000 | 10000
+| confirmed (last) | <100 | 100 | 1000 | 10000
+| confirmed (change since last in %) | <1 | 1 | 25 | 50
+| deaths (current) | <100 | 100 | 1000 | 10000
+| deaths (last) | <100 | 100 | 1000 | 10000
+| deaths (change since last in %) | <1 | 1 | 25 | 50
+| case fatality rate (in %) | <1 | 1 | 10 | 25
+| infection chance (1 person met) | <1 | 1 | 25 | 50
+| infection chance (10 persons met) | <1 | 1 | 25 | 50
+| infection chance (50 persons met) | <1 | 1 | 25 | 50
+| infection chance (100 persons met) | <1 | 1 | 25 | 50
+
+

@@ -82,6 +82,7 @@ class CoronaTracker
 		var timeline = this.timelines[loc.country];
 		var change = this.data[loc.country];
 		this.data[loc.country].latest = {
+			countryCode: 		loc.country_code,
 			population: 		loc.country_population,
 			caseFatalityRate: 	timeline.deaths.last(1) / timeline.confirmed.last(1),
 			infectionChance: 	timeline.confirmed.last(1) / loc.country_population,
@@ -110,6 +111,7 @@ class CoronaTracker
 
 		return {
 			day: day,
+			countryCode: this.data[country].latest.countryCode,
 			population: this.data[country].latest.population - this.data[country].deaths.total[day],
 			caseFatalityRate: Math.max(0, this.data[country].deaths.total[day] / this.data[country].confirmed.total[day]),
 			infectionChance:  Math.max(0, this.data[country].confirmed.total[day] / this.data[country].latest.population),
@@ -149,7 +151,7 @@ class CoronaTracker
 		var d = this.today(country);
 
 		return [ 
-			this.nameMap.hasOwnProperty(country) ? this.nameMap[country] : country, 
+			(this.nameMap.hasOwnProperty(country) ? this.nameMap[country] : country) + ' ['+d.countryCode+']', 
 			d.population, 
 			d.confirmed.current, d.confirmed.previous, d.confirmed.change.relative,
 			d.deaths.current, d.deaths.previous, d.deaths.change.relative,
