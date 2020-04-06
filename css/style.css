@@ -1,13 +1,13 @@
 .shadow {
 	-moz-box-shadow:     0 0 8px 0px #00000033;
-    -webkit-box-shadow:  0 0 8px 0px #00000033;
-    box-shadow:          0 0 8px 0px #00000033;
+	-webkit-box-shadow:  0 0 8px 0px #00000033;
+	box-shadow:          0 0 8px 0px #00000033;
 }
 
 .full-width {
 	margin-left: 3%;
-    margin-right: 3%;
-    width: 94%;	
+	margin-right: 3%;
+	width: 94%;	
 }
 
 table {
@@ -20,7 +20,7 @@ th, td {
 	border: 1px solid #999;
 	font-family: monospace;
 	text-align: right;
-    font-size: 11px;
+	font-size: 11px;
 	width: 7%;
 }
 
@@ -74,26 +74,26 @@ td.zero {
 body {
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
-    background: rgb(64,64,64);
-    background: linear-gradient(0deg, rgba(64,64,64,1) 0%, rgba(128,128,128,1) 100%);
-    font-size: 13px;
+	background: rgb(64,64,64);
+	background: linear-gradient(0deg, rgba(64,64,64,1) 0%, rgba(128,128,128,1) 100%);
+	font-size: 13px;
 	margin: 0;
 }
 
 h1 {
 	font-family: 'Libre Barcode 39 Text', cursive;
-    font-size: 73px;
-    margin-top: 35px;
-    margin-bottom: 25px;
-    width: 33% !important;
-    text-align: center;
-    margin-right: auto !important;
-    margin-left: auto !important;
-    background-color: black;
-    color: #eee;
+	font-size: 73px;
+	margin-top: 35px;
+	margin-bottom: 25px;
+	width: 33% !important;
+	text-align: center;
+	margin-right: auto !important;
+	margin-left: auto !important;
+	background-color: black;
+	color: #eee;
 	font-weight: 100;
-    padding-top: 20px;
-    padding-bottom: 11px;
+	padding-top: 20px;
+	padding-bottom: 11px;
 }
 
 #search {
@@ -110,13 +110,13 @@ h1 {
 
 .black-box-header {
 	background-color: black;
-    color: white;
-    margin-top: -25px;
-    margin-bottom: 0px;
+	color: white;
+	margin-top: -25px;
+	margin-bottom: 0px;
 }
 
 #cpbtn {
-    display: inline-block;
+	display: inline-block;
 	width: 54px;
 	cursor:pointer;
 	font-size: 12px;
@@ -140,6 +140,6 @@ h1 {
   font-size: 12px 'Roboto';
   border-radius: 5px;
   /*
-    more styles here
+	more styles here
   */
 }

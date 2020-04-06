@@ -12,12 +12,12 @@ class ObjectUtils
 
 	static valuesAsc(obj)
 	{
-		return Object.values(obj).sort(function(a,b) { return a < b; });
+		return Object.values(obj).sort(function(a,b) { return a - b; });
 	}
 
 	static valuesDesc(obj)
 	{
-		return Object.values(obj).sort(function(a,b) { return a > b; });
+		return Object.values(obj).sort(function(a,b) { return b - a; });
 	}
 
 	static hasKey(obj, key)
@@ -70,5 +70,4 @@ class ObjectUtils
 		}
 		console.log(dumpobj);
 	}
-
 }

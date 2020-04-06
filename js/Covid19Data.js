@@ -40,10 +40,10 @@ function mapRowsToIDs()
 	var rowMap = [];
 	var rows = $('#data').stupidtable()[0].rows;
 	var i = 1;
-  	for (i; i < rows.length; i++) {
+	for (i; i < rows.length; i++) {
 		rowMap.push(rows[i].cells[0].textContent);
-    }
-    return rowMap;
+	}
+	return rowMap;
 }
 
 function updateCell(row, col, val)
@@ -175,27 +175,27 @@ function filterTable(event) {
 		dead_last: 0
 	};
 	
-    var filter = event.target.value.toUpperCase();
-    var rows = document.querySelector("#data tbody").rows;
+	var filter = event.target.value.toUpperCase();
+	var rows = document.querySelector("#data tbody").rows;
 
-    filter = filter.split(',');
+	filter = filter.split(',');
 
-    for (var i = 0; i < rows.length; i++) {
-        if (inList(rows[i].cells[0].textContent.toUpperCase(), filter)) 
-        {
-            rows[i].style.display = "";
-            totals.population += Number(rows[i].cells[1].textContent);
-            totals.infected += Number(rows[i].cells[2].textContent);
-            totals.infected_last += Number(rows[i].cells[3].textContent);
-            totals.dead += Number(rows[i].cells[5].textContent);
-            totals.dead_last += Number(rows[i].cells[6].textContent);
-        } 
-        else 
-        {
-            rows[i].style.display = "none";
-        }      
-    }
-    
+	for (var i = 0; i < rows.length; i++) {
+		if (inList(rows[i].cells[0].textContent.toUpperCase(), filter)) 
+		{
+			rows[i].style.display = "";
+			totals.population += Number(rows[i].cells[1].textContent);
+			totals.infected += Number(rows[i].cells[2].textContent);
+			totals.infected_last += Number(rows[i].cells[3].textContent);
+			totals.dead += Number(rows[i].cells[5].textContent);
+			totals.dead_last += Number(rows[i].cells[6].textContent);
+		} 
+		else 
+		{
+			rows[i].style.display = "none";
+		}      
+	}
+	
 	updateData(
 		document.querySelector("#datatotals tbody").rows[0], 
 		totals.population, 

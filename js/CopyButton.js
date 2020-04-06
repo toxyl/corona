@@ -7,21 +7,21 @@ function attachCopyHandler(selector)
 	clipboard.on('success', 
 		function(e) 
 		{
-	    	e.clearSelection();
-	    	$(selector).animate({'opacity': 0},
-	    		100,
-	    		function() 
-	    		{
+			e.clearSelection();
+			$(selector).animate({'opacity': 0},
+				100,
+				function() 
+				{
 					$(this).text($(this).attr('data-clipboard-text-copied'));
-	      			$(this).animate({'opacity': 0},
-			    		1500,
-			    		function() 
-			    		{
+					$(this).animate({'opacity': 0},
+						1500,
+						function() 
+						{
 							$(this).text($(this).attr('data-clipboard-text-copy'));
-			    		}
-			    	).animate({'opacity': 1}, 200);
-	    		}
-	    	).animate({'opacity': 1}, 200);
+						}
+					).animate({'opacity': 1}, 200);
+				}
+			).animate({'opacity': 1}, 200);
 		}
 	);
 }

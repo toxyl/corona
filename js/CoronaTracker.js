@@ -1,21 +1,5 @@
 class CoronaTracker
 {
-	static timelines = {};
-	static data = {};
-	static days = 0;
-
-	static nameMap = {
-		"US": "United States",
-		"Taiwan*": "Taiwan",
-		"Congo (Brazzaville)": "Republic of the Congo",
-		"Congo (Kinshasa)": "DR Congo",
-		"Gambia, The": "Gambia",
-		"Bahamas, The": "Bahamas",
-		"Timor-Leste": "East Timor",
-		"Cabo Verde": "Cape Verde",
-		"Holy See": "Vatican City"
-	};
-
 	static calculateChanges(country, timeline)
 	{
 		ObjectUtils.createKey(this.data, country, { confirmed: [], deaths: [], recovered: [] }, false);
@@ -255,8 +239,8 @@ class CoronaTracker
 
 	static update(callback)
 	{
-        var loc;
-        var loadData = function (data)
+		var loc;
+		var loadData = function (data)
 		{
 			CoronaTracker.loadDataSet(data);
 			callback(data);
@@ -288,10 +272,26 @@ class CoronaTracker
 	}
 }
 
+CoronaTracker.timelines = {};
+CoronaTracker.data = {};
+CoronaTracker.days = 0;
+
+CoronaTracker.nameMap = {
+	"US": "United States",
+	"Taiwan*": "Taiwan",
+	"Congo (Brazzaville)": "Republic of the Congo",
+	"Congo (Kinshasa)": "DR Congo",
+	"Gambia, The": "Gambia",
+	"Bahamas, The": "Bahamas",
+	"Timor-Leste": "East Timor",
+	"Cabo Verde": "Cape Verde",
+	"Holy See": "Vatican City"
+};
+
 $.urlParam = function (name) 
 {
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(location.href);
-    return results == null ? '' : results[1];
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(location.href);
+	return results == null ? '' : results[1];
 }
 
 $(function(){
