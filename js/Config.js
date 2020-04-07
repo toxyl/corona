@@ -93,3 +93,4 @@ Config.aliasAdd('Cabo Verde',           'Cape Verde');
 Config.aliasAdd('Holy See',             'Vatican City');
 
 Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
+Config.updateInterval = 15; // in minutes

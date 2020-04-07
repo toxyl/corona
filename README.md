@@ -51,4 +51,6 @@ For further convenience most cells are highlighted according to four categories,
 | infection chance (50 persons met) | <1 | 1 | 25 | 50
 | infection chance (100 persons met) | <1 | 1 | 25 | 50
 
+## Configuration
+Edit `js/Config.js` to change the default settings (columns, highlighting thresholds, cell value calculations, country aliases, API URL, update interval).
 

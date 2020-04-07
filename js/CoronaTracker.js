@@ -219,14 +219,15 @@ class CoronaTracker
                 CoronaTracker.tblData.updateData(i, v[1], v[2], v[3], v[5], v[6]);
             }
         );
-        $('#data').stupidtable_settings({ "will_manually_build_table": true });
-        $('#data').bind('aftertablesort', function (event, data) { updateSort('#data', true); });
-        $('#data').stupidtable_build();
-        updateSort('#data');
+
+        CoronaTracker.tblData.initStupidTable();
+
+        this.updateSort();
+
         $('#search').val(filter);
-        $('#search').keyup(filterTable);
+        $('#search').keyup(this.filter);
         $('#search').keyup();
-        $(window).on('resize', adjustTotalsCellWidths);
+        $(window).on('resize', this.syncTableColumnWidths);
 
         addTooltips();
     }
@@ -250,30 +251,91 @@ class CoronaTracker
             CoronaTracker.update(
                 function(data)
                 {
-                    var filter = $.urlParam('c');
-                    var sortCol = $.urlParam('s');
-                    var sortAscending = $.urlParam('d').toLowerCase() == 'asc';
-                    if (sortCol == '') sortCol = 8;
-
-                    CoronaTracker.table(filter, sortCol, sortAscending);
-
+                    var url = URL.get();
+                    CoronaTracker.table(url.filter, url.sort.column, url.sort.ascending);
                 }
             );
             CoronaTracker.scheduleUpdate(timeNext, timeNext);
         }, timeFirst);
+    }
+
+    static syncTableColumnWidths()
+    {
+        var ths = $(this.tblData).find('th'); 
+        var cell;
+        var cellSrc;
+        var w = 0;
+        for (var i = 0; i < ths.length; i++) 
+        {
+            cellSrc = $(ths[i]);
+            w = cellSrc.outerWidth();
+            cell = $($(this.tblTotal).find('td')[i]);
+            cell.outerWidth(w); 
+            cellSrc.outerWidth(w); 
+        }
+    }
+
+    static updateSort(dontSort)
+    {
+        var sortInfo = this.tblData.getSortInfo();
+        if (dontSort != true) this.tblData.sort(sortInfo.index, sortInfo.direction);
+        URL.updateLink(sortInfo);
+        $('#search').keyup();
+        this.syncTableColumnWidths();
+    }
+
+    static filter(event)
+    {
+        var totals = {
+            population: 0,
+            infected: 0,
+            infected_last: 0,
+            dead: 0,
+            dead_last: 0
+        };
+
+        var inList = function(text, list)
+        {
+            for (var i = 0; i < list.length; i++)
+            {
+                if (text.indexOf(list[i].trim()) > -1)
+                    return true;    
+            }
+            return false;
+        };
+        
+        var filter = event.target.value.toUpperCase().split(',');
+        var rows = CoronaTracker.tblData.rows();
+
+        for (var i = 0; i < rows.length; i++) 
+        {
+            if (inList(CoronaTracker.tblData.val(rows[i], 0).toUpperCase(), filter)) 
+            {
+                rows[i].style.display = "";
+                totals.population    += CoronaTracker.tblData.valNumeric(rows[i], 1);
+                totals.infected      += CoronaTracker.tblData.valNumeric(rows[i], 2);
+                totals.infected_last += CoronaTracker.tblData.valNumeric(rows[i], 3);
+                totals.dead          += CoronaTracker.tblData.valNumeric(rows[i], 5);
+                totals.dead_last     += CoronaTracker.tblData.valNumeric(rows[i], 6);
+            }
+            else 
+            {
+                rows[i].style.display = "none";
+            }      
+        }
+        
+        CoronaTracker.tblTotal.updateData(0,     
+            totals.population, 
+            totals.infected,
+            totals.infected_last,
+            totals.dead,
+            totals.dead_last
+        );
+
+        URL.updateLink();
     }
 }
 
 CoronaTracker.timelines = {};
 CoronaTracker.data = {};
 CoronaTracker.days = 0;
-
-$.urlParam = function (name) 
-{
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(location.href);
-    return results == null ? '' : results[1];
-}
-
-$(function(){
-    CoronaTracker.scheduleUpdate(1, 60000*15); // 15 minutes
-});

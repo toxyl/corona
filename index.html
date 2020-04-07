@@ -10,9 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		<script src="js/ExtendedNumber.js"></script>
 		<script src="js/ExtendedArray.js"></script>
+		<script src="js/URL.js"></script>
 		<script src="js/DataTable.js"></script>
 		<script src="js/Config.js"></script>
-		<script src="js/misc.js"></script>
 		<script src="js/CopyButton.js"></script>
 		<script src="js/Tooltip.js"></script>
 		<script src="js/ObjectUtils.js"></script>
@@ -47,7 +47,8 @@ change of fatalities = ((fatalities current / fatalities last) - 1) * 100
 			</pre>
 		</div>
 		<script>
-			attachCopyHandler('#cpbtn');
+			attachCopyHandler('#cpbtn');    
+			CoronaTracker.scheduleUpdate(1, 60000 * Config.updateInterval);
 		</script>
 	</body>
 </html>

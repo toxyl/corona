@@ -23,6 +23,16 @@ class DataTable
         return $(row).find("td").eq(colID);
     }
 
+    val(row, colID)
+    {
+        return this.cell(row, colID).text();
+    }
+
+    valNumeric(row, colID)
+    {
+        return Number(this.cell(row, colID).text());
+    }
+
     updateCell(row, colID, value)
     {
         var colInfo = Config.columnInfo(colID);
@@ -84,15 +94,46 @@ class DataTable
         $(row).attr('data-tooltip', tooltipText);
     }
 
-
     updateData(row, population, infections, infectionsLast, fatalities, fatalitiesLast)
     {
-
         this.updateCell(row, 1, population);
         this.updateCell(row, 2, infections);
         this.updateCell(row, 3, infectionsLast);
         this.updateCell(row, 5, fatalities);
         this.updateCell(row, 6, fatalitiesLast);
         this.updateRow(row);
+    }
+
+    getSortInfo()
+    {
+        var asc = this.table.find("thead th.sorting-asc").index();
+        var desc = this.table.find("thead th.sorting-desc").index();
+
+        return { 
+            "index":        asc == desc ? 8 : Math.max(asc, desc),  
+            "direction":    desc >= asc ? 'desc' : 'asc'
+        };
+    }
+
+    sort(index, direction)
+    {
+        this.table.find("thead th").eq(index).stupidsort(direction);
+    }
+
+    initStupidTable()
+    {
+        this.table.stupidtable_settings(
+            { 
+                "will_manually_build_table": true 
+            }
+        );
+        this.table.bind(
+            'aftertablesort', 
+            function (event, data) 
+            { 
+                CoronaTracker.updateSort(true); 
+            }
+        );
+        this.table.stupidtable_build(); 
     }
 }
