@@ -92,6 +92,6 @@ Config.aliasAdd('Timor-Leste',          'East Timor');
 Config.aliasAdd('Cabo Verde',           'Cape Verde');
 Config.aliasAdd('Holy See',             'Vatican City');
 
-Config.apiURL = 'http://188.166.130.146/v2/locations?timelines=true';
-// Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
+// Config.apiURL = 'http://188.166.130.146/v2/locations?timelines=true';
+Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
 Config.updateInterval = 15; // in minutes
