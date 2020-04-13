@@ -72,15 +72,15 @@ Config.columnAdd('Country',                                 '',         null,   
 Config.columnAdd('Population',                              'int',      null,   null,   null);
 Config.columnAdd('Confirmed<br>(current)',                  'int',      100,    1000,   10000);
 Config.columnAdd('Confirmed<br>(last)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Confirmed<br>(change)',                   'float',    1,      25,     50,     function(dataTable, row) { return ((dataTable.cell(row, 2).text() / dataTable.cell(row, 3).text()) - 1).toPercent(); } );
+Config.columnAdd('Confirmed<br>(change)',                   'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 3).text(), dataTable.cell(row, 2).text()).toPercent(); } );
 Config.columnAdd('Deaths<br>(current)',                     'int',      100,    1000,   10000);
 Config.columnAdd('Deaths<br>(last)',                        'int',      100,    1000,   10000);
-Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return (( dataTable.cell(row, 5).text() / dataTable.cell(row, 6).text()) - 1).toPercent(); } );
-Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return (  dataTable.cell(row, 5).text() / dataTable.cell(row, 2).text()).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return (  dataTable.cell(row, 2).text() / dataTable.cell(row, 1).text()).toPercent(); });
-Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return (( dataTable.cell(row, 2).text() / dataTable.cell(row, 1).text()) * 10).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return (( dataTable.cell(row, 2).text() / dataTable.cell(row, 1).text()) * 50).toPercent(); });
-Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return (( dataTable.cell(row, 2).text() / dataTable.cell(row, 1).text()) * 100).toPercent(); });
+Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 6).text(), dataTable.cell(row, 5).text()).toPercent(); } );
+Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text()).toPercent(); } );
+Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 1).toPercent(); });
+Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 10).toPercent(); } );
+Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 50).toPercent(); });
+Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 100).toPercent(); });
 
 Config.aliasAdd('US',                   'United States');
 Config.aliasAdd('Taiwan*',              'Taiwan');
@@ -92,6 +92,6 @@ Config.aliasAdd('Timor-Leste',          'East Timor');
 Config.aliasAdd('Cabo Verde',           'Cape Verde');
 Config.aliasAdd('Holy See',             'Vatican City');
 
-Config.apiURL = 'http://188.166.130.146/v2/locations?timelines=true';
+Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
 // Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
 Config.updateInterval = 15; // in minutes
