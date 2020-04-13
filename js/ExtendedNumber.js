@@ -20,3 +20,30 @@ if (!Number.prototype.toPercent)
         return value.toFixed(decimals) + '%';
     }
 };
+
+if (!Number.prototype.format)
+{
+    Number.prototype.format = function(thousands, fractions)
+    {
+        if (thousands == undefined)
+            thousands = ',';
+
+        if (fractions == undefined)
+            fractions = '.';
+        
+        return this.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1[thousands]').replace(/\./g, fractions).replace(/\[thousands\]/g, thousands);
+    }
+};
+
+if (!Number.prototype.round)
+{
+    Number.prototype.round = function(decimals)
+    {
+        if (decimals == undefined)
+            decimals = 0;
+
+        decimals = Math.pow(10, decimals);
+
+        return Math.round(this * decimals) / decimals;
+    }
+};
