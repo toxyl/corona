@@ -46,21 +46,42 @@ class DataTable
             $cell[0].className = val < colInfo.low ? 'zero' : (val < colInfo.medium ? 'low' : (val < colInfo.high ? 'medium' : 'high'));
     }
 
-    predictDaysUntil(max, curr, last, scale)
+    formatToolTip(row)
     {
-        max = parseFloat(max);
-        curr = parseFloat(curr);
-        last = parseFloat(last);
+        var fmt = function (label, curr, last) 
+        {
+            var changeAbs = Math.absoluteChange(last, curr);
+            var change    = Math.percentageChange(last, curr);
+            var daysUntilDoubled = Math.doublingInXDays(last, curr);
+            changeAbs = last.format() + ((parseFloat(changeAbs) > 0) ? '+' : '') + changeAbs.format()  + " = " + curr.format();
 
-        if (curr == 0 || last == 0 || curr == last)
-            return -1;
-
-        var predictions = [ last, curr ].predictUntil(0, max * scale, 365);
-        
-        return {
-            "days": predictions.days,
-            "ratio": Math.max(0, predictions.prediction / max)
+            return "<b>" + label + "</b>: " + changeAbs.replace(/([\-\+\=])/g, ' $1 ') + " (" + (parseFloat(change) > 0 ? '+' : '') + change.toPercent(undefined, 2) + ", doubles in approx. "+daysUntilDoubled.toFixed(2)+" days)";
         };
+
+        var country      = this.cell(row, 0).text();
+        
+        var population   = Number(this.cell(row, 1).text());
+        
+        var infCurr      = Number(this.cell(row, 2).text());
+        var infLast      = Number(this.cell(row, 3).text());
+
+        var fatCurr      = Number(this.cell(row, 5).text());
+        var fatLast      = Number(this.cell(row, 6).text());
+
+        var infStats = Math.entirePopulationAffectedInXDays(population, infLast, infCurr).round(0);
+        var deaStats = Math.entirePopulationAffectedInXDays(population, fatLast, fatCurr).round(0);
+
+        var tooltipText = "<b>" + country + "</b><br><br>"+
+                          "<b>Population</b>: "+population.format()+" ("+(infCurr / population).toPercent()+" infected, "+(fatCurr / population).toPercent()+" died)<br>"+
+                          fmt('Confirmed', infCurr, infLast) + "<br>" + 
+                          fmt('Deaths', fatCurr, fatLast) + "<br>" + 
+                          "<br>";
+        if (infStats > 0)
+        {
+            tooltipText += "At the current rate the entire population would be infected in approx. " + infStats + " days.";
+        }
+
+        $(row).attr('data-tooltip', tooltipText);
     }
 
     updateRow(row)
@@ -78,20 +99,7 @@ class DataTable
                 this.updateCell(row, i,  this.cell(row, i).text());
         }
         
-        var population  = this.cell(row, 1).text();
-        var infCurr     = this.cell(row, 2).text();
-        var infLast     = this.cell(row, 3).text();
-        var fatCurr     = this.cell(row, 5).text();
-        var fatLast     = this.cell(row, 6).text();
-
-        var infStats = this.predictDaysUntil(population, infCurr, infLast, 0.95);
-        var deaStats = this.predictDaysUntil(population, fatCurr, fatLast, 0.95);
-
-        var tooltipText = "Currently " + (infCurr / population).toPercent() + " of the population are infected.";
-        if (infStats.days > 0) tooltipText += "<br>If the trend continues unchanged " + infStats.ratio.toPercent(100, 0) + " of the population will be infected in " + infStats.days + " days."
-        if (deaStats.days > 0) tooltipText += "<br>If the trend continues unchanged " + deaStats.ratio.toPercent(100, 0) + " of the population will be dead in " + deaStats.days + " days."
-
-        $(row).attr('data-tooltip', tooltipText);
+        this.formatToolTip(row);
     }
 
     updateData(row, population, infections, infectionsLast, fatalities, fatalitiesLast)
