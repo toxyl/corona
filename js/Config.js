@@ -11,6 +11,7 @@ class Config
         }
 
         this.aliases[name] = alias;
+        this.aliases[alias] = name;
     }
 
     static alias(name)
@@ -95,3 +96,9 @@ Config.aliasAdd('Holy See',             'Vatican City');
 Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
 // Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
 Config.updateInterval = 15; // in minutes
+
+Config.graphHeight = 100;
+Config.graphWidth = 500;
+Config.graphColorGrid = '#666666';
+Config.graphColorConfirmed = '#cccc00';
+Config.graphColorDeaths = '#cc0000';
