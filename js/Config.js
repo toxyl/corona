@@ -78,10 +78,10 @@ Config.columnAdd('Deaths<br>(current)',                     'int',      100,    
 Config.columnAdd('Deaths<br>(last)',                        'int',      100,    1000,   10000);
 Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 6).text(), dataTable.cell(row, 5).text()).toPercent(); } );
 Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text()).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 1).toPercent(); });
-Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 10).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 50).toPercent(); });
-Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 1).text(), 100).toPercent(); });
+Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 1).toPercent(); });
+Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 10).toPercent(); } );
+Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 50).toPercent(); });
+Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 100).toPercent(); });
 
 Config.aliasAdd('US',                   'United States');
 Config.aliasAdd('Taiwan*',              'Taiwan');
