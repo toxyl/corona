@@ -35,6 +35,7 @@
 			<p style="float: left;text-align: right;padding-left: 20px;">
 				Be aware that all percentages are only estimates and <b>will not</b> reflect the entire reality of it.<br>
 				The <i>infection chance</i> is based on meeting <b>one</b> person, but the more you meet, the higher your risk becomes (see <b>Infection Chance</b> columns).<br>
+				These numbers will be higher than the actual chance, though, because not all countries report recoveries and we are therefore considering individuals infectious who are already recovered.<br>
 				The given <i>case fatality rate</i> is based on data reported by medical institutions world-wide, it <b>does not</b> say anything about the <i>fatality</i> if medical care is not available.<br>
 				Changes are in regards to the previous data point. In countries where the virus is just starting to spread these numbers won't be very accurate.<br>
 				The data is updated every 15 minutes using the <a href="https://github.com/ExpDev07/coronavirus-tracker-api">Coronavirus Tracker API v2</a>.
@@ -46,6 +47,7 @@ case fatality rate   = (deaths / infected) * 100
 infection chance     = (((infected - deaths) / population) * people met) * 100
 change of infections = ((infections current / infections last) - 1) * 100
 change of deaths     = ((deaths current / deaths last) - 1) * 100
+
 			</pre>
 		</div>
 		<script>
