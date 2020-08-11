@@ -98,3 +98,11 @@ if (!Array.prototype.predictUntil)
         };
     }
 };
+
+if (!Array.prototype.estimateInfectionRate)
+{
+    Array.prototype.estimateInfectionRate = function(incubationPeriod)
+    {
+        return this.last(1) / this.last(1+incubationPeriod);
+    }
+};
