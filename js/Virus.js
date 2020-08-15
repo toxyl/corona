@@ -15,6 +15,11 @@ class RecursiveTree
 		var v = new this.constructor(name);
 		if (this.members == undefined)
 			this.members = [ ];
+		for (var i = 0; i < this.members.length; i++) 
+		{
+			if (this.members[i].name == name)
+				return this.members[i];
+		}
 		this.members.push(v);
 		return v;
 	}
@@ -23,7 +28,8 @@ class RecursiveTree
 	{
 		if (this.members == undefined)
 			this.members = [ ];
-		this.members.push(obj);
+		if (this.members.indexOf(obj) < 0)
+			this.members.push(obj);
 		return obj;
 	}
 
@@ -157,6 +163,7 @@ class RecursiveTree
 	}
 }
 
+// Virus.printToConsole(['US','Germany','Netherlands']);
 class Virus extends RecursiveTree
 {
 	static filter(filter)
@@ -166,12 +173,16 @@ class Virus extends RecursiveTree
 		var cs = [];
 		var countries = ObjectUtils.keys(CoronaTracker.data);
 		var d = null;
+		var c = null;
+		var r = null;
 
-		for (var i = 0; i < countries.length; i++) {
+		for (var i = 0; i < countries.length; i++) 
+		{
+			c = countries[i];
+			d = CoronaTracker.data[c];
+			r = consCorona.add(Config.region(c));
 
-			d = CoronaTracker.data[countries[i]];
-
-			cs.push(consCorona.
+			cs.push(r.
 				add(countries[i]).
 				increment('population', d.latest.population).
 				increment('infected', d.latest.confirmed.total.absolute.current).
@@ -197,7 +208,16 @@ class Virus extends RecursiveTree
 		}
 
 		return {
-			all: all,
+			world: all,
+			region: {
+				africa: all.find('Covid-19.Africa'),
+				arab_states: all.find('Covid-19.Arab States'),				
+				asia_and_pacific: all.find('Covid-19.Asia & Pacific'),				
+				europe: all.find('Covid-19.Europe'),				
+				middle_east: all.find('Covid-19.Middle East'),				
+				north_america: all.find('Covid-19.North America'),				
+				south_america: all.find('Covid-19.South America'),				
+			},
 			selection: selection
 		};
 	}
@@ -205,19 +225,104 @@ class Virus extends RecursiveTree
 	static printToConsole(filter)
 	{
 		var res = this.filter(filter);
+		var world = res.world.data();
+		var selection = { total: res.selection.data() };
+		var africa = { total: res.region.africa.data() };
+		var arab_states = { total: res.region.arab_states.data() };
+		var asia_and_pacific = { total: res.region.asia_and_pacific.data() };
+		var europe = { total: res.region.europe.data() };
+		var middle_east = { total: res.region.middle_east.data() };
+		var north_america = { total: res.region.north_america.data() };
+		var south_america = { total: res.region.south_america.data() };
 
-		for (var i = 0; i < res.selection.members.length; i++) 
-		{
+		for (var i = 0; i < res.region.africa.members.length; i++) {
+			africa[res.region.africa.members[i].name] = res.region.africa.members[i].data();
+		}
+		for (var i = 0; i < res.region.arab_states.members.length; i++) {
+			arab_states[res.region.arab_states.members[i].name] = res.region.arab_states.members[i].data();
+		}
+		for (var i = 0; i < res.region.asia_and_pacific.members.length; i++) {
+			asia_and_pacific[res.region.asia_and_pacific.members[i].name] = res.region.asia_and_pacific.members[i].data();
+		}
+		for (var i = 0; i < res.region.europe.members.length; i++) {
+			europe[res.region.europe.members[i].name] = res.region.europe.members[i].data();
+		}
+		for (var i = 0; i < res.region.middle_east.members.length; i++) {
+			middle_east[res.region.middle_east.members[i].name] = res.region.middle_east.members[i].data();
+		}
+		for (var i = 0; i < res.region.north_america.members.length; i++) {
+			north_america[res.region.north_america.members[i].name] = res.region.north_america.members[i].data();
+		}
+		for (var i = 0; i < res.region.south_america.members.length; i++) {
+			south_america[res.region.south_america.members[i].name] = res.region.south_america.members[i].data();
+		}
+		for (var i = 0; i < res.selection.members.length; i++) {
+			selection[res.selection.members[i].name] = res.selection.members[i].data();
+		}
+
+		var data = {
+			selection: 				selection,
+			regions:
+			{
+				total: 				world,
+				'Africa': 			africa,
+				'Arab States': 		arab_states,
+				'Asia & Pacific': 	asia_and_pacific,
+				'Europe': 			europe,
+				'Middle East': 		middle_east,
+				'North America': 	north_america,
+				'South America': 	south_america					
+			}
+		};
+
+		res.region.africa.printStats();
+		res.region.arab_states.printStats();
+		res.region.asia_and_pacific.printStats();
+		res.region.europe.printStats();
+		res.region.middle_east.printStats();
+		res.region.north_america.printStats();
+		res.region.south_america.printStats();
+		res.world.printStats();
+		res.selection.printStats();
+		for (var i = 0; i < res.selection.members.length; i++) {
 			res.selection.members[i].printStats();
 		}
 
-		res.all.printStats();
-		res.selection.printStats();
+		return data;
 	}
 
 	static plotData(filter)
 	{
 
+	}
+
+	data()
+	{
+		return {
+			population: this.totalPopulation(),
+			active_cases: this.activeCases(),
+			case_fatality_rate: parseFloat(this.caseFatalityRate()),
+			infected: {
+				total: this.totalInfected(),
+				change: this.newInfected(),
+				population: parseFloat(this.infectedPopulation())
+			},
+			dead: {
+				total: this.totalDead(),
+				change: this.newDead(),
+				population: parseFloat(this.deadPopulation())
+			},
+			recovered: {
+				total: this.totalRecovered(),
+				change: this.newRecovered(),
+				population: parseFloat(this.recoveredPopulation())
+			},
+			infection_chance: {
+				10: parseFloat(this.infectionChance(10)),
+				50: parseFloat(this.infectionChance(50)),
+				100: parseFloat(this.infectionChance(100))
+			}
+		};
 	}
 
 	printStats()
