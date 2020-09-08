@@ -54,3 +54,5 @@ For further convenience most cells are highlighted according to four categories,
 ## Configuration
 Edit `js/Config.js` to change the default settings (columns, highlighting thresholds, cell value calculations, country aliases, API URL, update interval).
 
+## Icon
+The favicon is made from [Somewans Covid-19 Coronavirus icon set](https://www.iconfinder.com/iconsets/covid-19-coronavirus).

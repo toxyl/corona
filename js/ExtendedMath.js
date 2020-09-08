@@ -8,9 +8,9 @@ if (!Math.caseFatalityRate)
 
 if (!Math.infectionChance)
 {
-    Math.infectionChance = function(infections, population, peopleMet)
+    Math.infectionChance = function(infections, deaths, population, peopleMet)
     {
-        return (parseFloat(infections) / parseFloat(population)) * peopleMet;
+        return ((parseFloat(infections) - parseFloat(deaths)) / parseFloat(population)) * peopleMet;
     }
 };
 

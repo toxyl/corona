@@ -84,8 +84,8 @@ class CoronaTracker
         this.data[loc.country].latest = {
             countryCode:        loc.country_code,
             population:         loc.country_population,
-            caseFatalityRate:   timeline.deaths.last(1) / timeline.confirmed.last(1),
-            infectionChance:    timeline.confirmed.last(1) / loc.country_population,
+            caseFatalityRate:   Math.caseFatalityRate(timeline.confirmed.last(1), timeline.deaths.last(1)),
+            infectionChance:    Math.infectionChance(timeline.confirmed.last(1), timeline.deaths.last(1), loc.country_population, 1),
             deaths:             this.latestOfTimeline(loc.country, 'deaths', loc.country_population),
             recovered:          this.latestOfTimeline(loc.country, 'recovered', loc.country_population),
             confirmed:          this.latestOfTimeline(loc.country, 'confirmed', loc.country_population),
@@ -113,8 +113,8 @@ class CoronaTracker
             day: day,
             countryCode: this.data[country].latest.countryCode,
             population: this.data[country].latest.population - this.data[country].deaths.total[day],
-            caseFatalityRate: Math.max(0, this.data[country].deaths.total[day] / this.data[country].confirmed.total[day]),
-            infectionChance:  Math.max(0, this.data[country].confirmed.total[day] / this.data[country].latest.population),
+            caseFatalityRate: Math.max(0, Math.caseFatalityRate(this.data[country].confirmed.total[day], this.data[country].deaths.total[day])),
+            infectionChance:  Math.max(0, Math.infectionChance(this.data[country].confirmed.total[day], this.data[country].deaths.total[day], this.data[country].latest.population)),
             confirmed: {
                 previous: this.data[country].confirmed.total[day-1],
                 current: this.data[country].confirmed.total[day],

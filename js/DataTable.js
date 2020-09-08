@@ -141,7 +141,7 @@ class DataTable
                 this.updateCell(row, i,  this.cell(row, i).text());
         }
         
-        this.formatToolTip(row);
+        formatToolTip(this, row);
     }
 
     updateData(row, population, infections, infectionsLast, fatalities, fatalitiesLast)
