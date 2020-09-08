@@ -62,10 +62,12 @@ function formatToolTip(dataTable, row)
                       (
                         country == 'TOTAL' ? '' : (
                             fmt('Active Cases (estimated)', estimatedActiveCasesCurr, estimatedActiveCasesLast) + "<br>" + 
+                            /*
                             "<br>"+ 
                             "<b>First infection</b>: " + graph.first.confirmed + " days ago<br>" + 
                             "<b>First death</b>: " + graph.first.death + " days ago<br>" + 
                             "<b>First recovery</b>: " + (graph.first.recovered > 1 ? graph.first.recovered + " days ago" : "N/A")
+                            */
                           )
                       ) + 
                       "<br>" + (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
