@@ -30,10 +30,9 @@
 			Share view: <span id="url"></span> <span id='cpbtn' data-clipboard-target='#url' data-clipboard-text-copy="copy" data-clipboard-text-copied="copied"></span><br>
 			<br>
 		</p>
-		<div id="datacontainer" class="full-width">
-
-		</div>
-		<div class="full-width shadow" style="background-color: #6b6b6b; height: 122px;margin-top: 10px;">
+		<div id="graph" class="full-width" style="padding-top:10px;padding-bottom:10px;height:125px;background-color: #000000a8;"></div>
+		<div id="datacontainer" class="full-width"><br><p style='color:white; font-size: 14px;'>Loading, please wait...</p><br></div>
+		<div class="full-width shadow" style="background-color: #6b6b6b; height: 122px;margin-top: 10px;padding-bottom: 10px;">
 			<p style="float: left;text-align: right;padding-left: 20px;">
 				Be aware that all percentages are only estimates and <b>will not</b> reflect the entire reality of it.<br>
 				The <i>infection chance</i> is based on meeting <b>one</b> person, but the more you meet, the higher your risk becomes (see <b>Infection Chance</b> columns).<br>
@@ -50,9 +49,6 @@ case fatality rate   = (deaths / infected) * 100
 infection chance     = (((infected - deaths) / population) * people met) * 100
 change of infections = ((infections current / infections last) - 1) * 100
 change of deaths     = ((deaths current / deaths last) - 1) * 100
-
-
-
 			</pre>
 		</div>
 		<script>

@@ -33,6 +33,21 @@ class RecursiveTree
 		return obj;
 	}
 
+	set(key, value)
+	{
+		if (this[key] == undefined) 
+			this[key] = 0;
+		this[key] = value;
+		return this;
+	}
+
+	get(key)
+	{
+		if (this[key] == undefined) 
+			return 0;
+		return this[key];
+	}
+
 	increment(key, increment)
 	{
 		if (this[key] == undefined) 
@@ -66,6 +81,34 @@ class RecursiveTree
 			return sum;
 		}
 		return this[key] == undefined ? 0 : this[key];
+	}
+
+	merge(key)
+	{
+		console.log(`Merging ${this.name}[${key}]`);
+		if (this.members != undefined && this.members.length > 0)
+		{
+			var v;
+			var merge = null;
+			for (var i = 0; i < this.members.length; i++)
+			{
+				v = this.members[i];
+				if (v.isGroup())
+				{
+					merge = v.merge(key);
+				}
+				else
+				{
+					if (v[key] != undefined)
+					{
+						merge = Array.from(v[key]).merge(this[key]);
+					}
+				}
+			}
+
+			return merge;
+		}
+		return this[key] == undefined ? [] : this[key];
 	}
 
 	keys()
@@ -184,6 +227,18 @@ class Virus extends RecursiveTree
 
 			cs.push(r.
 				add(countries[i]).
+				set('infected_prediction', d.confirmed.total.pop()).
+				set('infected_history', d.confirmed.total).
+				set('infected_change_prediction', d.confirmed.absolute.pop()).
+				set('infected_change_history', d.confirmed.absolute).
+				set('dead_prediction', d.deaths.total.pop()).
+				set('dead_history', d.deaths.total).
+				set('dead_change_prediction', d.deaths.absolute.pop()).
+				set('dead_change_history', d.deaths.absolute).
+				set('recovered_prediction', d.recovered.total.pop()).
+				set('recovered_history', d.recovered.total).
+				set('recovered_change_prediction', d.recovered.absolute.pop()).
+				set('recovered_change_history', d.recovered.absolute).
 				increment('population', d.latest.population).
 				increment('infected', d.latest.confirmed.total.absolute.current).
 				increment('infected_change', d.latest.confirmed.change.absolute).
@@ -299,28 +354,85 @@ class Virus extends RecursiveTree
 	data()
 	{
 		return {
-			population: this.totalPopulation(),
-			active_cases: this.activeCases(),
-			case_fatality_rate: parseFloat(this.caseFatalityRate()),
+			population: 						this.totalPopulation(),
+			active_cases: 						this.activeCases(),
+			case_fatality_rate: 				this.caseFatalityRate(),
+			everyone_infected_in_x_days:		Math.entirePopulationAffectedInXDays(this.totalPopulation(), this.totalInfected()  - this.newInfected(),   this.totalInfected()).round(0),
+			everyone_dead_in_x_days:			Math.entirePopulationAffectedInXDays(this.totalPopulation(), this.totalDead()      - this.newDead(),       this.totalDead()).round(0),
+			everyone_recovered_in_x_days:		Math.entirePopulationAffectedInXDays(this.totalPopulation(), this.totalRecovered() - this.newRecovered(),  this.totalRecovered()).round(0),
 			infected: {
-				total: this.totalInfected(),
-				change: this.newInfected(),
-				population: parseFloat(this.infectedPopulation())
+				total: 							this.totalInfected(),
+				change: 						this.newInfected(),
+				change_max: 					this.infectionChangeHistory().max(),
+				relation_to_worst: 				this.newInfected() / this.infectionChangeHistory().max(),
+				population: 					this.infectedPopulation(),
+				prediction: {
+					absolute: 					this.get('infected_prediction'),
+					change: 					this.get('infected_change_prediction')
+				},
+				history: {
+					absolute: 					this.infectionHistory(),
+					change: 					this.infectionChangeHistory(),
+					normalized: 				this.infectionHistory().normalize()
+				},
+				average: {
+					7: 							this.infectionAverage(7),
+					14: 						this.infectionAverage(14),
+					21: 						this.infectionAverage(21),
+					28: 						this.infectionAverage(28),
+					all: 						this.infectionAverage(0)
+				}
 			},
 			dead: {
-				total: this.totalDead(),
-				change: this.newDead(),
-				population: parseFloat(this.deadPopulation())
+				total: 							this.totalDead(),
+				change: 						this.newDead(),
+				change_max: 					this.deadChangeHistory().max(),
+				relation_to_worst: 				this.newDead() / this.deadChangeHistory().max(),
+				population: 					this.deadPopulation(),
+				prediction: {
+					absolute: 					this.get('dead_prediction'),
+					change: 					this.get('dead_change_prediction')
+				},
+				history: {
+					absolute: 					this.deadHistory(),
+					change: 					this.deadChangeHistory(),
+					normalized: 				this.deadHistory().normalize()
+				},
+				average: {
+					7: 							this.deadAverage(7),
+					14: 						this.deadAverage(14),
+					21: 						this.deadAverage(21),
+					28: 						this.deadAverage(28),
+					all: 						this.deadAverage(0)
+				}
 			},
 			recovered: {
-				total: this.totalRecovered(),
-				change: this.newRecovered(),
-				population: parseFloat(this.recoveredPopulation())
+				total: 							this.totalRecovered(),
+				change: 						this.newRecovered(),
+				change_max: 					this.recoveredChangeHistory().max(),
+				relation_to_best: 				this.newRecovered() / this.recoveredChangeHistory().max(),
+				population: 					this.recoveredPopulation(),
+				prediction: {
+					absolute: 					this.get('recovered_prediction'),
+					change: 					this.get('recovered_change_prediction')
+				},
+				history: {
+					absolute: 					this.recoveredHistory(),
+					change: 					this.recoveredChangeHistory(),
+					normalized: 				this.recoveredHistory().normalize()
+				},
+				average: {
+					7: 							this.recoveredAverage(7),
+					14: 						this.recoveredAverage(14),
+					21: 						this.recoveredAverage(21),
+					28: 						this.recoveredAverage(28),
+					all: 						this.recoveredAverage(0)
+				}
 			},
 			infection_chance: {
-				10: parseFloat(this.infectionChance(10)),
-				50: parseFloat(this.infectionChance(50)),
-				100: parseFloat(this.infectionChance(100))
+				10: this.infectionChance(10),
+				50: this.infectionChance(50),
+				100: this.infectionChance(100)
 			}
 		};
 	}
@@ -354,12 +466,12 @@ class Virus extends RecursiveTree
 
 	totalRecovered()
 	{
-		return -this.sum('recovered');
+		return this.sum('recovered');
 	}
 
 	newRecovered()
 	{
-		return -this.sum('recovered_change');
+		return this.sum('recovered_change');
 	}
 
 	totalInfected()
@@ -379,33 +491,79 @@ class Virus extends RecursiveTree
 
 	caseFatalityRate()
 	{
-		return Number(this.totalDead() / this.totalInfected()).toPercent();
+		return this.totalDead() / this.totalInfected();
 	}
 
 	activeCases()
 	{
-		return this.totalInfected() - this.totalDead() + this.totalRecovered();
+		return this.totalInfected() - this.totalDead() - this.totalRecovered();
 	}
 
 	infectedPopulation()
 	{
-		return Number(this.activeCases() / this.totalPopulation()).toPercent();
+		return this.activeCases() / this.totalPopulation();
 	}
 
 	deadPopulation()
 	{
-		return Number(this.totalDead() / this.totalPopulation()).toPercent();
+		return this.totalDead() / this.totalPopulation();
 	}
 
 	recoveredPopulation()
 	{
-		return Number(this.totalRecovered() / this.totalPopulation()).toPercent();
+		return this.totalRecovered() / this.totalPopulation();
 	}
 
 	infectionChance(peopleMet)
 	{
-		return Number((this.activeCases() / this.totalPopulation()) * peopleMet).toPercent();
+		return (this.activeCases() / this.totalPopulation()) * peopleMet;
 	}
 
+	infectionHistory()
+	{
+		console.log(`Merging ${this.name}`);
+		return Array.from(this.merge('infected_history'));
+	}
+
+	infectionAverage(days)
+	{
+		return Array.from(this.get('infected_change_history')).average(-days);
+	}
+
+	infectionChangeHistory()
+	{
+		console.log(`Merging ${this.name}`);
+		return Array.from(this.merge('infected_change_history'));
+	}
+
+	deadHistory()
+	{
+		return Array.from(this.get('dead_history'));
+	}
+
+	deadAverage(days)
+	{
+		return Array.from(this.get('dead_change_history')).average(-days);
+	}
+
+	deadChangeHistory()
+	{
+		return Array.from(this.get('dead_change_history'));
+	}
+
+	recoveredHistory()
+	{
+		return Array.from(this.get('recovered_history'));
+	}
+
+	recoveredChangeHistory()
+	{
+		return Array.from(this.get('recovered_change_history'));
+	}
+
+	recoveredAverage(days)
+	{
+		return Array.from(this.get('recovered_change_history')).average(-days);
+	}
 }
 

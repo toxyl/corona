@@ -7,8 +7,10 @@ class Graph
 
 		this.confirmed = [];
 	    this.deaths = [];
+	    this.recovered = [];
 		this.confirmedChangeAbs = [];
 	    this.deathsChangeAbs = [];
+	    this.recoveredChangeAbs = [];
 	    this.estimatedInfectionRate = [];
 
 	    this.first = {};
@@ -17,8 +19,10 @@ class Graph
 	    {
 	        this.confirmed = data.confirmed.total;
 	        this.deaths = data.deaths.total;
+	        this.recovered = data.recovered.total;
 	        this.confirmedChangeAbs = data.confirmed.absolute;
 	        this.deathsChangeAbs = data.deaths.absolute;
+	        this.recoveredChangeAbs = data.recovered.absolute;
 	    }
 
 	    this.scale = Math.ceil(this.width / (this.confirmed.length-1));
@@ -55,17 +59,38 @@ class Graph
 		var firstLine = this.verticalLine(this.first[name] * this.scale, color);	    
 	    this.first[name] = data.length - this.first[name];
 
-        return firstLine + '<polyline points="' + path + '" style="stroke:' + color + '; stroke-width:' + (strokeThickness == undefined ? 2 : strokeThickness) + '; fill:none"/>';
+        return /* firstLine +*/ '<polyline points="' + path + '" style="stroke:' + color + '; stroke-width:' + (strokeThickness == undefined ? 2 : strokeThickness) + '; fill:none"/>';
     }
 
     generate()
     {
+    	var dataRecovery = this.confirmed.delta(this.deaths, 14);
+
     	return 	"<svg width=\"" + ((this.confirmed.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
 		        this.grid() + 
 		        this.dataLine('death', this.deaths, Config.graphColorDeaths) + 
 		        this.dataLine('confirmed', this.confirmed, Config.graphColorConfirmed) + 
-		        this.dataLine('deathChangeAbs', this.deathsChangeAbs, Config.graphColorDeaths, 1) + 
-		        this.dataLine('confirmedChangeAbs', this.confirmedChangeAbs, Config.graphColorConfirmed, 1) + 
+		        this.dataLine('recovered', dataRecovery, Config.graphColorRecovered, 1) + 
+		        "</svg>";
+    }
+
+    generateChangesGraph()
+    {
+    	var dataDeath = this.deathsChangeAbs;
+    	var dataConfirmed = this.confirmedChangeAbs;
+    	var dataRecovery = dataConfirmed.delta(dataDeath, 14);
+
+    	dataDeath.pop();
+    	dataConfirmed.pop();
+    	dataRecovery.pop();
+
+	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max());
+
+    	return 	"<svg width=\"" + ((dataDeath.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
+		        this.grid() + 
+		        this.dataLine('deathChangeAbs', dataDeath, Config.graphColorDeaths, 2, s) + 
+		        this.dataLine('confirmedChangeAbs', dataConfirmed, Config.graphColorConfirmed, 2, s) + 
+		        this.dataLine('recovered', dataRecovery, Config.graphColorRecovered, 1, s) + 
 		        "</svg>";
     }
 
