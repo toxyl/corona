@@ -61,8 +61,9 @@ function formatToolTip(dataTable, row)
                       fmt('Deaths', fatCurr, fatLast) + "<br>" + 
                       (
                         country == 'TOTAL' ? '' : (
-                            fmt('Active Cases (estimated)', estimatedActiveCasesCurr, estimatedActiveCasesLast) + "<br>" + 
+                            fmt('Active Cases (estimated)', estimatedActiveCasesCurr, estimatedActiveCasesLast) + "<br>" 
                             /*
+                            +
                             "<br>"+ 
                             "<b>First infection</b>: " + graph.first.confirmed + " days ago<br>" + 
                             "<b>First death</b>: " + graph.first.death + " days ago<br>" + 
