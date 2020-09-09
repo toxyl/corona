@@ -64,13 +64,15 @@ class Graph
 
     generate()
     {
-    	var dataRecovery = this.confirmed.delta(this.deaths, 14);
+    	var dataRecovered = this.confirmed.delta(this.deaths, 14);
+    	var dataEstimatedActiveCases = this.confirmed.delta(dataRecovered);
 
     	return 	"<svg width=\"" + ((this.confirmed.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
 		        this.grid() + 
 		        this.dataLine('death', this.deaths, Config.graphColorDeaths) + 
 		        this.dataLine('confirmed', this.confirmed, Config.graphColorConfirmed) + 
-		        this.dataLine('recovered', dataRecovery, Config.graphColorRecovered, 1) + 
+		        this.dataLine('recovered', dataRecovered, Config.graphColorRecovered, 1) + 
+		        this.dataLine('active', dataEstimatedActiveCases, Config.graphColorActive, 1) + 
 		        "</svg>";
     }
 
@@ -78,19 +80,22 @@ class Graph
     {
     	var dataDeath = this.deathsChangeAbs;
     	var dataConfirmed = this.confirmedChangeAbs;
-    	var dataRecovery = dataConfirmed.delta(dataDeath, 14);
+    	var dataRecovered = dataConfirmed.delta(dataDeath, 14);
+    	var dataEstimatedActiveCases = this.confirmedChangeAbs.delta(dataRecovered);
 
     	dataDeath.pop();
     	dataConfirmed.pop();
-    	dataRecovery.pop();
+    	dataRecovered.pop();
+    	dataEstimatedActiveCases.pop();
 
-	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max());
+	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max(), dataEstimatedActiveCases.max());
 
     	return 	"<svg width=\"" + ((dataDeath.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
 		        this.grid() + 
 		        this.dataLine('deathChangeAbs', dataDeath, Config.graphColorDeaths, 2, s) + 
 		        this.dataLine('confirmedChangeAbs', dataConfirmed, Config.graphColorConfirmed, 2, s) + 
-		        this.dataLine('recovered', dataRecovery, Config.graphColorRecovered, 1, s) + 
+		        this.dataLine('recovered', dataRecovered, Config.graphColorRecovered, 1, s) + 
+		        this.dataLine('active', dataEstimatedActiveCases, Config.graphColorActive, 1, s) + 
 		        "</svg>";
     }
 

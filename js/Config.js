@@ -385,5 +385,5 @@ Config.graphWidth = 500;
 Config.graphColorGrid = '#666666';
 Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
-Config.graphColorAvgR = '#0000cc';
+Config.graphColorActive = '#0000cc';
 Config.graphColorRecovered = '#00cc00';

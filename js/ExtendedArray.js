@@ -240,6 +240,9 @@ if (!Array.prototype.delta)
         if (fillValue == undefined)
             fillValue = 0;
 
+        if (offset == undefined)
+            offset = 0;
+
         var res = [];
         var i = 0;
 
