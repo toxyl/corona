@@ -78,14 +78,17 @@ class Graph
 
     generateChangesGraph()
     {
+    	var avgFactor = 0.25;
     	var dataDeath = this.deathsChangeAbs;
     	var dataConfirmed = this.confirmedChangeAbs;
-    	var dataRecovered = dataConfirmed.delta(dataDeath, 14);
-    	var dataEstimatedActiveCases = this.confirmedChangeAbs.delta(dataRecovered);
+    	var dataRecovered = dataConfirmed.delta(dataDeath, 14).exponentialAverage(avgFactor);
+    	var dataEstimatedActiveCases = this.confirmedChangeAbs.delta(dataRecovered).exponentialAverage(avgFactor);
 
     	dataDeath.pop();
     	dataConfirmed.pop();
+    	dataRecovered = dataRecovered.exponentialAverage(avgFactor);
     	dataRecovered.pop();
+    	dataEstimatedActiveCases = dataEstimatedActiveCases.exponentialAverage(avgFactor);
     	dataEstimatedActiveCases.pop();
 
 	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max(), dataEstimatedActiveCases.max());

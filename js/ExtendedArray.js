@@ -166,6 +166,18 @@ if (!Array.prototype.divide)
     };
 };
 
+if (!Array.prototype.exponentialAverage)
+{
+    Array.prototype.exponentialAverage = function(w)
+    {
+        var averages = [this[0]];
+        for (var i = 1; i < this.length; i++) {
+            averages.push(w * Math.max(0, this[i]) + (1 - w) * Math.max(0, averages[i - 1]));
+        }
+        return averages;
+    };
+};
+
 if (!Array.prototype.change)
 {
     Array.prototype.change = function(index)
