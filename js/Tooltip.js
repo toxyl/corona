@@ -5,19 +5,33 @@ function addTooltips()
     $('[data-tooltip]').hover(
         function()
         {
-            $('<div class="div-tooltip"></div>').html($(this).attr('data-tooltip')).appendTo('body').fadeIn('slow');
-            $('#graph').html($(this).attr('data-graph')).fadeIn('slow');
-            $('#graph').css({ paddingTop: 10, paddingBottom: 10, height: Config.graphHeight + 25 });
+            $('#tooltip').html($(this).attr('data-tooltip')).fadeIn('slow');
+            $('#pageTitle').html($(this).attr('data-country')).fadeIn('slow');
+
+            var di = $(this).attr('data-infected').split(',');
+            var dr = $(this).attr('data-recovered').split(',');
+            var da = $(this).attr('data-active').split(',');
+            var dd = $(this).attr('data-deaths').split(',');
+
+            var ddi = $(this).attr('data-daily-infected').split(',');
+            var ddr = $(this).attr('data-daily-recovered').split(',');
+            var dda = $(this).attr('data-daily-active').split(',');
+            var ddd = $(this).attr('data-daily-deaths').split(',');
+
+            $('#graphcontainer1').css({ height: Config.graphHeight + 25 });
+            $('#graphcontainer2').css({ height: Config.graphHeight + 25 });
+
+            var chartTotals = new Chart(document.getElementById("chartTotals"), Graph.generateData('Totals', di, dr, da, dd, 0, 'right'));            
+            var chartDaily  = new Chart(document.getElementById("chartDaily"), Graph.generateData('Daily Change', ddi, ddr, dda, ddd));
         }, 
         function() 
         { 
-            $('.div-tooltip').remove();
-          //  $('#graph').remove();
+            // $('.div-tooltip').remove();
         }
     ).mousemove(
         function(e) 
         {
-            $('.div-tooltip').css({ top: e.pageY + 10, left:  e.pageX + 20 });
+            // $('.div-tooltip').css({ top: e.pageY + 10, left:  e.pageX + 20 });
         }
     );
 }
@@ -35,6 +49,7 @@ function formatToolTip(dataTable, row)
     };
 
     var country      = dataTable.cell(row, 0).text();
+    if (country == 'TOTAL') return;
     
     var population   = Number(dataTable.cell(row, 1).text());
     
@@ -46,32 +61,25 @@ function formatToolTip(dataTable, row)
 
     var infStats = Math.entirePopulationAffectedInXDays(population, infLast, infCurr).round(0);
 
-    var data = CoronaTracker.data[Config.alias(country.replace(/(.*)\s+\[.*?\]/g, '$1'))];
-    var graph = new Graph(data);
-    var gdata = graph.generate();
-    var gdataChange = graph.generateChangesGraph();
+    var graph = new Graph(country);
 
     var activeCurr = graph.confirmed.last(1) - graph.recovered.last(1);
     var activeLast = graph.confirmed.last(2) - graph.recovered.last(2);
 
-    var tooltipText = "<b>" + country + "</b><br><br>"+
-                      "<b>Population</b>: " + population.format() + " (" + (infCurr / population).toPercent() + " have been infected, " + (activeCurr / population).toPercent() + " are active cases, " + (fatCurr / population).toPercent() + " died)<br>" +
+    var tooltipText = "<b>Population</b>: " + population.format() + " (" + (infCurr / population).toPercent() + " have been infected, " + (activeCurr / population).toPercent() + " are active cases, " + (fatCurr / population).toPercent() + " died)<br>" +
                       fmt('Confirmed', infCurr, infLast) + "<br>" + 
                       fmt('Deaths', fatCurr, fatLast) + "<br>" + 
-                      (
-                        country == 'TOTAL' ? '' : (
-                            fmt('Active Cases (estimated)', activeCurr, activeLast) + "<br>" 
-                            /*
-                            +
-                            "<br>"+ 
-                            "<b>First infection</b>: " + graph.first.confirmed + " days ago<br>" + 
-                            "<b>First death</b>: " + graph.first.death + " days ago<br>" + 
-                            "<b>First recovery</b>: " + (graph.first.recovered > 1 ? graph.first.recovered + " days ago" : "N/A")
-                            */
-                          )
-                      ) + 
-                      "<br>" + (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
+                      fmt('Active Cases (estimated)', activeCurr, activeLast) + "<br>" + 
+                      (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
 
     $(row).attr('data-tooltip', tooltipText);
-    $(row).attr('data-graph', "<div style='width:50%;float:left;'><b style='color:white;'>Total</b><br>" + gdata + "</div><div style='width:50%;float:left;'><b style='color:white;'>Daily Change</b><br>" + gdataChange + "</div>");
+    $(row).attr('data-infected', graph.confirmed);
+    $(row).attr('data-deaths', graph.deaths);
+    $(row).attr('data-recovered', graph.recovered);
+    $(row).attr('data-active', graph.active);    
+    $(row).attr('data-daily-infected', graph.confirmedChangeAbs);
+    $(row).attr('data-daily-deaths', graph.deathsChangeAbs);
+    $(row).attr('data-daily-recovered', graph.recoveredChangeAbs);
+    $(row).attr('data-daily-active', graph.activeChangeAbs);
+    $(row).attr('data-country', country);
 }

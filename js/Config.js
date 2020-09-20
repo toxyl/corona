@@ -383,10 +383,10 @@ Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
 // Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
 Config.updateInterval = 15; // in minutes
 
-Config.graphHeight = 100;
+Config.graphHeight = 145;
 Config.graphWidth = 500;
 Config.graphColorGrid = '#666666';
 Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
-Config.graphColorActive = '#0000cc';
+Config.graphColorActive = '#00ccff';
 Config.graphColorRecovered = '#00cc00';

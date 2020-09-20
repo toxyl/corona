@@ -80,6 +80,24 @@ td.zero {
 	box-shadow: inset 0px 0px 0px 2px #00000030;
 }
 
+#graphcontainer1 {
+	width:  50%; 
+	height: 50px;
+	float:  left;
+}
+
+#graphcontainer2 {
+	width:  50%; 
+	height: 50px;
+	float:  right;
+}
+
+#stickytop {
+	position: sticky;
+	height: 390px;
+	width: 100%;
+}
+
 body {
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
@@ -87,22 +105,17 @@ body {
 	background: linear-gradient(0deg, rgba(64,64,64,1) 0%, rgba(128,128,128,1) 100%);
 	font-size: 13px;
 	margin: 0;
+	overflow: hidden;
 }
 
 h1 {
 	font-family: 'Libre Barcode 39 Text', cursive;
-	font-size: 73px;
-	margin-top: 35px;
-	margin-bottom: 25px;
-	width: 33% !important;
-	text-align: center;
-	margin-right: auto !important;
-	margin-left: auto !important;
-	background-color: black;
-	color: #eee;
-	font-weight: 100;
-	padding-top: 20px;
-	padding-bottom: 11px;
+    font-size: 50px;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+    color: #eee;
+    font-weight: 100;
 }
 
 #search {
@@ -148,4 +161,47 @@ h1 {
   color: #fff;
   font-size: 12px 'Open Sans';
   border-radius: 5px;
+}
+
+#graph {
+	padding-top:10px;
+	padding-bottom:10px;
+	height:170px;
+	background-color: #000000a8;
+}
+
+#datablock {
+    top: 390px;
+    bottom: 123px;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    overflow-y: overlay;
+}
+
+#datacontainer > p {
+	color: white; 
+	font-size: 14px;
+}
+
+#infobox {
+	background-color: #6b6b6b; 
+	height: 122px;
+	margin-top: 10px;
+	padding-bottom: 10px;
+	bottom: 0;
+	position: absolute;
+}
+
+#infobox > p {
+
+	float: left;
+	text-align: right;
+	padding-left: 5px;
+}
+
+#infobox > pre {
+	float: left;
+	text-align: left;
+	padding-left: 5px;
 }

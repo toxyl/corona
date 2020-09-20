@@ -1,9 +1,122 @@
 class Graph
 {
-	constructor(data)
+	static generateData(title, dataInfected, dataRecovered, dataActive, dataDeaths, yAxisMin, position) 
 	{
-		this.width = Config.graphWidth;
-		this.height = Config.graphHeight;
+		var labels = [];
+        var NOW = Date.now();
+        var d;
+
+        for (var i = 0; i < dataInfected.length; i++) {
+            d = new Date(NOW - (dataInfected.length - i) * (1000 * 60 * 60 * 24));
+            labels.push(d);
+        }
+
+		return {
+			type: 'line',
+			data: {
+				labels: labels,
+				datasets: [
+					{ 
+						pointStyle: 'circle',
+						pointRadius: 0,
+						pointHoverRadius: 2,
+						data: dataInfected,
+						label: "Infected",
+						borderColor: Config.graphColorConfirmed,
+						borderWidth: 1,
+						fill: false
+					}, 
+					{ 
+						pointStyle: 'circle',
+						pointRadius: 0,
+						pointHoverRadius: 2,
+						data: dataRecovered,
+						label: "Recovered (estimate)",
+						borderColor: Config.graphColorRecovered,
+						borderWidth: 1,
+						fill: false
+					}, 
+					{ 
+						pointStyle: 'circle',
+						pointRadius: 0,
+						pointHoverRadius: 2,
+						data: dataActive,
+						label: "Active Cases (estimate)",
+						borderColor: Config.graphColorActive,
+						borderWidth: 1,
+						fill: false
+					}, 
+					{ 
+						pointStyle: 'circle',
+						pointRadius: 0,
+						pointHoverRadius: 2,
+						data: dataDeaths,
+						label: "Deaths",
+						borderColor: Config.graphColorDeaths,
+						borderWidth: 1,
+						fill: false
+					}
+				]
+			},
+			options: {
+				title: {
+					display: true,
+					text: title
+				},
+				scales: {
+	                xAxes: [
+		                {
+		                    type: 'time',
+		                    gridLines: {
+		                    	color: Config.graphColorGrid,
+		                    },
+		                    time: {
+		                        unit: 'month'
+		                    },
+	                    	ticks: {
+	                           fontSize: 10,
+		                    }
+		                }
+		            ],
+	                yAxes: [
+	                	{
+		                	position: position == undefined ? 'left' : position,
+		                    gridLines: {
+		                    	color: Config.graphColorGrid,
+		                    },
+	                    	ticks: {
+	                        	beginAtZero: true,
+		                        min: yAxisMin,
+		                        fontSize: 10,
+		                    }
+	                	}
+	                ]
+	            },
+	            events: [],
+				tooltips: {
+					enabled: false,
+				},
+				hover: {
+					enabled: false,
+				},
+				legend: {
+					position: 'bottom'
+				},
+		        layout: {
+		            padding: {
+		                left: 25,
+		                right: 25,
+		                top: 0,
+		                bottom: 0
+		            }
+		        }
+			}
+		};            
+	}
+
+	constructor(country)
+	{
+		var data = CoronaTracker.data[Config.alias(country.replace(/(.*)\s+\[.*?\]/g, '$1'))];
 
 		this.confirmed = [];
 	    this.deaths = [];
@@ -14,8 +127,6 @@ class Graph
 	    this.recoveredChangeAbs = [];
 	    this.activeChangeAbs = [];
 	    this.estimatedInfectionRate = [];
-
-	    this.first = {};
 	    
 	    if (data != undefined)
 	    {
@@ -28,77 +139,5 @@ class Graph
 	        this.recoveredChangeAbs = data.recovered.absolute;
 	        this.activeChangeAbs = data.active.absolute;
 	    }
-
-	    this.scale = Math.ceil(this.width / (this.confirmed.length-1));
-	    this.scaleH = 1 / this.confirmed.last(1);
 	}
-
-	grid()
-	{
-	    var grid = "";
-	    for (var i = 0; i < this.confirmed.length; i++)
-	    {
-	        grid += this.verticalLine(i * this.scale, Config.graphColorGrid);
-	    }
-	    return grid;
-	}
-
-	verticalLine(x, color) 
-    {
-        return '<polyline points="' + x +',0 ' + x + ',' + (this.height + 2) + '" style="stroke:' + color + '; stroke-width:1; fill:none"/>';
-    }
-
-    dataLine(name, data, color, strokeThickness, scale) 
-    {
-	    var path = '';
-	    this.first[name] = 0;
-
-	    for (var i = 0; i < data.length; i++)
-	    {
-	        path += (i * this.scale) + ',' + (this.height - (parseFloat(data[i]) * (scale == undefined ? this.scaleH : scale)) * this.height + 1).round() + " ";
-	        if (data[i] <= 0) this.first[name]++;
-	    }
-	    this.first[name]--;
-		
-		var firstLine = this.verticalLine(this.first[name] * this.scale, color);	    
-	    this.first[name] = data.length - this.first[name];
-
-        return /* firstLine +*/ '<polyline points="' + path + '" style="stroke:' + color + '; stroke-width:' + (strokeThickness == undefined ? 2 : strokeThickness) + '; fill:none"/>';
-    }
-
-    generate()
-    {
-    	return 	"<svg width=\"" + ((this.confirmed.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
-		        this.grid() + 
-		        this.dataLine('death', this.deaths, Config.graphColorDeaths) + 
-		        this.dataLine('confirmed', this.confirmed, Config.graphColorConfirmed) + 
-		        this.dataLine('recovered', this.recovered, Config.graphColorRecovered, 1) + 
-		        this.dataLine('active', this.active, Config.graphColorActive, 1) + 
-		        "</svg>";
-    }
-
-    generateChangesGraph()
-    {
-    	var avgFactor = 0.25;
-    	var dataDeath = this.deathsChangeAbs;
-    	var dataConfirmed = this.confirmedChangeAbs;
-    	var dataRecovered = this.recoveredChangeAbs.exponentialAverage(avgFactor);
-    	var dataEstimatedActiveCases = this.activeChangeAbs.exponentialAverage(avgFactor);
-
-    	dataDeath.pop();
-    	dataConfirmed.pop();
-    	dataRecovered.pop();
-    	dataEstimatedActiveCases.pop();
-
-	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max(), dataEstimatedActiveCases.max());
-
-    	return 	"<svg width=\"" + ((dataDeath.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
-		        this.grid() + 
-		        this.dataLine('deathChangeAbs', dataDeath, Config.graphColorDeaths, 2, s) + 
-		        this.dataLine('confirmedChangeAbs', dataConfirmed, Config.graphColorConfirmed, 2, s) + 
-		        this.dataLine('recovered', dataRecovered, Config.graphColorRecovered, 1, s) + 
-		        this.dataLine('active', dataEstimatedActiveCases, Config.graphColorActive, 1, s) + 
-		        "</svg>";
-    }
-
 }
