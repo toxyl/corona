@@ -80,8 +80,8 @@ class CoronaTracker
         
         var timeline = this.timelines[loc.country];
 
-        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14));
-        timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered));
+        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14).exponentialAverage(0.25));
+        timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered).exponentialAverage(0.25));
 
         this.timelines[loc.country] = timeline;
 
