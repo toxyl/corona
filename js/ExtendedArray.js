@@ -91,7 +91,10 @@ if (!Array.prototype.merge)
         l = array.length;
 
         for (i; i < l; i++) {
-            this[i] = array[i];
+            if (i >= this.length)
+                this.push(array[i]);
+            else
+                this[i] = array[i];
         }
 
         return this;

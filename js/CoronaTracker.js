@@ -39,7 +39,6 @@ class CoronaTracker
         ObjectUtils.createKey(this.timelines, loc.country, {}, false);
         ObjectUtils.addToKey(this.timelines[loc.country], 'confirmed', ObjectUtils.valuesAsc(loc.timelines.confirmed.timeline));
         ObjectUtils.addToKey(this.timelines[loc.country], 'deaths', ObjectUtils.valuesAsc(loc.timelines.deaths.timeline));
-        ObjectUtils.addToKey(this.timelines[loc.country], 'recovered', ObjectUtils.valuesAsc(loc.timelines.recovered.timeline));
     }
 
     static latestOfTimeline(country, timeline, population)
@@ -76,18 +75,29 @@ class CoronaTracker
     static loadData(loc)
     {
         this.loadTimelines(loc);
-        this.calculateChanges(loc.country, 'confirmed');
         this.calculateChanges(loc.country, 'deaths');
-        this.calculateChanges(loc.country, 'recovered');
+        this.calculateChanges(loc.country, 'confirmed');
+        
         var timeline = this.timelines[loc.country];
+
+        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14));
+        timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered));
+
+        this.timelines[loc.country] = timeline;
+
+        this.calculateChanges(loc.country, 'recovered');
+        this.calculateChanges(loc.country, 'active');
+
+
         var change = this.data[loc.country];
         this.data[loc.country].latest = {
             countryCode:        loc.country_code,
             population:         loc.country_population,
             caseFatalityRate:   Math.caseFatalityRate(timeline.confirmed.last(1), timeline.deaths.last(1)),
-            infectionChance:    Math.infectionChance(timeline.confirmed.last(1), timeline.deaths.last(1), loc.country_population, 1),
+            infectionChance:    Math.infectionChance(timeline.active.last(1), 0, loc.country_population, 1),
             deaths:             this.latestOfTimeline(loc.country, 'deaths', loc.country_population),
             recovered:          this.latestOfTimeline(loc.country, 'recovered', loc.country_population),
+            active:             this.latestOfTimeline(loc.country, 'active', loc.country_population),
             confirmed:          this.latestOfTimeline(loc.country, 'confirmed', loc.country_population),
         };
     }
@@ -114,7 +124,7 @@ class CoronaTracker
             countryCode: this.data[country].latest.countryCode,
             population: this.data[country].latest.population - this.data[country].deaths.total[day],
             caseFatalityRate: Math.max(0, Math.caseFatalityRate(this.data[country].confirmed.total[day], this.data[country].deaths.total[day])),
-            infectionChance:  Math.max(0, Math.infectionChance(this.data[country].confirmed.total[day], this.data[country].deaths.total[day], this.data[country].latest.population)),
+            infectionChance:  Math.max(0, Math.infectionChance(this.data[country].active.total[day], 0, this.data[country].latest.population)),
             confirmed: {
                 previous: this.data[country].confirmed.total[day-1],
                 current: this.data[country].confirmed.total[day],
@@ -139,6 +149,14 @@ class CoronaTracker
                     relative: this.data[country].recovered.relative[day],
                 }
             },
+            active: {
+                previous: this.data[country].active.total[day-1],
+                current: this.data[country].active.total[day],
+                change: {
+                    absolute: this.data[country].active.absolute[day],
+                    relative: this.data[country].active.relative[day],
+                }
+            },
         };
     }
 
@@ -155,6 +173,7 @@ class CoronaTracker
             d.population, 
             d.confirmed.current, d.confirmed.previous, d.confirmed.change.relative,
             d.deaths.current, d.deaths.previous, d.deaths.change.relative,
+            d.active.current, d.active.previous, d.active.change.relative,
             d.caseFatalityRate,
             d.infectionChance,
             d.infectionChance*10,
@@ -291,7 +310,11 @@ class CoronaTracker
             infected: 0,
             infected_last: 0,
             dead: 0,
-            dead_last: 0
+            dead_last: 0,
+            active: 0,
+            active_last: 0,
+            recovered: 0,
+            recovered_last: 0
         };
 
         var inList = function(text, list)
@@ -317,6 +340,8 @@ class CoronaTracker
                 totals.infected_last += CoronaTracker.tblData.valNumeric(rows[i], 3);
                 totals.dead          += CoronaTracker.tblData.valNumeric(rows[i], 5);
                 totals.dead_last     += CoronaTracker.tblData.valNumeric(rows[i], 6);
+                totals.active        += CoronaTracker.tblData.valNumeric(rows[i], 8);
+                totals.active_last   += CoronaTracker.tblData.valNumeric(rows[i], 9);
             }
             else 
             {
@@ -329,7 +354,11 @@ class CoronaTracker
             totals.infected,
             totals.infected_last,
             totals.dead,
-            totals.dead_last
+            totals.dead_last,
+            totals.recovered,
+            totals.recovered_last,
+            totals.active,
+            totals.active_last
         );
 
         URL.updateLink();

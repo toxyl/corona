@@ -7,10 +7,12 @@ class Graph
 
 		this.confirmed = [];
 	    this.deaths = [];
+	    this.active = [];
 	    this.recovered = [];
 		this.confirmedChangeAbs = [];
 	    this.deathsChangeAbs = [];
 	    this.recoveredChangeAbs = [];
+	    this.activeChangeAbs = [];
 	    this.estimatedInfectionRate = [];
 
 	    this.first = {};
@@ -19,10 +21,12 @@ class Graph
 	    {
 	        this.confirmed = data.confirmed.total;
 	        this.deaths = data.deaths.total;
+	        this.active = data.active.total;
 	        this.recovered = data.recovered.total;
 	        this.confirmedChangeAbs = data.confirmed.absolute;
 	        this.deathsChangeAbs = data.deaths.absolute;
 	        this.recoveredChangeAbs = data.recovered.absolute;
+	        this.activeChangeAbs = data.active.absolute;
 	    }
 
 	    this.scale = Math.ceil(this.width / (this.confirmed.length-1));
@@ -64,15 +68,12 @@ class Graph
 
     generate()
     {
-    	var dataRecovered = this.confirmed.delta(this.deaths, 14);
-    	var dataEstimatedActiveCases = this.confirmed.delta(dataRecovered);
-
     	return 	"<svg width=\"" + ((this.confirmed.length - 1) * this.scale) + "\" height=\"" + (this.height + 2) + "\" style=\"border: 2px solid " + Config.graphColorGrid + "\">" + 
 		        this.grid() + 
 		        this.dataLine('death', this.deaths, Config.graphColorDeaths) + 
 		        this.dataLine('confirmed', this.confirmed, Config.graphColorConfirmed) + 
-		        this.dataLine('recovered', dataRecovered, Config.graphColorRecovered, 1) + 
-		        this.dataLine('active', dataEstimatedActiveCases, Config.graphColorActive, 1) + 
+		        this.dataLine('recovered', this.recovered, Config.graphColorRecovered, 1) + 
+		        this.dataLine('active', this.active, Config.graphColorActive, 1) + 
 		        "</svg>";
     }
 
@@ -81,14 +82,12 @@ class Graph
     	var avgFactor = 0.25;
     	var dataDeath = this.deathsChangeAbs;
     	var dataConfirmed = this.confirmedChangeAbs;
-    	var dataRecovered = dataConfirmed.delta(dataDeath, 14).exponentialAverage(avgFactor);
-    	var dataEstimatedActiveCases = this.confirmedChangeAbs.delta(dataRecovered).exponentialAverage(avgFactor);
+    	var dataRecovered = this.recoveredChangeAbs.exponentialAverage(avgFactor);
+    	var dataEstimatedActiveCases = this.activeChangeAbs.exponentialAverage(avgFactor);
 
     	dataDeath.pop();
     	dataConfirmed.pop();
-    	dataRecovered = dataRecovered.exponentialAverage(avgFactor);
     	dataRecovered.pop();
-    	dataEstimatedActiveCases = dataEstimatedActiveCases.exponentialAverage(avgFactor);
     	dataEstimatedActiveCases.pop();
 
 	    var s = 1 / Math.max(dataDeath.max(), dataConfirmed.max(), dataEstimatedActiveCases.max());

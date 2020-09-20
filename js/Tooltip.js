@@ -31,7 +31,7 @@ function formatToolTip(dataTable, row)
         var daysUntilDoubled = Math.doublingInXDays(last, curr);
         changeAbs = last.format() + ((parseFloat(changeAbs) >= 0) ? '+' : '') + changeAbs.format()  + " = " + curr.format();
 
-        return "<b>" + label + "</b>: " + changeAbs.replace(/([\-\+\=])/g, ' $1 ') + " (" + (parseFloat(change) > 0 ? '+' : '') + change.toPercent(undefined, 2) + (Number.isFinite(daysUntilDoubled) ? ", "+ (parseFloat(change) > 0 ? 'doubles' : 'halves')+" in approx. "+daysUntilDoubled.toFixed(2)+" days" : '') + ")";
+        return "<b>" + label + "</b>: " + changeAbs.replace(/([\-\+\=])/g, ' $1 ') + " (" + (parseFloat(change) > 0 ? '+' : '') + change.toPercent(undefined, 2) + (Number.isFinite(daysUntilDoubled) ? ", "+ (parseFloat(change) > 0 ? 'doubles' : 'halves')+" in approx. "+(parseFloat(change) > 0 ? daysUntilDoubled.toFixed(2) : -daysUntilDoubled.toFixed(2))+" days" : '') + ")";
     };
 
     var country      = dataTable.cell(row, 0).text();
@@ -51,17 +51,16 @@ function formatToolTip(dataTable, row)
     var gdata = graph.generate();
     var gdataChange = graph.generateChangesGraph();
 
-    var dataRecovered = graph.confirmed.delta(graph.deaths, 14);
-    var estimatedActiveCasesCurr = graph.confirmed.last(1) - dataRecovered.last(1);
-    var estimatedActiveCasesLast = graph.confirmed.last(2) - dataRecovered.last(2);
+    var activeCurr = graph.confirmed.last(1) - graph.recovered.last(1);
+    var activeLast = graph.confirmed.last(2) - graph.recovered.last(2);
 
     var tooltipText = "<b>" + country + "</b><br><br>"+
-                      "<b>Population</b>: " + population.format() + " (" + (infCurr / population).toPercent() + " infected, " + (fatCurr / population).toPercent() + " died)<br>" +
+                      "<b>Population</b>: " + population.format() + " (" + (infCurr / population).toPercent() + " have been infected, " + (activeCurr / population).toPercent() + " are active cases, " + (fatCurr / population).toPercent() + " died)<br>" +
                       fmt('Confirmed', infCurr, infLast) + "<br>" + 
                       fmt('Deaths', fatCurr, fatLast) + "<br>" + 
                       (
                         country == 'TOTAL' ? '' : (
-                            fmt('Active Cases (estimated)', estimatedActiveCasesCurr, estimatedActiveCasesLast) + "<br>" 
+                            fmt('Active Cases (estimated)', activeCurr, activeLast) + "<br>" 
                             /*
                             +
                             "<br>"+ 
