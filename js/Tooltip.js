@@ -18,6 +18,11 @@ function addTooltips()
             var dda = $(this).attr('data-daily-active').split(',');
             var ddd = $(this).attr('data-daily-deaths').split(',');
 
+            ddi.pop();
+            ddr.pop();
+            dda.pop();
+            ddd.pop();
+
             $('#graphcontainer1').css({ height: Config.graphHeight + 25 });
             $('#graphcontainer2').css({ height: Config.graphHeight + 25 });
 
