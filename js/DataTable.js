@@ -23,6 +23,25 @@ class DataTable
         return $(row).find("td").eq(colID);
     }
 
+    cellFloat(row, colID)
+    {
+        return parseFloat(this.cell(row, colID).text());
+    }
+
+    cellInt(row, colID)
+    {
+        return parseInt(this.cell(row, colID).text());
+    }
+
+    ratioNewToRecovered(row)
+    {
+        var r = Math.ratioNewToRecovered(
+            this.cellFloat(row, Config.colIDs.ACTIVE)    - this.cellFloat(row, Config.colIDs.ACTIVE_LAST), 
+            this.cellFloat(row, Config.colIDs.RECOVERED) - this.cellFloat(row, Config.colIDs.RECOVERED_LAST)
+        );
+        return Number.isFinite(r) ? r : 0;
+    }
+
     val(row, colID)
     {
         return this.cell(row, colID).text();

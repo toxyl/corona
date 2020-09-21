@@ -6,6 +6,14 @@ if (!Math.caseFatalityRate)
     }
 };
 
+if (!Math.ratioNewToRecovered)
+{
+    Math.ratioNewToRecovered = function(active, recovered)
+    {
+        return parseFloat(active) / parseFloat(recovered);
+    }
+};
+
 if (!Math.infectionChance)
 {
     Math.infectionChance = function(infections, deaths, population, peopleMet)

@@ -98,11 +98,12 @@ class Config
 /* 11 */ Config.columnAdd('Active<br>(change, est.)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.ACTIVE_LAST).text(), dataTable.cell(row, Config.colIDs.ACTIVE).text()).toPercent(); } );
 /* 12 */ Config.columnAdd('Recovered<br>(change, est.)',             'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.RECOVERED_LAST).text(), dataTable.cell(row, Config.colIDs.RECOVERED).text()).toPercent(); } );
 /* 13 */ Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.DEATHS_LAST).text(), dataTable.cell(row, Config.colIDs.DEATHS).text()).toPercent(); } );
-/* 14 */ Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, Config.colIDs.INFECTIONS).text(), dataTable.cell(row, Config.colIDs.DEATHS).text()).toPercent(); } );
-/* 15 */ Config.columnAdd('Inf. Chance<br>(1+ ppl)',                 'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 1).toPercent(); });
-/* 16 */ Config.columnAdd('Inf. Chance<br>(10+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 10).toPercent(); } );
-/* 17 */ Config.columnAdd('Inf. Chance<br>(50+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 50).toPercent(); });
-/* 18 */ Config.columnAdd('Inf. Chance<br>(100+ ppl)',               'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 100).toPercent(); });
+/* 14 */ Config.columnAdd('New cases per<br>recovered case',         'float',    0.5,    0.75,   1.0,    function(dataTable, row) { return Math.max(0, dataTable.ratioNewToRecovered(row)).round(2); });
+/* 15 */ Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, Config.colIDs.INFECTIONS).text(), dataTable.cell(row, Config.colIDs.DEATHS).text()).toPercent(); } );
+/* 16 */ Config.columnAdd('Inf. Chance<br>(1+ ppl)',                 'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 1).toPercent(); });
+/* 17 */ Config.columnAdd('Inf. Chance<br>(10+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 10).toPercent(); } );
+/* 18 */ Config.columnAdd('Inf. Chance<br>(50+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 50).toPercent(); });
+/* 19 */ Config.columnAdd('Inf. Chance<br>(100+ ppl)',               'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 100).toPercent(); });
 
 Config.aliasAdd('US',                   'United States');
 Config.aliasAdd('Taiwan*',              'Taiwan');
@@ -409,10 +410,10 @@ Config.colIDs = {
     ACTIVE_CHANGE: 11,
     RECOVERED_CHANGE: 12,
     DEATHS_CHANGE: 13,
-    CASE_FATALITY_RATE: 14,
-    INFECTION_CHANCE_1: 15,
-    INFECTION_CHANCE_10: 16,
-    INFECTION_CHANCE_50: 17,
-    INFECTION_CHANCE_100: 18,
-
+    R0: 14,
+    CASE_FATALITY_RATE: 15,
+    INFECTION_CHANCE_1: 16,
+    INFECTION_CHANCE_10: 17,
+    INFECTION_CHANCE_50: 18,
+    INFECTION_CHANCE_100: 19,
 }
