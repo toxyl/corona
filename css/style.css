@@ -98,7 +98,7 @@ td.zero {
 
 #stickytop {
 	position: sticky;
-	height: 390px;
+	height: 360px;
 	width: 100%;
 }
 
@@ -175,8 +175,8 @@ h1 {
 }
 
 #datablock {
-    top: 390px;
-    bottom: 123px;
+    top: 360px;
+    bottom: 165px;
     width: 100%;
     height: auto;
     position: absolute;
@@ -190,7 +190,7 @@ h1 {
 
 #infobox {
 	background-color: #6b6b6b; 
-	height: 105px;
+	height: 140px;
 	margin-top: 10px;
 	padding-bottom: 10px;
 	bottom: 0;
@@ -208,4 +208,39 @@ h1 {
 	float: left;
 	text-align: left;
 	padding-left: 5px;
+}
+
+.tooltipColumnLabel {
+	width: 180px;
+    display: inline-block;
+    text-align: left;
+}
+
+.tooltipColumn1 {
+	width: 100px;
+    display: inline-block;
+    text-align: left;
+}
+
+.tooltipColumn2 {
+	width: 190px;
+    display: inline-block;
+    text-align: left;
+}
+
+.tooltipColumn3 {
+	width: 80px;
+    display: inline-block;
+    text-align: left;
+}
+
+.tooltipColumn4 {
+	width: 160px;
+    display: inline-block;
+    text-align: left;
+}
+
+#pageTitle {
+    padding-bottom: 19px;
+    padding-top: 19px;
 }

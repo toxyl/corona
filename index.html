@@ -26,17 +26,15 @@
 	</head>
 	<body>
 		<div id="stickytop">
-			<div class="full-width shadow" style="height: 190px;background-color: black;color: #eee;vertical-align: middle;">
-				<div style="float:left;width: 50%;height: 190px;">
+			<div class="full-width shadow" style="height: 160px;background-color: black;color: #eee;vertical-align: middle;">
+				<div style="float:left;width: 50%;height: 160px;">
 					<h1 id="pageTitle">[COVID-19 Data]</h1>
 					<p class="full-width shadow">
-						Click on the column headers to change the sorting (default is <b>case fatality rate</b>).<br>
-						You can search for multiple countries by separating the (partial) names with commas.<br>
 						Share view: <span id="url"></span> <span id='cpbtn' data-clipboard-target='#url' data-clipboard-text-copy="copy" data-clipboard-text-copied="copied"></span><br>
 						<br>
 					</p>					
 				</div>
-				<div style="float:right;width: 50%;margin-top: 35px;">
+				<div style="float:right;width: 50%;margin-top: 16px;">
 					<div id="tooltip"></div>
 				</div>
 			</div>
@@ -54,6 +52,8 @@
 		</div>
 		<footer id="infobox" class="full-width shadow">
 			<p>
+				Click on the column headers to change the sorting (default is <b>case fatality rate</b>).<br>
+				You can search for multiple countries by separating the (partial) names with commas.<br>
 				Recoveries and active cases are estimated based on the assumption that a person is infectious for <b>14 days</b> and after that either recovers or dies.<br>
 				The <i>infection chance</i> is based on meeting <b>one</b> person, but the more you meet, the higher your risk becomes (see <b>Infection Chance</b> columns).<br>
 				The given <i>case fatality rate</i> <b>does not</b> say anything about the <i>fatality</i> if medical care is not available.<br>

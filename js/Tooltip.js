@@ -34,14 +34,29 @@ function addTooltips()
 
 function formatToolTip(dataTable, row)
 {
-    var fmt = function (label, curr, last) 
+    var fmtRow = function (label, column1, column2, column3, column4) 
+    {
+        return "<div><span class='tooltipColumnLabel'><b>" + label + "</b></span>" + 
+               "<span class='tooltipColumn1'>" + column1 + "</span>" +
+               "<span class='tooltipColumn2'>" + column2 + "</span>" +
+               "<span class='tooltipColumn3'>" + column3 + "</span>" +
+               "<span class='tooltipColumn4'>" + column4 + "</span></div>";
+    };
+
+    var fmt = function (label, curr, last, pop) 
     {
         var changeAbs = Math.absoluteChange(last, curr);
         var change    = Math.percentageChange(last, curr);
         var daysUntilDoubled = Math.doublingInXDays(last, curr);
         changeAbs = last.format() + ((parseFloat(changeAbs) >= 0) ? '+' : '') + changeAbs.format()  + " = " + curr.format();
 
-        return "<b>" + label + "</b>: " + changeAbs.replace(/([\-\+\=])/g, ' $1 ') + " (" + (parseFloat(change) > 0 ? '+' : '') + change.toPercent(undefined, 2) + (Number.isFinite(daysUntilDoubled) ? ", "+ (parseFloat(change) > 0 ? 'doubles' : 'halves')+" in approx. "+(parseFloat(change) > 0 ? daysUntilDoubled.toFixed(2) : -daysUntilDoubled.toFixed(2))+" days" : '') + ")";
+        return fmtRow(
+            label, 
+            (curr / pop).toPercent(),
+            changeAbs.replace(/([\-\+\=])/g, ' $1 '), 
+            (parseFloat(change) > 0 ? '+' : '-') + Math.abs(change).toPercent(undefined, 2), 
+            (Number.isFinite(daysUntilDoubled) ? (parseFloat(change) > 0 ? 'doubles' : 'halves') + " in "+(parseFloat(change) > 0 ? daysUntilDoubled.toFixed(2) : -daysUntilDoubled.toFixed(2))+" days" : '')
+        );
     };
 
     var country      = dataTable.cell(row, Config.colIDs.COUNTRY).text();
@@ -66,11 +81,11 @@ function formatToolTip(dataTable, row)
     var graph        = new Graph(country);
 
 
-    var tooltipText = "<b>Population</b>: " + population.format() + " (" + (infCurr / population).toPercent() + " have been infected, " + (actCurr / population).toPercent() + " are active cases, " + (fatCurr / population).toPercent() + " died)<br>" +
-                      fmt('Infections', infCurr, infLast) + "<br>" + 
-                      fmt('Active Cases (estimated)', actCurr, actLast) + "<br>" + 
-                      fmt('Recovered (estimated)', recCurr, recLast) + "<br>" + 
-                      fmt('Deaths', fatCurr, fatLast) + "<br>" + 
+    var tooltipText = fmtRow('Population', '', population.format(), '', '') +
+                      fmt('Infections', infCurr, infLast, population) + 
+                      fmt('Active Cases (estimated)', actCurr, actLast, population) + 
+                      fmt('Recovered (estimated)', recCurr, recLast, population) + 
+                      fmt('Deaths', fatCurr, fatLast, population) + 
                       (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
 
     $(row).attr('data-country',         country);
