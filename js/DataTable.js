@@ -66,13 +66,15 @@ class DataTable
 
     updateData(row, population, infections, infectionsLast, fatalities, fatalitiesLast, recovered, recoveredLast, active, activeLast)
     {
-        this.updateCell(row, 1, population);
-        this.updateCell(row, 2, infections);
-        this.updateCell(row, 3, infectionsLast);
-        this.updateCell(row, 5, fatalities);
-        this.updateCell(row, 6, fatalitiesLast);
-        this.updateCell(row, 8, active);
-        this.updateCell(row, 9, activeLast);
+        this.updateCell(row, Config.colIDs.POPULATION, population);
+        this.updateCell(row, Config.colIDs.INFECTIONS, infections);
+        this.updateCell(row, Config.colIDs.INFECTIONS_LAST, infectionsLast);
+        this.updateCell(row, Config.colIDs.DEATHS, fatalities);
+        this.updateCell(row, Config.colIDs.DEATHS_LAST, fatalitiesLast);
+        this.updateCell(row, Config.colIDs.RECOVERED, recovered);
+        this.updateCell(row, Config.colIDs.RECOVERED_LAST, recoveredLast);
+        this.updateCell(row, Config.colIDs.ACTIVE, active);
+        this.updateCell(row, Config.colIDs.ACTIVE_LAST, activeLast);
         this.updateRow(row);
     }
 

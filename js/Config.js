@@ -83,23 +83,26 @@ class Config
     }
 }
 
-/*                stat                                      type        low     medium  high    updateFunction*/
-Config.columnAdd('Country',                                 '',         null,   null,   null);
-Config.columnAdd('Population',                              'int',      null,   null,   null);
-Config.columnAdd('Confirmed<br>(current)',                  'int',      100,    1000,   10000);
-Config.columnAdd('Confirmed<br>(last)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Confirmed<br>(change)',                   'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 3).text(), dataTable.cell(row, 2).text()).toPercent(); } );
-Config.columnAdd('Deaths<br>(current)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Deaths<br>(last)',                        'int',      100,    1000,   10000);
-Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 6).text(), dataTable.cell(row, 5).text()).toPercent(); } );
-Config.columnAdd('Active<br>(current)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Active<br>(last)',                        'int',      100,    1000,   10000);
-Config.columnAdd('Active<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 9).text(), dataTable.cell(row, 8).text()).toPercent(); } );
-Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text()).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 8).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 1).toPercent(); });
-Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 8).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 10).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 8).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 50).toPercent(); });
-Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 8).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 100).toPercent(); });
+/*                         stat                                      type        low     medium  high    updateFunction*/
+/*  0 */ Config.columnAdd('Country',                                 '',         null,   null,   null);  
+/*  1 */ Config.columnAdd('Population',                              'int',      null,   null,   null);  
+/*  2 */ Config.columnAdd('Infections',                              'int',      100,    1000,   10000); 
+/*  3 */ Config.columnAdd('Active',                                  'int',      100,    1000,   10000); 
+/*  4 */ Config.columnAdd('Recovered',                               'int',      100,    1000,   10000); 
+/*  5 */ Config.columnAdd('Deaths',                                  'int',      100,    1000,   10000); 
+/*  6 */ Config.columnAdd('Infections (last)',                       'int',      100,    1000,   10000); 
+/*  7 */ Config.columnAdd('Active (last)',                           'int',      100,    1000,   10000); 
+/*  8 */ Config.columnAdd('Recovered (last)',                        'int',      100,    1000,   10000); 
+/*  9 */ Config.columnAdd('Deaths (last)',                           'int',      100,    1000,   10000); 
+/* 10 */ Config.columnAdd('Infections<br>(change)',                  'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.INFECTIONS_LAST).text(), dataTable.cell(row, Config.colIDs.INFECTIONS).text()).toPercent(); } );
+/* 11 */ Config.columnAdd('Active<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.ACTIVE_LAST).text(), dataTable.cell(row, Config.colIDs.ACTIVE).text()).toPercent(); } );
+/* 12 */ Config.columnAdd('Recovered<br>(change)',                   'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.RECOVERED_LAST).text(), dataTable.cell(row, Config.colIDs.RECOVERED).text()).toPercent(); } );
+/* 13 */ Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, Config.colIDs.DEATHS_LAST).text(), dataTable.cell(row, Config.colIDs.DEATHS).text()).toPercent(); } );
+/* 14 */ Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, Config.colIDs.INFECTIONS).text(), dataTable.cell(row, Config.colIDs.DEATHS).text()).toPercent(); } );
+/* 15 */ Config.columnAdd('Inf. Chance<br>(1+ ppl)',                 'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 1).toPercent(); });
+/* 16 */ Config.columnAdd('Inf. Chance<br>(10+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 10).toPercent(); } );
+/* 17 */ Config.columnAdd('Inf. Chance<br>(50+ ppl)',                'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 50).toPercent(); });
+/* 18 */ Config.columnAdd('Inf. Chance<br>(100+ ppl)',               'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, Config.colIDs.ACTIVE).text(), 0, dataTable.cell(row, Config.colIDs.POPULATION).text(), 100).toPercent(); });
 
 Config.aliasAdd('US',                   'United States');
 Config.aliasAdd('Taiwan*',              'Taiwan');
@@ -390,3 +393,26 @@ Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
 Config.graphColorActive = '#00ccff';
 Config.graphColorRecovered = '#00cc00';
+
+Config.colIDs = {
+    COUNTRY: 0,
+    POPULATION: 1,
+    INFECTIONS: 2,
+    ACTIVE: 3,
+    RECOVERED: 4,
+    DEATHS: 5,
+    INFECTIONS_LAST: 6,
+    ACTIVE_LAST: 7,
+    RECOVERED_LAST: 8,
+    DEATHS_LAST: 9,
+    INFECTIONS_CHANGE: 10,
+    ACTIVE_CHANGE: 11,
+    RECOVERED_CHANGE: 12,
+    DEATHS_CHANGE: 13,
+    CASE_FATALITY_RATE: 14,
+    INFECTION_CHANCE_1: 15,
+    INFECTION_CHANCE_10: 16,
+    INFECTION_CHANCE_50: 17,
+    INFECTION_CHANCE_100: 18,
+
+}

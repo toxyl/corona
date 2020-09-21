@@ -2,7 +2,7 @@ class CoronaTracker
 {
     static calculateChanges(country, timeline)
     {
-        ObjectUtils.createKey(this.data, country, { confirmed: [], deaths: [], recovered: [] }, false);
+        ObjectUtils.createKey(this.data, country, { confirmed: [], deaths: [], recovered: [], active: [] }, false);
         
         var v = this.timelines[country][timeline];
         var res = [ 0 ];
@@ -26,12 +26,16 @@ class CoronaTracker
             res.push(vDelta);
             resPercent.push(vPercent);
         }
-        ObjectUtils.createKey(this.data[country], timeline, 
+        ObjectUtils.createKey(
+            this.data[country],
+            timeline, 
             { 
                 absolute: res, 
                 relative: resPercent, 
                 total: resTotals 
-            }, true);
+            }, 
+            true
+        );
     }
 
     static loadTimelines(loc)
@@ -94,17 +98,16 @@ class CoronaTracker
         this.calculateChanges(loc.country, 'recovered');
         this.calculateChanges(loc.country, 'active');
 
-
         var change = this.data[loc.country];
         this.data[loc.country].latest = {
             countryCode:        loc.country_code,
             population:         loc.country_population,
             caseFatalityRate:   Math.caseFatalityRate(timeline.confirmed.last(1), timeline.deaths.last(1)),
             infectionChance:    Math.infectionChance(timeline.active.last(1), 0, loc.country_population, 1),
+            confirmed:          this.latestOfTimeline(loc.country, 'confirmed', loc.country_population),
             deaths:             this.latestOfTimeline(loc.country, 'deaths', loc.country_population),
             recovered:          this.latestOfTimeline(loc.country, 'recovered', loc.country_population),
             active:             this.latestOfTimeline(loc.country, 'active', loc.country_population),
-            confirmed:          this.latestOfTimeline(loc.country, 'confirmed', loc.country_population),
         };
     }
 
@@ -177,10 +180,24 @@ class CoronaTracker
         return [ 
             Config.alias(country) + ' ['+d.countryCode+']', 
             d.population, 
-            d.confirmed.current, d.confirmed.previous, d.confirmed.change.relative,
-            d.deaths.current, d.deaths.previous, d.deaths.change.relative,
-            d.active.current, d.active.previous, d.active.change.relative,
+            
+            d.confirmed.current,
+            d.active.current, 
+            d.recovered.current, 
+            d.deaths.current,
+            
+            d.confirmed.previous,
+            d.active.previous, 
+            d.recovered.previous, 
+            d.deaths.previous,
+            
+            d.confirmed.change.relative,
+            d.active.change.relative,
+            d.recovered.change.relative,
+            d.deaths.change.relative,
+            
             d.caseFatalityRate,
+            
             d.infectionChance,
             d.infectionChance*10,
             d.infectionChance*50,
@@ -240,8 +257,18 @@ class CoronaTracker
         $.each(rows, 
             function(key, v) 
             {
-                var i = rowIDs.indexOf(v[0]);
-                CoronaTracker.tblData.updateData(i, v[1], v[2], v[3], v[5], v[6]);
+                var i = rowIDs.indexOf(v[Config.colIDs.COUNTRY]);
+                CoronaTracker.tblData.updateData(
+                    i, 
+                    v[Config.colIDs.POPULATION], 
+                    v[Config.colIDs.INFECTIONS], 
+                    v[Config.colIDs.INFECTIONS_LAST], 
+                    v[Config.colIDs.DEATHS], 
+                    v[Config.colIDs.DEATHS_LAST], 
+                    v[Config.colIDs.RECOVERED], 
+                    v[Config.colIDs.RECOVERED_LAST], 
+                    v[Config.colIDs.ACTIVE], 
+                    v[Config.colIDs.ACTIVE_LAST]);
             }
         );
 
@@ -340,14 +367,16 @@ class CoronaTracker
         {
             if (inList(CoronaTracker.tblData.val(rows[i], 0).toUpperCase(), filter)) 
             {
-                rows[i].style.display = "";
-                totals.population    += CoronaTracker.tblData.valNumeric(rows[i], 1);
-                totals.infected      += CoronaTracker.tblData.valNumeric(rows[i], 2);
-                totals.infected_last += CoronaTracker.tblData.valNumeric(rows[i], 3);
-                totals.dead          += CoronaTracker.tblData.valNumeric(rows[i], 5);
-                totals.dead_last     += CoronaTracker.tblData.valNumeric(rows[i], 6);
-                totals.active        += CoronaTracker.tblData.valNumeric(rows[i], 8);
-                totals.active_last   += CoronaTracker.tblData.valNumeric(rows[i], 9);
+                rows[i].style.display  = "";
+                totals.population     += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.POPULATION);
+                totals.infected       += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.INFECTIONS);
+                totals.infected_last  += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.INFECTIONS_LAST);
+                totals.dead           += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.DEATHS);
+                totals.dead_last      += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.DEATHS_LAST);
+                totals.active         += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.ACTIVE);
+                totals.active_last    += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.ACTIVE_LAST);
+                totals.recovered      += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.RECOVERED);
+                totals.recovered_last += CoronaTracker.tblData.valNumeric(rows[i], Config.colIDs.RECOVERED_LAST);
             }
             else 
             {
