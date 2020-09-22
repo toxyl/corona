@@ -59,6 +59,7 @@ class Graph
 				]
 			},
 			options: {
+				maintainAspectRatio: false,
 				title: {
 					display: true,
 					text: title

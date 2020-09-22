@@ -260,3 +260,129 @@ table {
 	    padding-top: 1vh;
 	    padding-bottom: 1vh;
 	}
+
+@media only screen and (max-width: 1024px) {
+	
+	th:nth-child(11), 
+	td:nth-child(11), 
+	th:nth-child(12), 
+	td:nth-child(12), 
+	th:nth-child(13), 
+	td:nth-child(13), 
+	th:nth-child(14), 
+	td:nth-child(14),
+	#graphcontainer2 {
+		display: none;
+	}
+
+	#graphcontainer1 {
+		width: 100%;
+	}
+
+	#datablock {
+	    top: 45vh;
+	    bottom: 13vh;
+	    width: 100%;
+	    font-size: 0.9vw;
+	}
+
+	#graph {
+		height: 29vh;
+	}
+
+	#tooltip {
+	    font-size: 0.8vw;
+	}
+
+	#stickytopHeader {
+	    height: 11.5vh;
+	}
+
+	#search {
+	    font-size: 1.2vw;
+	}
+
+	#infobox {
+	    background-color: #6b6b6b;
+	    height: 11vh;
+	    bottom: 1vh;
+	    position: absolute;
+	    font-size: 0.8vw;
+	}
+
+		#infobox > p {
+			width: 61%;
+		}
+
+	#cpbtn {
+	    font-size: 1vw;
+	}
+
+
+}
+
+@media only screen and (max-width: 600px) {
+	th:nth-child(17), 
+	td:nth-child(17), 
+	th:nth-child(18), 
+	td:nth-child(18), 
+	th:nth-child(19), 
+	td:nth-child(19),
+	.tooltipColumn4,
+	#stickytopCountry > p,
+	#url,
+	#infobox
+	{
+		display: none;
+	}
+
+	#datablock {
+	    top: 53vh;
+	    bottom: 1vh;
+	    width: 100%;
+	    font-size: 1.25vw;
+	}
+		#pageTitle {
+		    padding-top: 1vh;
+		    font-size: 4.6vw;
+		}
+
+		#stickytopStats {
+			float: right;
+		    width: 100%;
+		}
+		
+		#stickytopCountry {
+		    float: left;
+		    width: 100%;
+		}
+
+		#stickytopHeader {
+	    	height: 21vh;
+	    }
+
+	    #tooltip {
+		    width: 100%;
+		    font-size: 1.6vw;
+		}
+
+	    .tooltipColumnLabel {
+		    width: 22vw;
+		}
+
+		.tooltipColumn1 {
+	    	width: 10vw;
+	    }
+
+	    .tooltipColumn2 {
+		    width: 29vw;
+		}
+
+		.tooltipColumn3 {
+		    width: 9vw;
+		}
+
+		#search {
+		    font-size: 1.5vw;
+		}
+}
