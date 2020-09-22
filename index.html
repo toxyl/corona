@@ -1,6 +1,7 @@
-
+<!DOCTYPE html>
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/stupidtable/1.1.3/stupidtable.min.js"></script>
@@ -26,24 +27,24 @@
 	</head>
 	<body>
 		<div id="stickytop">
-			<div class="full-width shadow" style="height: 160px;background-color: black;color: #eee;vertical-align: middle;">
-				<div style="float:left;width: 50%;height: 160px;">
+			<div id="stickytopHeader" class="full-width shadow">
+				<div id="stickytopCountry">
 					<h1 id="pageTitle">[COVID-19 Data]</h1>
-					<p class="full-width">
+					<p>
 						<span id='cpbtn' data-clipboard-target='#url' data-clipboard-text-copy="click to share view" data-clipboard-text-copied="link copied to clipboard"></span><br>
 						<span id="url"></span>
 					</p>					
 				</div>
-				<div style="float:right;width: 50%;margin-top: 16px;">
+				<div id="stickytopStats">
 					<div id="tooltip"></div>
 				</div>
 			</div>
 			<div id="graph" class="full-width">
 				<div id="graphcontainer1">
-					<canvas id="chartTotals" width="250" height="50"></canvas>
+					<canvas id="chartTotals" width="490" height="160"></canvas>
 				</div>
 				<div id="graphcontainer2">
-					<canvas id="chartDaily" width="250" height="50"></canvas>
+					<canvas id="chartDaily" width="490" height="160"></canvas>
 				</div>
 			</div>
 		</div>

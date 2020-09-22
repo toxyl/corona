@@ -239,8 +239,8 @@ class CoronaTracker
         if (sortAscending)  { rows.sort((a, b) => a[sortCol] - b[sortCol]); }
         else                { rows.sort((a, b) => b[sortCol] - a[sortCol]); }
 
-        $('#datacontainer').append('<table id="datatotals" style="width:100%" class="shadow"><tbody><tr></tr></tbody></table>');
-        $('#datacontainer').append('<table id="data" style="width:100%;margin-top: 10px;" class="shadow"><thead><tr></tr></thead><tbody></tbody></table>');
+        $('#datacontainer').append('<table id="datatotals" class="shadow"><tbody><tr></tr></tbody></table>');
+        $('#datacontainer').append('<table id="data" class="shadow"><thead><tr></tr></thead><tbody></tbody></table>');
 
         for (var i = 0; i < columns.length; i++)
         {

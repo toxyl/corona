@@ -23,8 +23,8 @@ function addTooltips()
             dda.pop();
             ddd.pop();
 
-            $('#graphcontainer1').css({ height: Config.graphHeight + 25 });
-            $('#graphcontainer2').css({ height: Config.graphHeight + 25 });
+            // $('#graphcontainer1').css({ height: Config.graphHeight + 25 });
+            // $('#graphcontainer2').css({ height: Config.graphHeight + 25 });
 
             var chartTotals = new Chart(document.getElementById("chartTotals"), Graph.generateData('Totals', di, dr, da, dd, 0, 'right'));            
             var chartDaily  = new Chart(document.getElementById("chartDaily"), Graph.generateData('Daily Change', ddi, ddr, dda, ddd));
