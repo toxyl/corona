@@ -7,27 +7,33 @@ function addTooltips()
         {
             $('#tooltip').html($(this).attr('data-tooltip')).fadeIn('slow');
             $('#pageTitle').html($(this).attr('data-country')).fadeIn('slow');
+            $('#pageTitleRegion').html($(this).attr('data-region')).fadeIn('slow');
+            $('#pageTitlePopulation').html(Number($(this).attr('data-population')).format() + " ppl").fadeIn('slow');
 
             var di = $(this).attr('data-infected').split(',');
             var dr = $(this).attr('data-recovered').split(',');
             var da = $(this).attr('data-active').split(',');
             var dd = $(this).attr('data-deaths').split(',');
 
+
             var ddi = $(this).attr('data-daily-infected').split(',');
             var ddr = $(this).attr('data-daily-recovered').split(',');
             var dda = $(this).attr('data-daily-active').split(',');
             var ddd = $(this).attr('data-daily-deaths').split(',');
+
+            var dr3 = $(this).attr('data-recovered3wk').split(',');
+            var da3 = $(this).attr('data-active3wk').split(',');
+
+            var ddr3 = $(this).attr('data-daily-recovered3wk').split(',');
+            var dda3 = $(this).attr('data-daily-active3wk').split(',');
 
             ddi.pop();
             ddr.pop();
             dda.pop();
             ddd.pop();
 
-            // $('#graphcontainer1').css({ height: Config.graphHeight + 25 });
-            // $('#graphcontainer2').css({ height: Config.graphHeight + 25 });
-
-            var chartTotals = new Chart(document.getElementById("chartTotals"), Graph.generateData('Totals', di, dr, da, dd, 0, 'right'));            
-            var chartDaily  = new Chart(document.getElementById("chartDaily"), Graph.generateData('Daily Change', ddi, ddr, dda, ddd));
+            var chartTotals = new Chart(document.getElementById("chartTotals"), Graph.generateData('Totals', di, dr, da, dr3, da3, dd, 0, 'right'));            
+            var chartDaily  = new Chart(document.getElementById("chartDaily"), Graph.generateData('Daily Change', ddi, ddr, dda, ddr3, dda3, ddd));
         }
     );
 }
@@ -80,22 +86,31 @@ function formatToolTip(dataTable, row)
 
     var graph        = new Graph(country);
 
+    var region       = Config.region(country);
+    var tooltipText  = fmtRow('Population', '', population.format(), '', '') +
+                       fmt('Infections', infCurr, infLast, population) + 
+                       fmt('Active Cases (estimated)', actCurr, actLast, population) + 
+                       fmt('Recovered (estimated)', recCurr, recLast, population) + 
+                       fmt('Deaths', fatCurr, fatLast, population) + 
+                       (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
 
-    var tooltipText = fmtRow('Population', '', population.format(), '', '') +
-                      fmt('Infections', infCurr, infLast, population) + 
-                      fmt('Active Cases (estimated)', actCurr, actLast, population) + 
-                      fmt('Recovered (estimated)', recCurr, recLast, population) + 
-                      fmt('Deaths', fatCurr, fatLast, population) + 
-                      (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
+    $(row).attr('data-population',          population);
+    $(row).attr('data-country',             country);
+    $(row).attr('data-region',              region);
+    $(row).attr('data-tooltip',             tooltipText);
 
-    $(row).attr('data-country',         country);
-    $(row).attr('data-tooltip',         tooltipText);
-    $(row).attr('data-infected',        graph.confirmed);
-    $(row).attr('data-deaths',          graph.deaths);
-    $(row).attr('data-recovered',       graph.recovered);
-    $(row).attr('data-active',          graph.active);    
-    $(row).attr('data-daily-infected',  graph.confirmedChangeAbs);
-    $(row).attr('data-daily-deaths',    graph.deathsChangeAbs);
-    $(row).attr('data-daily-recovered', graph.recoveredChangeAbs);
-    $(row).attr('data-daily-active',    graph.activeChangeAbs);
+    $(row).attr('data-infected',            graph.confirmed);
+    $(row).attr('data-deaths',              graph.deaths);
+    $(row).attr('data-recovered',           graph.recovered);
+    $(row).attr('data-active',              graph.active);    
+
+    $(row).attr('data-daily-infected',      graph.confirmedChangeAbs);
+    $(row).attr('data-daily-deaths',        graph.deathsChangeAbs);
+    $(row).attr('data-daily-recovered',     graph.recoveredChangeAbs);
+    $(row).attr('data-daily-active',        graph.activeChangeAbs);
+
+    $(row).attr('data-recovered3wk',        graph.recovered3wk);
+    $(row).attr('data-active3wk',           graph.active3wk);    
+    $(row).attr('data-daily-recovered3wk',  graph.recovered3wkChangeAbs);
+    $(row).attr('data-daily-active3wk',     graph.active3wkChangeAbs);
 }

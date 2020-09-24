@@ -1,6 +1,6 @@
 class Graph
 {
-	static generateData(title, dataInfected, dataRecovered, dataActive, dataDeaths, yAxisMin, position) 
+	static generateData(title, dataInfected, dataRecovered, dataActive, dataRecovered3wk, dataActive3wk, dataDeaths, yAxisMin, position) 
 	{
 		var labels = [];
         var NOW = Date.now();
@@ -45,7 +45,30 @@ class Graph
 						borderColor: Config.graphColorActive,
 						borderWidth: 1,
 						fill: false
+
 					}, 
+					// { 
+					// 	pointStyle: 'circle',
+					// 	pointRadius: 0,
+					// 	pointHoverRadius: 2,
+					// 	data: dataRecovered3wk,
+					// 	label: "Recovered (estimate, 21d)",
+					// 	borderColor: Config.graphColorRecovered3wk,
+					// 	borderWidth: 1,
+					// 	borderDash: [ 4, 4 ],
+					// 	fill: false
+					// }, 
+					// { 
+					// 	pointStyle: 'circle',
+					// 	pointRadius: 0,
+					// 	pointHoverRadius: 2,
+					// 	data: dataActive3wk,
+					// 	label: "Active Cases (estimate, 21d)",
+					// 	borderColor: Config.graphColorActive3wk,
+					// 	borderWidth: 1,
+					// 	borderDash: [ 4, 4 ],
+					// 	fill: false
+					// }, 
 					{ 
 						pointStyle: 'circle',
 						pointRadius: 0,
@@ -122,7 +145,9 @@ class Graph
 		this.confirmed = [];
 	    this.deaths = [];
 	    this.active = [];
+	    this.active3wk = [];
 	    this.recovered = [];
+	    this.recovered3wk = [];
 		this.confirmedChangeAbs = [];
 	    this.deathsChangeAbs = [];
 	    this.recoveredChangeAbs = [];
@@ -134,11 +159,15 @@ class Graph
 	        this.confirmed = data.confirmed.total;
 	        this.deaths = data.deaths.total;
 	        this.active = data.active.total;
+	        this.active3wk = data.active3wk.total;
 	        this.recovered = data.recovered.total;
+	        this.recovered3wk = data.recovered3wk.total;
 	        this.confirmedChangeAbs = data.confirmed.absolute;
 	        this.deathsChangeAbs = data.deaths.absolute;
 	        this.recoveredChangeAbs = data.recovered.absolute;
+	        this.recovered3wkChangeAbs = data.recovered3wk.absolute;
 	        this.activeChangeAbs = data.active.absolute;
+	        this.active3wkChangeAbs = data.active3wk.absolute;
 	    }
 	}
 }

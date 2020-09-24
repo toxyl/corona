@@ -84,8 +84,8 @@ class CoronaTracker
         
         var timeline = this.timelines[loc.country];
 
-        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14).exponentialAverage(0.25));
-        timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered).exponentialAverage(0.25));
+        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14).exponentialAverage(0.2));
+        timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered).exponentialAverage(0.2));
         for (var i = 0; i < timeline.recovered.length; i++) {
             timeline.recovered[i] = Math.round(timeline.recovered[i]);
         }
@@ -93,10 +93,21 @@ class CoronaTracker
             timeline.active[i] = Math.round(timeline.active[i]);
         }
 
+        timeline.recovered3wk = Array.from(timeline.confirmed.delta(timeline.deaths, 21).exponentialAverage(0.25));
+        timeline.active3wk = Array.from(timeline.confirmed.delta(timeline.recovered3wk).exponentialAverage(0.25));
+        for (var i = 0; i < timeline.recovered3wk.length; i++) {
+            timeline.recovered3wk[i] = Math.round(timeline.recovered3wk[i]);
+        }
+        for (var i = 0; i < timeline.active3wk.length; i++) {
+            timeline.active3wk[i] = Math.round(timeline.active3wk[i]);
+        }
+
         this.timelines[loc.country] = timeline;
 
         this.calculateChanges(loc.country, 'recovered');
         this.calculateChanges(loc.country, 'active');
+        this.calculateChanges(loc.country, 'recovered3wk');
+        this.calculateChanges(loc.country, 'active3wk');
 
         var change = this.data[loc.country];
         this.data[loc.country].latest = {
@@ -109,6 +120,8 @@ class CoronaTracker
             deaths:             this.latestOfTimeline(loc.country, 'deaths', loc.country_population),
             recovered:          this.latestOfTimeline(loc.country, 'recovered', loc.country_population),
             active:             this.latestOfTimeline(loc.country, 'active', loc.country_population),
+            recovered3wk:       this.latestOfTimeline(loc.country, 'recovered3wk', loc.country_population),
+            active3wk:          this.latestOfTimeline(loc.country, 'active3wk', loc.country_population),
         };
     }
 
@@ -166,6 +179,22 @@ class CoronaTracker
                 change: {
                     absolute: this.data[country].active.absolute[day],
                     relative: this.data[country].active.relative[day],
+                }
+            },
+            recovered3wk: {
+                previous: this.data[country].recovered3wk.total[day-1],
+                current: this.data[country].recovered3wk.total[day],
+                change: {
+                    absolute: this.data[country].recovered3wk.absolute[day],
+                    relative: this.data[country].recovered3wk.relative[day],
+                }
+            },
+            active3wk: {
+                previous: this.data[country].active3wk.total[day-1],
+                current: this.data[country].active3wk.total[day],
+                change: {
+                    absolute: this.data[country].active3wk.absolute[day],
+                    relative: this.data[country].active3wk.relative[day],
                 }
             },
         };
@@ -241,6 +270,9 @@ class CoronaTracker
 
         $('#datacontainer').append('<table id="datatotals" class="shadow"><tbody><tr></tr></tbody></table>');
         $('#datacontainer').append('<table id="data" class="shadow"><thead><tr></tr></thead><tbody></tbody></table>');
+
+        $('#pageTitleRegion').html('Hover over a');
+        $('#pageTitle').html('country');
 
         for (var i = 0; i < columns.length; i++)
         {
