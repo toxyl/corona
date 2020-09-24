@@ -80,11 +80,14 @@ class CoronaTracker
     {
         this.loadTimelines(loc);
         this.calculateChanges(loc.country, 'deaths');
-        this.calculateChanges(loc.country, 'confirmed');
         
         var timeline = this.timelines[loc.country];
 
-        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 14).exponentialAverage(0.2).exponentialAverage(0.2));
+        timeline.confirmed = Array.from(timeline.confirmed.exponentialAverage(0.9));
+          for (var i = 0; i < timeline.confirmed.length; i++) {
+            timeline.confirmed[i] = Math.round(timeline.confirmed[i]);
+        }      
+        timeline.recovered = Array.from(timeline.confirmed.delta(timeline.deaths, 13).exponentialAverage(0.2).exponentialAverage(0.2));
         timeline.active = Array.from(timeline.confirmed.delta(timeline.recovered).exponentialAverage(0.2));
         for (var i = 0; i < timeline.recovered.length; i++) {
             timeline.recovered[i] = Math.round(timeline.recovered[i]);
@@ -104,6 +107,7 @@ class CoronaTracker
 
         this.timelines[loc.country] = timeline;
 
+        this.calculateChanges(loc.country, 'confirmed');
         this.calculateChanges(loc.country, 'recovered');
         this.calculateChanges(loc.country, 'active');
         this.calculateChanges(loc.country, 'recovered3wk');
