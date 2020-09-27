@@ -1,3 +1,11 @@
+if (!Array.prototype.array)
+{
+    Array.prototype.array = function()
+    {
+        return Array.from(this);
+    };
+};
+
 if (!Array.prototype.last)
 {
     Array.prototype.last = function(offset)
@@ -144,28 +152,67 @@ if (!Array.prototype.average)
 
 if (!Array.prototype.subtract)
 {
-    Array.prototype.subtract = function(index, value)
+    Array.prototype.subtract = function(array)
     {
-        this[index] -= value;
-        return this[index];
+        var v;
+        var res = [];
+        var arrayMode = Array.isArray(array);
+        var l = arrayMode ? array.length : this.length;
+
+        for (var i = 0; i < l; i++) {
+            v = this[i] - (arrayMode ? array[i] : array);
+            res.push(Number.isFinite(v) ? v : 0);
+        }
+        return res;
     };
 };
 
 if (!Array.prototype.multiply)
 {
-    Array.prototype.multiply = function(index, value)
+    Array.prototype.multiply = function(array)
     {
-        this[index] *= value;
-        return this[index];
+        var v;
+        var res = [];
+        var arrayMode = Array.isArray(array);
+        var l = arrayMode ? array.length : this.length;
+
+        for (var i = 0; i < l; i++) {
+            v =this[i] * (arrayMode ? array[i] : array);
+            res.push(Number.isFinite(v) ? v : 0);
+        }
+        return res;
     };
 };
 
 if (!Array.prototype.divide)
 {
-    Array.prototype.divide = function(index, value)
+    Array.prototype.divide = function(array)
     {
-        this[index] /= value;
-        return this[index];
+        var v;
+        var res = [];
+        var arrayMode = Array.isArray(array);
+        var l = arrayMode ? array.length : this.length;
+
+        for (var i = 0; i < l; i++) {
+            v = arrayMode ? array[i] : array;
+            v = Number.isFinite(v) && v != 0 ? this[i] / v : 0;
+            res.push(Number.isFinite(v) ? v : 0);
+        }
+        return res;
+    };
+};
+
+if (!Array.prototype.round)
+{
+    Array.prototype.round = function()
+    {
+        var v;
+        var res = [];
+        for (var i = 0; i < this.length; i++) {
+            v = Math.round(this[i]);
+            res.push(Number.isFinite(v) ? v : 0);
+        }
+        return res;
     };
 };
 
@@ -173,11 +220,13 @@ if (!Array.prototype.exponentialAverage)
 {
     Array.prototype.exponentialAverage = function(w)
     {
-        var averages = [this[0]];
+        var v;
+        var res = [this[0]];
         for (var i = 1; i < this.length; i++) {
-            averages.push(w * Math.max(0, this[i]) + (1 - w) * Math.max(0, averages[i - 1]));
+            v = w * Math.max(0, this[i]) + (1 - w) * Math.max(0, res[i - 1]);
+            res.push(Number.isFinite(v) ? v : 0);
         }
-        return averages;
+        return res;
     };
 };
 
@@ -190,6 +239,34 @@ if (!Array.prototype.change)
             absolute: this[index] - this[Math.max(0,index-1)],
         };
     }
+};
+
+if (!Array.prototype.relativeChange)
+{
+    Array.prototype.relativeChange = function()
+    {
+        var resRel = [ 0 ];
+        for (var i = 0; i < this.length - 1; i++)
+        {
+            resRel.push(this[i+1] / this[i] - 1);
+            if (!Number.isFinite(resRel[i]))
+                resRel[i] = 0;
+        } 
+        return resRel;
+    }
+};
+
+if (!Array.prototype.getChanges)
+{
+    Array.prototype.getChanges = function()
+    {
+        var resAbs = [ 0 ];
+        for (var i = 0; i < this.length - 1; i++)
+        {
+            resAbs.push(this[i+1]-this[i]);
+        } 
+        return resAbs;
+    };
 };
 
 if (!Array.prototype.predict)
@@ -260,13 +337,15 @@ if (!Array.prototype.delta)
 
         var res = [];
         var i = 0;
+        var v;
 
         for (i; i < offset; i++) {
             res[i] = fillValue;
         }
         
         for (i; i < this.length; i++) {
-            res[i] = this[i - offset] - data[i];
+            v = this[i - offset] - data[i];
+            res[i] = Number.isFinite(v) ? v : 0;
         }
 
         return res;

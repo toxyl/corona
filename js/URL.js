@@ -11,13 +11,12 @@ class URL
 	{
 		var filter = this.param('c');
 		var sortCol = this.param('s');
-		var sortAscending = this.param('d').toLowerCase() == 'asc';
 		if (sortCol == '') sortCol = 8;
 		return {
 			filter: filter,
 			sort: {
-				column: sortCol,
-				ascending: sortAscending,
+				index: parseInt(sortCol),
+				direction: this.param('d').toLowerCase() == 'asc' ? 'asc' : 'desc',
 			}
 		};
 	}
@@ -29,10 +28,7 @@ class URL
 
 	static updateLink(sortInfo)
 	{
-	    if (sortInfo == undefined) 
-	        sortInfo = CoronaTracker.tblData.getSortInfo();
 	    var url = location.href.replace(/\?.*/, '') + '?c=' + $('#search').val() + '&s=' + sortInfo.index + '&d=' + sortInfo.direction;
 	    this.updateLocation(url);
-	    $('#url').text(url);
 	}
 }

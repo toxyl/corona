@@ -36,9 +36,6 @@ table {
 		background-color: #eee;
 		font-family: 'Open Sans';
 		text-align:center;
-	}
-
-	th[data-sort]{
 		cursor:pointer;
 	}
 
@@ -63,6 +60,23 @@ table {
 	td:nth-child(10) {
 		display: none;
 	}
+
+	[data-hidden="true"] {
+		display: none;
+	}
+
+	td.high-good {
+		background-color: #8aff8a7f;
+	}
+
+	td.medium-good {
+		background-color: #caf55d7f;
+	}
+
+	td.low-good {
+		background-color: #f9ff877f;
+	}
+
 
 	td.high {
 		background-color: #ff8a8a7f;
@@ -106,11 +120,11 @@ table {
    		font-size: 0.6vw;
 	}
 
-	.sorting-desc {
+	.sort-desc {
 		color:red;
 	}
 
-	.sorting-asc {
+	.sort-asc {
 		color:green;
 	}
 
