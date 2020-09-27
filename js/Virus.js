@@ -85,7 +85,6 @@ class RecursiveTree
 
 	merge(key)
 	{
-		console.log(`Merging ${this.name}[${key}]`);
 		if (this.members != undefined && this.members.length > 0)
 		{
 			var v;
@@ -101,7 +100,10 @@ class RecursiveTree
 				{
 					if (v[key] != undefined)
 					{
+						if (this[key] == undefined)
+							this[key] = [];
 						merge = Array.from(v[key]).merge(this[key]);
+						this[key] = merge;
 					}
 				}
 			}
@@ -355,7 +357,6 @@ class Virus extends RecursiveTree
 	{
 		return {
 			population: 						this.totalPopulation(),
-			active_cases: 						this.activeCases(),
 			case_fatality_rate: 				this.caseFatalityRate(),
 			everyone_infected_in_x_days:		Math.entirePopulationAffectedInXDays(this.totalPopulation(), this.totalInfected()  - this.newInfected(),   this.totalInfected()).round(0),
 			everyone_dead_in_x_days:			Math.entirePopulationAffectedInXDays(this.totalPopulation(), this.totalDead()      - this.newDead(),       this.totalDead()).round(0),
@@ -429,6 +430,25 @@ class Virus extends RecursiveTree
 					all: 						this.recoveredAverage(0)
 				}
 			},
+			active_cases: {
+				total: 							this.totalActiveCases(),
+				change: 						this.newActiveCases(),
+				change_max: 					this.activeCasesChangeHistory().max(),
+				relation_to_best: 				this.newActiveCases() / this.activeCasesChangeHistory().max(),
+				population: 					this.activeCasesPopulation(),
+				history: {
+					absolute: 					this.activeCasesHistory(),
+					change: 					this.activeCasesChangeHistory(),
+					normalized: 				this.activeCasesHistory().normalize()
+				},
+				average: {
+					7: 							this.activeCasesAverage(7),
+					14: 						this.activeCasesAverage(14),
+					21: 						this.activeCasesAverage(21),
+					28: 						this.activeCasesAverage(28),
+					all: 						this.activeCasesAverage(0)
+				}
+			},
 			infection_chance: {
 				10: this.infectionChance(10),
 				50: this.infectionChance(50),
@@ -443,10 +463,10 @@ class Virus extends RecursiveTree
 		console.log('='.repeat(this.name.length));
 		console.log('Population:             ' + this.totalPopulation() + ' / 100%');
 		console.log('Population (infected):  ' + this.totalInfected() + ' / ' + this.infectedPopulation() + ' / +' + this.newInfected());
+		console.log('Population (active):    ' + this.totalActiveCases() + ' / ' + this.activeCasesPopulation() + ' / +' + this.newActiveCases());
 		console.log('Population (recovered): ' + this.totalRecovered() + ' / ' + this.recoveredPopulation() + ' / +' + this.newRecovered());
 		console.log('Population (dead):      ' + this.totalDead() + ' / ' + this.deadPopulation() + ' / +' + this.newDead());
 
-		console.log('Active cases:           ' + this.activeCases());
 		console.log('Case Fatality Rate:     ' + this.caseFatalityRate());
 		console.log('Infection Chance (10):  ' + this.infectionChance(10));
 		console.log('Infection Chance (50):  ' + this.infectionChance(50));
@@ -466,12 +486,22 @@ class Virus extends RecursiveTree
 
 	totalRecovered()
 	{
-		return this.sum('recovered');
+		return this.recoveredChangeHistory().sum();
 	}
 
 	newRecovered()
 	{
-		return this.sum('recovered_change');
+		return this.recoveredChangeHistory().last(2);
+	}
+
+	totalActiveCases()
+	{
+		return this.activeCasesHistory().last(2);
+	}
+
+	newActiveCases()
+	{
+		return this.activeCasesChangeHistory().last(2);
 	}
 
 	totalInfected()
@@ -494,14 +524,9 @@ class Virus extends RecursiveTree
 		return this.totalDead() / this.totalInfected();
 	}
 
-	activeCases()
-	{
-		return this.totalInfected() - this.totalDead() - this.totalRecovered();
-	}
-
 	infectedPopulation()
 	{
-		return this.activeCases() / this.totalPopulation();
+		return this.totalInfected() / this.totalPopulation();
 	}
 
 	deadPopulation()
@@ -514,56 +539,78 @@ class Virus extends RecursiveTree
 		return this.totalRecovered() / this.totalPopulation();
 	}
 
+	activeCasesPopulation()
+	{
+		return this.totalActiveCases() / this.totalPopulation();
+	}
+
 	infectionChance(peopleMet)
 	{
-		return (this.activeCases() / this.totalPopulation()) * peopleMet;
+		return Math.max(0, this.activeCasesPopulation()) * peopleMet;
 	}
 
 	infectionHistory()
 	{
-		console.log(`Merging ${this.name}`);
 		return Array.from(this.merge('infected_history'));
 	}
 
 	infectionAverage(days)
 	{
-		return Array.from(this.get('infected_change_history')).average(-days);
+		return Array.from(this.merge('infected_change_history')).average(-days);
 	}
 
 	infectionChangeHistory()
 	{
-		console.log(`Merging ${this.name}`);
 		return Array.from(this.merge('infected_change_history'));
 	}
 
 	deadHistory()
 	{
-		return Array.from(this.get('dead_history'));
+		return Array.from(this.merge('dead_history'));
 	}
 
 	deadAverage(days)
 	{
-		return Array.from(this.get('dead_change_history')).average(-days);
+		return Array.from(this.merge('dead_change_history')).average(-days);
 	}
 
 	deadChangeHistory()
 	{
-		return Array.from(this.get('dead_change_history'));
+		return Array.from(this.merge('dead_change_history'));
+	}
+
+	activeCasesHistory()
+	{
+		var ih = Array.from(this.infectionHistory());
+		var rh = Array.from(this.recoveredHistory());
+		return Array.from(ih.delta(rh));
+	}
+
+	activeCasesChangeHistory()
+	{
+		var ich = Array.from(this.infectionChangeHistory());
+		var rch = Array.from(this.recoveredChangeHistory());
+		return Array.from(ich.delta(rch));
+	}
+
+	activeCasesAverage(days)
+	{
+		return this.activeCasesChangeHistory().average(-days);
 	}
 
 	recoveredHistory()
 	{
-		return Array.from(this.get('recovered_history'));
+		return Array.from(this.infectionHistory().delta(this.deadHistory(), 14));
 	}
 
 	recoveredChangeHistory()
 	{
-		return Array.from(this.get('recovered_change_history'));
+		return Array.from(this.infectionChangeHistory().delta(this.deadChangeHistory(), 14));
 	}
 
 	recoveredAverage(days)
 	{
-		return Array.from(this.get('recovered_change_history')).average(-days);
+		return this.recoveredChangeHistory().average(-days);
 	}
 }
 
