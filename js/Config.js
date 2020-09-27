@@ -49,7 +49,7 @@ class Config
 
     static region(country)
     {
-        country = country.replace(/(.*?)\s*\[\w+\]\s*/, '$1');
+        country = country.stripCountryCode();
         return this.regions.hasOwnProperty(country) ? this.regions[country] : 'unknown';
     }
 }

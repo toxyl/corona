@@ -131,11 +131,12 @@ class TimelinesAdapter
 
 		for (var i = 0; i < input.locations.length; i++) {
 			location = input.locations[i];
+			location.country = Config.alias(location.country);
 
 	        // insert default item if undefined
 			if (this[location.country] == undefined) {
 				this[location.country] = {
-					country: Config.alias(location.country),
+					country: location.country.appendCountryCode(location.country_code),
 					country_code: location.country_code,
 					population: location.country_population
 				};
@@ -150,8 +151,8 @@ class TimelinesAdapter
 		for (var i = 0; i < countries.length; i++) {
 			c = countries[i];
 			TimelinesAdapter.appendTimeline(this[c], 'recovered', 					this.getInfectedTotal(c).delta(this.getDeathsTotal(c), Config.data.timeToRecoveryOrDeath).exponentialAverage(Config.data.ema.recovered).exponentialAverage(Config.data.ema.recovered).round().array(), false);
-			TimelinesAdapter.appendTimeline(this[c], 'active', 					this.getInfectedTotal(c).subtract(this.getRecoveredTotal(c)).exponentialAverage(Config.data.ema.active).round().array(), false);
-			TimelinesAdapter.appendTimeline(this[c], 'case_fatality_rate', 		this.getDeathsTotal(c).divide(this.getInfectedTotal(c)).array(), false);
+			TimelinesAdapter.appendTimeline(this[c], 'active', 						this.getInfectedTotal(c).subtract(this.getRecoveredTotal(c)).exponentialAverage(Config.data.ema.active).round().array(), false);
+			TimelinesAdapter.appendTimeline(this[c], 'case_fatality_rate', 			this.getDeathsTotal(c).divide(this.getInfectedTotal(c)).array(), false);
 			TimelinesAdapter.appendTimeline(this[c], 'infection_chance', 			this.getActiveTotal(c).divide(this[c].population).array(), false);
 			TimelinesAdapter.appendTimeline(this[c], 'infection_chance_10', 		this.getActiveTotal(c).divide(this[c].population).multiply(10).array(), false);
 			TimelinesAdapter.appendTimeline(this[c], 'infection_chance_50', 		this.getActiveTotal(c).divide(this[c].population).multiply(50).array(), false);

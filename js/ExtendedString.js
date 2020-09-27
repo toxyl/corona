@@ -6,6 +6,14 @@ if (!String.prototype.stripCountryCode)
     }
 };
 
+if (!String.prototype.appendCountryCode)
+{
+    String.prototype.appendCountryCode = function(country_code)
+    {
+        return Config.alias(this.stripCountryCode()) + ' ['+country_code+']';
+    }
+};
+
 if (!String.prototype.getCountryAlias)
 {
     String.prototype.getCountryAlias = function()

@@ -48,7 +48,7 @@ table {
 	    max-width: 10vw;
 	}
 
-	th:nth-child(2), 
+/*	th:nth-child(2), 
 	td:nth-child(2),
 	th:nth-child(7), 
 	td:nth-child(7), 
@@ -60,7 +60,7 @@ table {
 	td:nth-child(10) {
 		display: none;
 	}
-
+*/
 	[data-hidden="true"] {
 		display: none;
 	}
@@ -116,7 +116,7 @@ table {
 		}
 
 	#search {
-	    width: 90%;
+	    width: 97.5vw;
    		font-size: 0.6vw;
 	}
 

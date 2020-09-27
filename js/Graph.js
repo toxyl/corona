@@ -118,7 +118,7 @@ class Graph
 
 	constructor(country)
 	{
-		var data = CoronaTracker.data[Config.alias(country.replace(/(.*)\s+\[.*?\]/g, '$1'))];
+		var data = CoronaTracker.data[Config.alias(country.stripCountryCode())];
 
 		this.confirmed = [];
 	    this.deaths = [];

@@ -124,9 +124,14 @@ class TimelinesData
 			index: index,
 			direction: String(direction).toLowerCase()
 		};
-
-		if (this.sortInfo.direction == 'asc') { this.data.sort((a, b) => a[index] - b[index]); }
-        else                   			      { this.data.sort((a, b) => b[index] - a[index]); }
+		if (TimelinesDataColumns.columnByIndex(index).type == 'string') {
+			if (this.sortInfo.direction == 'asc') { this.data.sort((a, b) => String(a).localeCompare(String(b))); }
+			else                                  { this.data.sort((a, b) => String(b).localeCompare(String(a))); }
+		}
+		else {
+			if (this.sortInfo.direction == 'asc') { this.data.sort((a, b) => a[index] - b[index]); }
+	        else                   			      { this.data.sort((a, b) => b[index] - a[index]); }			
+		}
 
         return this;
 	}
