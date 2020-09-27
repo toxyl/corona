@@ -116,8 +116,6 @@ class TimelinesTable
 
     				URL.updateLink(event.data);
     				TimelinesTable.generate(CoronaTracker.timelinesData.sort().filter(0));
-
-    				console.log('Header #' + event.data.index + ' clicked ('+event.data.oldIndex+' - '+event.data.index+').'); 
     			}
     		);
     	}
