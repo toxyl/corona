@@ -128,26 +128,26 @@ class TimelinesAdapterOWID
 	constructor(input) {
 		var iso_codes = ObjectUtils.keys(input);
 		var data;
-		var country;
 
 		for (var i = 0; i < iso_codes.length; i++) {
 			data = input[iso_codes[i]];
 
-			country = Config.alias(data.country);
+			Config.addISOCode(data.country, iso_codes[i]);
 
 	        // insert default item if undefined
-			if (this[country] == undefined) {
-				this[country] = {
-					country: country.appendCountryCode(iso_codes[i]),
+			if (this[data.country] == undefined) {
+				this[data.country] = {
+					country: data.country,
 					country_code: iso_codes[i],
-					population: data.population.total
+					population: data.population.total,
+					region: data.continent,
 				};
 			}
 
-			TimelinesAdapterOWID.appendTimeline(this[country], 'infected', data.cases.total.exponentialAverage(Config.data.ema.infected).round());
-			TimelinesAdapterOWID.appendTimeline(this[country], 'deaths', data.deaths.total.exponentialAverage(Config.data.ema.deaths).round());
-			TimelinesAdapterOWID.appendTimeline(this[country], 'recovered', data.recovered.total.exponentialAverage(Config.data.ema.recovered).round());
-			TimelinesAdapterOWID.appendTimeline(this[country], 'active', data.active.total.exponentialAverage(Config.data.ema.active).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'infected', data.cases.total.exponentialAverage(Config.data.ema.infected).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'deaths', data.deaths.total.exponentialAverage(Config.data.ema.deaths).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'recovered', data.recovered.total.exponentialAverage(Config.data.ema.recovered).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'active', data.active.total.exponentialAverage(Config.data.ema.active).round());
 		}
 
 		var countries = ObjectUtils.keys(this);

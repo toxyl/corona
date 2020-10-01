@@ -5,7 +5,6 @@ class CoronaTracker
         var loadData = function (data)
         {
             CoronaTracker.timelines = new TimelinesAdapterOWID(data);
-            // CoronaTracker.timelines = new TimelinesAdapter(data);
             CoronaTracker.timelinesData = new TimelinesData(CoronaTracker.timelines);
             callback();
         };

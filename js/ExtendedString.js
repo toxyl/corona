@@ -8,17 +8,11 @@ if (!String.prototype.stripCountryCode)
 
 if (!String.prototype.appendCountryCode)
 {
-    String.prototype.appendCountryCode = function(country_code)
+    String.prototype.appendCountryCode = function()
     {
-        return Config.alias(this.stripCountryCode()) + ' ['+country_code+']';
-    }
-};
+        var s = this.stripCountryCode();
 
-if (!String.prototype.getCountryAlias)
-{
-    String.prototype.getCountryAlias = function()
-    {
-        return Config.alias(this.stripCountryCode());
+        return s + ' ['+Config.isoCode(s)+']';
     }
 };
 

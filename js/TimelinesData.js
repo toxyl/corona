@@ -1,7 +1,7 @@
 class TimelinesDataColumn
 {	
 	static formatters = {
-		string:  function(a) { return a.toString(); },
+		string:  function(a) { return a.toString().appendCountryCode(); },
 		int:     function(a) { return parseFloat(a).toFixed(0); },
 		float:   function(a) { return parseFloat(a).toFixed(2); },
 		percent: function(a) { return (parseFloat(a).toFixed(4) * 100).toFixed(2) + '%'; },
@@ -146,7 +146,7 @@ class TimelinesData
 
 		if (TimelinesDataColumns.columnByIndex(index).type == 'string') {
 			for (var i = 0; i < this.data.length; i++) {
-				this.visible[i] = filter == '' || String(this.data[i][index]).isInList(filter);
+				this.visible[i] = filter == '' || String(this.data[i][index].appendCountryCode()).isInList(filter);
 			}
 		} else {
 			filter = filter == '' ? undefined : filter.replace(/[^=<>]*([=<>]{1,2})\s*(\d+\.{0,1}\d*)\D*/, '$1||$2').split('||');

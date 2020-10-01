@@ -72,7 +72,7 @@ class TimelinesTable
     }
 
     static setDataAttributes(c) {
-		return  ' data-region="' + Config.region(c.country) + '" ' +
+		return  ' data-region="' + c.region + '" ' +
 				' data-population="' + c.population + '" ' +
 				' data-country="' + c.country + '" ' +
 				' data-infected="' + c.infected.total + '" ' +
@@ -127,7 +127,7 @@ class TimelinesTable
 		var c;
 		var row;
 		for (var i = 0; i < timelines.data.length; i++) {
-			country = timelines.data[i][0].getCountryAlias();
+			country = timelines.data[i][0];
 			c = CoronaTracker.timelines[country];
 
 			row = [ '<tr' + TimelinesTable.setDataAttributes(c) + '>' ];
@@ -147,10 +147,10 @@ class TimelinesTable
 		var j;
 
 		for (var i = 0; i < timelines.data.length; i++) {
-			country = timelines.data[i][0].getCountryAlias();
+			country = timelines.data[i][0];
 			j = 0;
 			for (j; j < rows.length; j++) {
-				if ($(rows[j]).attr('data-country').getCountryAlias() == country)
+				if ($(rows[j]).attr('data-country') == country)
 					break; 
 			}
 			$(rows[j]).attr('data-hidden', !timelines.visible[i]);
