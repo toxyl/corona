@@ -4,7 +4,8 @@ class CoronaTracker
     {
         var loadData = function (data)
         {
-            CoronaTracker.timelines = new TimelinesAdapter(data);
+            CoronaTracker.timelines = new TimelinesAdapterOWID(data);
+            // CoronaTracker.timelines = new TimelinesAdapter(data);
             CoronaTracker.timelinesData = new TimelinesData(CoronaTracker.timelines);
             callback();
         };
@@ -19,7 +20,7 @@ class CoronaTracker
             CoronaTracker.update(
                 function()
                 {
-                    TimelinesTable.generate(CoronaTracker.timelinesData.sort().filter(0));
+                    TimelinesTable.generate(CoronaTracker.timelinesData.sort().filter(0), true);
                 }
             );
             CoronaTracker.scheduleUpdate(timeNext, timeNext);

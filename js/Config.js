@@ -365,7 +365,8 @@ Config.regionsAdd({
     ]
 });
 
-Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
+Config.apiURL = 'https://cors-anywhere.herokuapp.com/http://cvtapi.nl/latest.json';
+// Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
 Config.updateInterval = 15; // in minutes
 
 Config.graphColorGrid = '#666666';

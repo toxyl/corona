@@ -160,21 +160,26 @@ class TimelinesTable
 		$("#data > tbody").html(rowsNew.join(''));
     }
 
-	static generate(timelines) {
+	static generate(timelines, fullUpdate) {
+		if (fullUpdate == undefined)
+			fullUpdate = false;
+		
 		var t = $('#data');
 
 		if (t.length == 0)
 		{
-			console.log('No table generated yet.');
 			$('#datacontainer').html("<table id='data'><thead><tr></tr></thead><tbody></tbody></table>"); 
 			$('#data > thead > tr').html(TimelinesTable.generateHeader(timelines));
-			$('#data > tbody').html(TimelinesTable.generateBody(timelines));
 	        $('#search').val(URL.get().filter);
 	        $('#search').keyup(TimelinesTable.filter);
 		}
-
 		TimelinesTable.updateHeader(timelines);
+		
+		if (t.length == 0 || fullUpdate)
+			$('#data > tbody').html(TimelinesTable.generateBody(timelines));
+		
 		TimelinesTable.updateBody(timelines);
+
 	    $('[data-country]').hover(TimelinesTable.loadDataAttributes);
 
         URL.updateLink(timelines.sortInfo);
