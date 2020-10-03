@@ -3,102 +3,40 @@
  **/
 class Config 
 {
-    static aliasAdd(name, alias)
-    {
-        if (this.aliases == undefined)
-        {
-            this.aliases = {};
-        }
+    static addISOCode(country, iso_code) {
+        if (this.isoCodes == undefined)
+            this.isoCodes = {};
+        if (this.countries == undefined)
+            this.countries = {};
 
-        this.aliases[name] = alias;
-        this.aliases[alias] = name;
+        this.isoCodes[country] = iso_code;
+        this.countries[iso_code] = country;
     }
 
-    static alias(name)
-    {
-        return this.aliases.hasOwnProperty(name) ? this.aliases[name] : name;
+    static country(iso_code) {
+        return this.countries[iso_code] == undefined ? "N/A" : this.countries[iso_code];
     }
 
-    static columnAdd(name, type, low, medium, high, updateFunction)
-    {
-        if (this.cols == undefined)
-        {
-            this.cols = {
-                names:      [ ],
-                types:      [ ],
-                thresholds: 
-                {
-                    low:    [ ],
-                    medium: [ ],
-                    high:   [ ],
-                },
-                onUpdate: []
-            };
-        }
-
-        this.cols.names.push(name);
-        this.cols.types.push(type);
-        this.cols.thresholds.low.push(low);
-        this.cols.thresholds.medium.push(medium);
-        this.cols.thresholds.high.push(high);
-        this.cols.onUpdate.push(updateFunction == undefined ? null : updateFunction);
-    }
-
-    static columnInfo(index)
-    {
-        return {
-            name:       this.cols.names[index],
-            type:       this.cols.types[index],
-            low:        this.cols.thresholds.low[index],
-            medium:     this.cols.thresholds.medium[index],
-            high:       this.cols.thresholds.high[index],
-            onUpdate:   this.cols.onUpdate[index],
-        }
-    }
-
-    static columns()
-    {
-        var res = [];
-        var l = this.cols.names.length;
-        for (var i = 0; i < l; i++)
-        {
-            res.push(this.columnInfo(i));
-        }
-        return res;
+    static isoCode(country) {
+        return this.isoCodes[country] == undefined ? "N/A" : this.isoCodes[country];
     }
 }
 
-/*                stat                                      type        low     medium  high    updateFunction*/
-Config.columnAdd('Country',                                 '',         null,   null,   null);
-Config.columnAdd('Population',                              'int',      null,   null,   null);
-Config.columnAdd('Confirmed<br>(current)',                  'int',      100,    1000,   10000);
-Config.columnAdd('Confirmed<br>(last)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Confirmed<br>(change)',                   'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 3).text(), dataTable.cell(row, 2).text()).toPercent(); } );
-Config.columnAdd('Deaths<br>(current)',                     'int',      100,    1000,   10000);
-Config.columnAdd('Deaths<br>(last)',                        'int',      100,    1000,   10000);
-Config.columnAdd('Deaths<br>(change)',                      'float',    1,      25,     50,     function(dataTable, row) { return Math.percentageChange(dataTable.cell(row, 6).text(), dataTable.cell(row, 5).text()).toPercent(); } );
-Config.columnAdd('Case Fatality Rate',                      'float',    1,      10,     25,     function(dataTable, row) { return Math.caseFatalityRate(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text()).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(1 person met)',      'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 1).toPercent(); });
-Config.columnAdd('Infection Chance<br>(10 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 10).toPercent(); } );
-Config.columnAdd('Infection Chance<br>(50 persons met)',    'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 50).toPercent(); });
-Config.columnAdd('Infection Chance<br>(100 persons met)',   'float',    1,      25,     50,     function(dataTable, row) { return Math.infectionChance(dataTable.cell(row, 2).text(), dataTable.cell(row, 5).text(), dataTable.cell(row, 1).text(), 100).toPercent(); });
+Config.data = {
+    ema: {
+        infected: 0.9,
+        deaths: 0.9,
+        recovered: 0.2,
+        active: 0.2,
+        tests: 0.2,
+    }
+};
 
-Config.aliasAdd('US',                   'United States');
-Config.aliasAdd('Taiwan*',              'Taiwan');
-Config.aliasAdd('Congo (Brazzaville)',  'Republic of the Congo');
-Config.aliasAdd('Congo (Kinshasa)',     'DR Congo');
-Config.aliasAdd('Gambia, The',          'Gambia');
-Config.aliasAdd('Bahamas, The',         'Bahamas');
-Config.aliasAdd('Timor-Leste',          'East Timor');
-Config.aliasAdd('Cabo Verde',           'Cape Verde');
-Config.aliasAdd('Holy See',             'Vatican City');
-
-Config.apiURL = 'https://cvtapi.nl/v2/locations?timelines=true';
-// Config.apiURL = 'https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=true';
+Config.apiURL = 'https://cors-anywhere.herokuapp.com/http://cvtapi.nl/latest.json';
 Config.updateInterval = 15; // in minutes
 
-Config.graphHeight = 100;
-Config.graphWidth = 500;
 Config.graphColorGrid = '#666666';
 Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
+Config.graphColorActive = '#00ccff';
+Config.graphColorRecovered = '#00cc00';

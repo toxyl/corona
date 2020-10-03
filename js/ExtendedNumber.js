@@ -47,3 +47,29 @@ if (!Number.prototype.round)
         return Math.round(this * decimals) / decimals;
     }
 };
+
+if (!Number.prototype.compare)
+{
+    Number.prototype.compare = function(op, value)
+    {
+        if (op == undefined)
+            op = '=';
+
+        if (op == '=')
+            return this == value;
+
+        if (op == '>=')
+            return this >= value;
+
+        if (op == '<=')
+            return this <= value;
+
+        if (op == '>')
+            return this > value;
+
+        if (op == '<')
+            return this < value;
+
+        return false;
+    }
+};
