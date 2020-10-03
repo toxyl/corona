@@ -123,7 +123,6 @@ class Graph
 		this.confirmed = [];
 	    this.deaths = [];
 	    this.active = [];
-	    this.active3wk = [];
 	    this.recovered = [];
 		this.confirmedChangeAbs = [];
 	    this.deathsChangeAbs = [];

@@ -2,7 +2,7 @@ class TimelinesDataColumn
 {	
 	static formatters = {
 		string:  function(a) { return a.toString().appendCountryCode(); },
-		int:     function(a) { return parseFloat(a).toFixed(0); },
+		int:     function(a) { return Number(parseFloat(a).toFixed(0)).format() },
 		float:   function(a) { return parseFloat(a).toFixed(2); },
 		percent: function(a) { return (parseFloat(a).toFixed(4) * 100).toFixed(2) + '%'; },
 	};
@@ -50,10 +50,12 @@ class TimelinesDataColumns
 		new TimelinesDataColumn('Active (total)', 				'total.active', 					'int', 		{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high',        "-100000": 'high-good', "-10000": 'medium-good', "-1000": 'low-good'  }),
 		new TimelinesDataColumn('Recovered (total)', 			'total.recovered',					'int', 		{ 0: 'zero', 1000: 'low-good', 10000: 'medium-good', 100000: 'high-good' }),
 		new TimelinesDataColumn('Deaths (total)', 				'total.deaths', 					'int', 		{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
+		new TimelinesDataColumn('Tests (total)', 				'total.tests', 						'int', 		{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
 		new TimelinesDataColumn('Infections (change)', 			'relative_change.infected', 		'percent', 	{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
 		new TimelinesDataColumn('Active Cases (change)', 		'relative_change.active', 			'percent', 	{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high',        "-100000": 'high-good', "-10000": 'medium-good', "-1000": 'low-good' }),
 		new TimelinesDataColumn('Recovered (change)', 			'relative_change.recovered', 		'percent',	{ 0: 'zero', 1000: 'low-good', 10000: 'medium-good', 100000: 'high-good' }),
 		new TimelinesDataColumn('Deaths (change)', 				'relative_change.deaths', 			'percent', 	{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
+		new TimelinesDataColumn('Positive Test Rate', 			'total.positive_rate',			 	'percent', 	{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
 		new TimelinesDataColumn('New Cases / Recovered', 		'total.new_cases_per_recovered', 	'float', 	{ 0: 'zero', 1000: 'low',      10000: 'medium',      100000: 'high' }),
 		new TimelinesDataColumn('Case Fatality Rate', 			'total.case_fatality_rate', 		'percent', 	{ 0: 'zero', "0.01": 'low',   "0.03": 'medium',      "0.05": 'high' }),
 		new TimelinesDataColumn('Infection Chance (1+ ppl)', 	'total.infection_chance', 			'percent', 	{ 0: 'zero', "0.10": 'low',   "0.25": 'medium',      "0.50": 'high' }),

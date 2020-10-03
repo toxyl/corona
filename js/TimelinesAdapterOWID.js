@@ -148,6 +148,8 @@ class TimelinesAdapterOWID
 			TimelinesAdapterOWID.appendTimeline(this[data.country], 'deaths', data.deaths.total.exponentialAverage(Config.data.ema.deaths).round());
 			TimelinesAdapterOWID.appendTimeline(this[data.country], 'recovered', data.recovered.total.exponentialAverage(Config.data.ema.recovered).round());
 			TimelinesAdapterOWID.appendTimeline(this[data.country], 'active', data.active.total.exponentialAverage(Config.data.ema.active).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'tests', data.tests.total.exponentialAverage(Config.data.ema.tests).round());
+			TimelinesAdapterOWID.appendTimeline(this[data.country], 'positive_rate', data.tests.positive_rate);
 		}
 
 		var countries = ObjectUtils.keys(this);

@@ -28,6 +28,7 @@ Config.data = {
         deaths: 0.9,
         recovered: 0.2,
         active: 0.2,
+        tests: 0.2,
     }
 };
 
@@ -40,5 +41,3 @@ Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
 Config.graphColorActive = '#00ccff';
 Config.graphColorRecovered = '#00cc00';
-Config.graphColorActive3wk = '#0099cc7f';
-Config.graphColorRecovered3wk = '#009900';
