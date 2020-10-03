@@ -11,15 +11,17 @@ Multiple search terms should be separated with commas.
 Country codes should be wrapped in square brackets. 
 
 ### Examples
-- `Neth,Erman` will show `*Neth*erlands [NLF]` and `G*erman*y [DEU]`
-- `[NLD],Erman` will show `Netherlands *[NLF]*` and `G*erman*y [DEU]`
+- `Neth,Erman` will show `*Neth*erlands [NLD]` and `G*erman*y [DEU]`
+- `[NLD],Erman` will show `Netherlands *[NLD]*` and `G*erman*y [DEU]`
 - `[Z` will show `South Africa *[Z*AF]`, `Zambia *[Z*MB]` and `Zimbabwe *[Z*WE]` 
 
 ## Sorting
 The overview can be sorted by any column. Clicking the current sorting column changes the order.
 
 ## Highlighting
-For further convenience most cells are highlighted according to eight categories. Negative developments range from yellow (low) to red (high), positive developments from yellow (low) to green (high).
+For further convenience most cells are highlighted:
+- negative developments range from yellow (low) to red (high)
+- positive developments from yellow (low) to green (high)
 
 ## Icon
 The favicon is made from [Somewans Covid-19 Coronavirus icon set](https://www.iconfinder.com/iconsets/covid-19-coronavirus).
