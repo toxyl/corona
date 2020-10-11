@@ -260,7 +260,7 @@
 	function needs_update($file) 
 	{
 		$now = new DateTime('now');
-		return file_exists($file) && filemtime($file) < ($now->format('U') - 60*60);
+		return !file_exists($file) || filemtime($file) < ($now->format('U') - 60*60);
 	}
 
 	// load data
