@@ -280,5 +280,5 @@
 		file_put_contents($fout, $rows);		
 	}
 	header('Content-Type: application/json');
-	echo file_put_contents($fout);
+	echo file_get_contents($fout);
 ?>
