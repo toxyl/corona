@@ -1,4 +1,6 @@
 <?php
+	set_time_limit(0);
+
 	function read_float($v, $index)
 	{
 		return !isset($v[$index]) || $v[$index] == '' ? null : (float)($v[$index]);
