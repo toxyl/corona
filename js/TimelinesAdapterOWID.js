@@ -140,10 +140,10 @@ class TimelinesAdapterOWID
                     country: data.country,
                     country_code: iso_codes[i],
                     population: data.population.total,
-                    population_infected: data.cases.total.last(1) / data.population.total,
-                    population_active: data.active.total.last(1) / data.population.total,
-                    population_recovered: data.recovered.total.last(1) / data.population.total,
-                    population_deaths: data.deaths.total.last(1) / data.population.total,
+                    population_infected: data.cases.total.last() / data.population.total,
+                    population_active: data.active.total.last() / data.population.total,
+                    population_recovered: data.recovered.total.last() / data.population.total,
+                    population_deaths: data.deaths.total.last() / data.population.total,
                     region: data.continent,
                 };
             }

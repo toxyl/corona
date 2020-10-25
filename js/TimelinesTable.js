@@ -54,7 +54,7 @@ class TimelinesTable
 
             return fmtRow(
                 label, 
-                (curr / pop).toPercent(),
+                pop.toPercent(),
                 changeAbs.replace(/([\-\+\=])/g, ' $1 '), 
                 (parseFloat(change) > 0 ? '+' : '-') + Math.abs(change).toPercent(undefined, 2), 
                 (Number.isFinite(daysUntilDoubled) ? (parseFloat(change) > 0 ? 'doubles' : 'halves') + " in "+(parseFloat(change) > 0 ? daysUntilDoubled.toFixed(2) : -daysUntilDoubled.toFixed(2))+" days" : '')
@@ -64,10 +64,10 @@ class TimelinesTable
         var infStats = Math.entirePopulationAffectedInXDays(c.population, c.infected.total.last(1), c.infected.total.last()).round(0);
 
         return  fmtRow('Population', '', c.population.format(), '', '') +
-                fmt('Infections', c.infected.total.last(), c.infected.total.last(1), c.population) + 
-                fmt('Active Cases (estimated)', c.active.total.last(), c.active.total.last(1), c.population) + 
-                fmt('Recovered (estimated)', c.recovered.total.last(), c.recovered.total.last(1), c.population) + 
-                fmt('Deaths', c.deaths.total.last(), c.deaths.total.last(1), c.population) + 
+                fmt('Infections', c.infected.total.last(), c.infected.total.last(1), c.population_infected) + 
+                fmt('Active Cases (estimated)', c.active.total.last(), c.active.total.last(1), c.population_active) + 
+                fmt('Recovered (estimated)', c.recovered.total.last(), c.recovered.total.last(1), c.population_recovered) + 
+                fmt('Deaths', c.deaths.total.last(), c.deaths.total.last(1), c.population_deaths) + 
                 (infStats > 0 && Number.isFinite(infStats) ? "<br>At the current rate the entire population would be infected in approx. " + infStats + " days.<br>" : '');
     }
 
