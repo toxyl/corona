@@ -86,7 +86,14 @@ class TimelinesTable
                 ' data-tooltip="' + this.generateOverviewText(c) + '" ';
     }
 
+    static generateHeaderGroups(timelines) {
+        var headerGroups = [];
 
+        for (var i = 0; i < timelines.headerGroups.length; i++) {
+            headerGroups.push(timelines.headerGroups[i].html());
+        }
+        return headerGroups.join('');
+    }
 
     static generateHeader(timelines) {
         var header = [];
@@ -98,7 +105,7 @@ class TimelinesTable
     }
 
     static updateHeader(timelines) {
-        var cols = $('#data > thead > tr > th');
+        var cols = $('#data > thead > tr:nth-child(2) > th');
         for (var i = 0; i < cols.length; i++) {
             $(cols[i]).removeClass('sort-asc').removeClass('sort-desc');
             if (timelines.sortInfo.index == i)
@@ -168,8 +175,12 @@ class TimelinesTable
 
         if (t.length == 0)
         {
-            $('#datacontainer').html("<table id='data'><thead><tr></tr></thead><tbody></tbody></table>"); 
-            $('#data > thead > tr').html(TimelinesTable.generateHeader(timelines));
+            $('#datacontainer').html("<table id='data'><thead></thead><tbody></tbody></table>"); 
+            $('#data > thead').html(
+                '<tr>' + TimelinesTable.generateHeaderGroups(timelines) + '</tr>' +
+                '<tr>' + TimelinesTable.generateHeader(timelines) + '</tr>'
+            );
+            // $('#data > thead > tr').html(TimelinesTable.generateHeader(timelines));
             $('#search').val(URL.get().filter);
             $('#search').keyup(TimelinesTable.filter);
         }
