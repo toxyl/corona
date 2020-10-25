@@ -150,6 +150,28 @@ if (!Array.prototype.average)
     };
 };
 
+if (!Array.prototype.movingAverage)
+{
+    Array.prototype.movingAverage = function(days, start, length)
+    {
+        if (start == undefined || start == -0)
+            start = 0;
+        else if (start < 0)
+            start = this.length + start;
+
+        var end = Math.min(start + (length == undefined ? this.length : length), this.length);
+
+        var movingAverage = [];
+        for (var i = start; i < end-1; i++)
+        {
+            movingAverage.push((parseFloat(this[i]) + parseFloat(this[i - 1]) + parseFloat(this[i + 1])) / days);
+        }
+
+        return movingAverage;
+    };
+};
+
+
 if (!Array.prototype.subtract)
 {
     Array.prototype.subtract = function(array)

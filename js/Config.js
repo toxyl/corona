@@ -32,7 +32,7 @@ Config.data = {
     }
 };
 
-Config.apiURL = 'https://cors-anywhere.herokuapp.com/http://cvtapi.nl/latest.json';
+Config.apiURL = 'data.php';
 Config.updateInterval = 15; // in minutes
 
 Config.graphColorGrid = '#666666';
