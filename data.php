@@ -265,6 +265,15 @@
 		return !file_exists($file) || filesize($file) < 100 || filemtime($file) < ($now->format('U') - 60*60);
 	}
 
+	function set_headers($file) 
+	{
+		$now = new DateTime('now');
+		$maxage = (filemtime($file) + 60*60) - $now->format('U');
+		header('Content-Type: application/json');
+		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $maxage) . ' GMT');
+		header("Cache-Control: max-age=$maxage");
+	}
+
 	// load data
 	$fout = 'latest.json';
 	if (needs_update($fout))
@@ -279,9 +288,9 @@
 		derive_active_and_recovery_data($rows);
 
 		$rows = json_encode($rows, JSON_NUMERIC_CHECK);
-		file_put_contents($fout, $rows);		
+		file_put_contents($fout, $rows);
 	}
-	header('Content-Type: application/json');
+	set_headers($fout);
 	echo file_get_contents($fout);
 ?>
 

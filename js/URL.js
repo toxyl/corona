@@ -9,14 +9,14 @@ class URL
 
     static get()
     {
-        var filter = this.param('c');
-        var sortCol = this.param('s');
+        var filter = decodeURI(this.param('c')).replace(/[^a-zA-Z0-9\s\[\],]/g, '');
+        var sortCol = this.param('s').replace(/[^0-9]/g, '');
         if (sortCol == '') sortCol = 8;
         return {
             filter: filter,
             sort: {
                 index: parseInt(sortCol),
-                direction: this.param('d').toLowerCase() == 'asc' ? 'asc' : 'desc',
+                direction: this.param('d').replace(/.*?\b(a|de)sc\b.*/gis, '$1sc').toLowerCase() == 'asc' ? 'asc' : 'desc',
             }
         };
     }
@@ -28,7 +28,7 @@ class URL
 
     static updateLink(sortInfo)
     {
-        var url = location.href.replace(/\?.*/, '') + '?c=' + $('#search').val() + '&s=' + sortInfo.index + '&d=' + sortInfo.direction;
+        var url = location.href.replace(/\?.*/, '') + '?c=' + encodeURI($('#search').val()) + '&s=' + sortInfo.index + '&d=' + sortInfo.direction;
         this.updateLocation(url);
     }
 }
