@@ -1,52 +1,60 @@
 <?php
 	set_time_limit(0);
 
-	function read_float($v, $index)
+	function read_float($v, $index, $headers)
 	{
+		if (is_string($index))
+			$index = array_search($index, $headers);
 		return !isset($v[$index]) || $v[$index] == '' ? null : (float)($v[$index]);
 	}
 
-	function read_rounded($v, $index, $decimals)
+	function read_rounded($v, $index, $decimals, $headers)
 	{
+		if (is_string($index))
+			$index = array_search($index, $headers);
 		return !isset($v[$index]) || $v[$index] == '' ? null : round((float)($v[$index]), $decimals);
 	}
 
-	function read_int($v, $index)
+	function read_int($v, $index, $headers)
 	{
+		if (is_string($index))
+			$index = array_search($index, $headers);
 		return !isset($v[$index]) || $v[$index] == '' ? null : (int)($v[$index]);
 	}
 
-	function read_string($v, $index)
+	function read_string($v, $index, $headers)
 	{
+		if (is_string($index))
+			$index = array_search($index, $headers);
 		return $v[$index] ?? 'N/A';
 	}
 
-	function add_row(&$rows, $r)
+	function add_row(&$rows, $r, $headers)
 	{
-		$iso_code 				 = read_string($r, 0);
-		$date 					 = read_string($r, 3);
+		$iso 				 					= read_string($r, 'iso_code', $headers);
+		$dt 					 				= read_string($r, 'date', $headers);
 
-		if ($date == 'N/A')
+		if ($dt == 'N/A')
 			return;
 
-		if (!isset($rows[$iso_code]))
+		if (!isset($rows[$iso]))
 		{
-			$continent 				 = read_string($r, 1);
-			$country 				 = read_string($r, 2);
+			$continent 				 			= read_string($r, 'continent', $headers);
+			$country 				 			= read_string($r, 'location', $headers);
 			
 			if ($country == 'International')
 				return;
 
-			$population 			 = read_int($r, 26);
-			$population_density 	 = read_float($r, 27);
-			$median_age 			 = read_float($r, 28);
-			$above_65 				 = read_float($r, 29);
-			$above_70				 = read_float($r, 30); 
-			$life_expectancy		 = read_float($r, 39);
-			$human_development_index = read_float($r, 40);
-			$hospital_beds			 = (int)(($population / 1000) * read_float($r, 38));
+			$population 			 			= read_int($r, 'population', $headers);
+			$population_density 	 			= read_float($r, 'population_density', $headers);
+			$median_age 			 			= read_float($r, 'median_age', $headers);
+			$above_65 				 			= read_float($r, 'aged_65_older', $headers);
+			$above_70				 			= read_float($r, 'aged_70_older', $headers); 
+			$life_expectancy		 			= read_float($r, 'life_expectancy', $headers);
+			$human_development_index 			= read_float($r, 'human_development_index', $headers);
+			$hospital_beds			 			= (int)(($population / 1000) * read_float($r, 'hospital_beds_per_thousand', $headers));
 
-			$rows[$iso_code] = [
+			$rows[$iso] = [
 				"continent" 					=> $continent,
 				"country" 						=> $country,
 				"population" => [
@@ -61,6 +69,7 @@
 					"human_development_index" 	=> $human_development_index,
 				],
 				"hospital_beds" 				=> $hospital_beds,
+				"icu_patients" 					=> [ "total" => [] ],
 				"stringency_index" 				=> [ "total" => [] ],
 				"cases"  						=> [ "total" => [], "new" => [], "new_smoothed" => [] ],
 				"deaths" 						=> [ "total" => [], "new" => [], "new_smoothed" => [] ],
@@ -68,29 +77,31 @@
 			];
 		}
 
-		$rows[$iso_code]["cases"]["total"][$date] 				= read_int($r, 4);
-		$rows[$iso_code]["cases"]["new"][$date]	 				= read_int($r, 5);
-		$rows[$iso_code]["cases"]["new_smoothed"][$date] 		= read_int($r, 6);
+		$rows[$iso]["cases"]["total"][$dt] 				= read_int($r, 'total_cases', $headers);
+		$rows[$iso]["cases"]["new"][$dt]	 			= read_int($r, 'new_cases', $headers);
+		$rows[$iso]["cases"]["new_smoothed"][$dt] 		= read_int($r, 'new_cases_smoothed', $headers);
 
-		$rows[$iso_code]["deaths"]["total"][$date] 				= read_int($r, 7);
-		$rows[$iso_code]["deaths"]["new"][$date]	 			= read_int($r, 8);
-		$rows[$iso_code]["deaths"]["new_smoothed"][$date] 		= read_int($r, 9);
+		$rows[$iso]["deaths"]["total"][$dt] 			= read_int($r, 'total_deaths', $headers);
+		$rows[$iso]["deaths"]["new"][$dt]	 			= read_int($r, 'new_deaths', $headers);
+		$rows[$iso]["deaths"]["new_smoothed"][$dt] 		= read_int($r, 'new_deaths_smoothed', $headers);
 
-		$rows[$iso_code]["tests"]["total"][$date] 				= read_int($r, 17);
-		$rows[$iso_code]["tests"]["new"][$date] 				= read_int($r, 16);
-		$rows[$iso_code]["tests"]["new_smoothed"][$date] 		= read_int($r, 20);
-		$rows[$iso_code]["tests"]["per_case"][$date] 			= read_rounded($r, 22, 2);
-		$rows[$iso_code]["tests"]["positive_rate"][$date] 		= read_rounded($r, 23, 8);
+		$rows[$iso]["tests"]["total"][$dt] 				= read_int($r, 'total_tests', $headers);
+		$rows[$iso]["tests"]["new"][$dt] 				= read_int($r, 'new_tests', $headers);
+		$rows[$iso]["tests"]["new_smoothed"][$dt] 		= read_int($r, 'new_tests_smoothed', $headers);
+		$rows[$iso]["tests"]["per_case"][$dt] 			= read_rounded($r, 'tests_per_case', 2, $headers);
+		$rows[$iso]["tests"]["positive_rate"][$dt] 		= read_rounded($r, 'positive_rate', 8, $headers);
 
-		$rows[$iso_code]["stringency_index"]["total"][$date] 	= read_float($r, 25);
+		$rows[$iso]["icu_patients"]["total"][$dt] 		= read_int($r, 'icu_patients', $headers);
+		$rows[$iso]["stringency_index"]["total"][$dt] 	= read_float($r, 'stringency_index', $headers);
 
 	}
 
-	function add_rows(&$rows, $data)
+	function add_rows(&$rows, $data, $headers)
 	{
+		$headers = explode(',', $headers);
 		foreach ($data as $row)
 		{
-			add_row($rows, explode(',', $row));
+			add_row($rows, explode(',', $row), $headers);
 		}
 	}
 
@@ -282,7 +293,7 @@
 		$data = explode("\n", file_get_contents($f));
 		$headers = array_shift($data);
 
-		add_rows($rows, $data);
+		add_rows($rows, $data, $headers);
 		add_missing_dates($rows);
 		compress_arrays($rows);
 		derive_active_and_recovery_data($rows);
