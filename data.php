@@ -219,10 +219,18 @@
 
 	function compress_arrays(&$rows)
 	{
+		$categories = [
+			"cases",
+			"deaths",
+			"tests",
+			"stringency_index",
+			"icu_patients"
+
+		];
 		$iso_codes = array_keys($rows);
 		foreach ($iso_codes as $iso_code)
 		{
-			foreach (["cases","deaths","tests","stringency_index"] as $category)
+			foreach ($categories as $category)
 			{
 				$metrics = array_keys($rows["$iso_code"]["$category"]);
 				foreach ($metrics as $metric)
