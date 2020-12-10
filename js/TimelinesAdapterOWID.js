@@ -145,6 +145,7 @@ class TimelinesAdapterOWID
                     population_recovered: data.recovered.total.last() / data.population.total,
                     population_deaths: data.deaths.total.last() / data.population.total,
                     region: data.continent,
+                    hospital_beds: data.hospital_beds,
                 };
             }
 
@@ -154,6 +155,7 @@ class TimelinesAdapterOWID
             TimelinesAdapterOWID.appendTimeline(this[data.country], 'active', data.active.total.exponentialAverage(Config.data.ema.active).round());
             TimelinesAdapterOWID.appendTimeline(this[data.country], 'tests', data.tests.total.exponentialAverage(Config.data.ema.tests).round());
             TimelinesAdapterOWID.appendTimeline(this[data.country], 'positive_rate', data.tests.positive_rate);
+            TimelinesAdapterOWID.appendTimeline(this[data.country], 'hosp_patients', data.hosp_patients.total.round());
             TimelinesAdapterOWID.appendTimeline(this[data.country], 'icu_patients', data.icu_patients.total.round());
         }
 
@@ -166,7 +168,7 @@ class TimelinesAdapterOWID
             TimelinesAdapterOWID.appendTimeline(this[c], 'infection_chance_10',         this.getActiveTotal(c).divide(this[c].population).multiply(10).array(), false);
             TimelinesAdapterOWID.appendTimeline(this[c], 'infection_chance_50',         this.getActiveTotal(c).divide(this[c].population).multiply(50).array(), false);
             TimelinesAdapterOWID.appendTimeline(this[c], 'infection_chance_100',        this.getActiveTotal(c).divide(this[c].population).multiply(100).array(), false);
-            TimelinesAdapterOWID.appendTimeline(this[c], 'new_cases_per_recovered',     this.getActiveChange(c).divide(this.getRecoveredChange(c)).array(), false);
+            TimelinesAdapterOWID.appendTimeline(this[c], 'new_cases_per_recovered',     this.getActiveChange(c).divide(this.getRecoveredChange(c)).exponentialAverage(Config.data.ema.new_cases_per_recovered).array(), false);
         }
     }
 }

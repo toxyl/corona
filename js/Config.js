@@ -29,6 +29,7 @@ Config.data = {
         recovered: 0.2,
         active: 0.2,
         tests: 0.2,
+        new_cases_per_recovered: 0.1,
     }
 };
 
@@ -36,7 +37,9 @@ Config.apiURL = 'data.php';
 Config.updateInterval = 15; // in minutes
 
 Config.graphColorGrid = '#666666';
+Config.graphColorGrid2 = '#0066667F';
 Config.graphColorConfirmed = '#cccc00';
 Config.graphColorDeaths = '#cc0000';
 Config.graphColorActive = '#00ccff';
 Config.graphColorRecovered = '#00cc00';
+Config.graphColorNewPerRecovered = '#33cccc';

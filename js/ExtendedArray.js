@@ -38,8 +38,8 @@ if (!Array.prototype.max)
     {
         var max = null;
         for (var i = 0; i < this.length; i++) {
-            if (max == null || this[i] > max)
-                max = this[i];
+            if (max == null || parseFloat(this[i]) > max)
+                max = parseFloat(this[i]);
         }
         return max;
     };
@@ -72,10 +72,10 @@ if (!Array.prototype.normalize)
     Array.prototype.normalize = function(max)
     {
         if (max == undefined)
-            max = this.max();
+            max = Math.max(1, this.max());
         
         for (var i = 0; i < this.length; i++) {
-            this[i] = this[i] / max;
+            this[i] = parseFloat(this[i]) / max;
         }
 
         return this;
@@ -182,7 +182,7 @@ if (!Array.prototype.subtract)
         var l = arrayMode ? array.length : this.length;
 
         for (var i = 0; i < l; i++) {
-            v = this[i] - (arrayMode ? array[i] : array);
+            v = this[i] - (arrayMode ? parseFloat(array[i]) : parseFloat(array));
             res.push(Number.isFinite(v) ? v : 0);
         }
         return res;
@@ -199,7 +199,7 @@ if (!Array.prototype.multiply)
         var l = arrayMode ? array.length : this.length;
 
         for (var i = 0; i < l; i++) {
-            v =this[i] * (arrayMode ? array[i] : array);
+            v = parseFloat(this[i]) * (arrayMode ? parseFloat(array[i]) : parseFloat(array));
             res.push(Number.isFinite(v) ? v : 0);
         }
         return res;

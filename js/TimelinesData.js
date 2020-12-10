@@ -59,8 +59,9 @@ class TimelinesDataColumns
     static colGroups = [
         new TimelinesDataColumnGroup('', 1), // country
         new TimelinesDataColumnGroup('Population', 5),
-        new TimelinesDataColumnGroup('Totals', 5),
+        new TimelinesDataColumnGroup('Totals', 4),
         new TimelinesDataColumnGroup('Changes', 4),
+        new TimelinesDataColumnGroup('Hospitalizations', 3),
         new TimelinesDataColumnGroup('Misc', 3),
         new TimelinesDataColumnGroup('Infection Chance', 3),
     ];
@@ -71,19 +72,22 @@ class TimelinesDataColumns
         new TimelinesDataColumn('Population',                   'population',                       'int',      { 0: 'zero', 10000000: 'low-neutral',      100000000: 'medium-neutral',       1000000000: 'high-neutral', }),
         new TimelinesDataColumn('Infections',                   'population_infected',              'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high' }),
         new TimelinesDataColumn('Active',                       'population_active',                'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high' }),
-        new TimelinesDataColumn('Recovered',                    'population_recovered',             'percent',  { 0: 'zero',   "0.01-good": 'low',            "0.03": 'medium-good',              "0.05": 'high-good' }),
+        new TimelinesDataColumn('Recovered',                    'population_recovered',             'percent',  { 0: 'zero',   "0.01": 'low-good',            "0.03": 'medium-good',              "0.05": 'high-good' }),
         new TimelinesDataColumn('Deaths',                       'population_deaths',                'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high' }),
 
         new TimelinesDataColumn('Infections',                   'total.infected',                   'int',      { 0: 'zero',     1000: 'low',                  10000: 'medium',                   100000: 'high', }),
         new TimelinesDataColumn('Active<br>currently',          'total.active',                     'int',      { 0: 'zero',     1000: 'low',                  10000: 'medium',                   100000: 'high',        "-100000": 'high-good', "-10000": 'medium-good', "-1000": 'low-good'  }),
         new TimelinesDataColumn('Recovered',                    'total.recovered',                  'int',      { 0: 'zero',     1000: 'low-good',             10000: 'medium-good',              100000: 'high-good' }),
         new TimelinesDataColumn('Deaths',                       'total.deaths',                     'int',      { 0: 'zero',     1000: 'low',                  10000: 'medium',                   100000: 'high' }),
-        new TimelinesDataColumn('ICU Patients<br>currently',    'total.icu_patients',               'int',      { 0: 'zero',      100: 'low',                   1000: 'medium',                    10000: 'high' }),
 
         new TimelinesDataColumn('Infections',                   'relative_change.infected',         'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high' }),
         new TimelinesDataColumn('Active',                       'relative_change.active',           'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high',           "-0.01": 'low-good',   "-0.03": 'medium-good',  "-0.05": 'high-good' }),
         new TimelinesDataColumn('Recovered',                    'relative_change.recovered',        'percent',  { 0: 'zero',   "0.01": 'low-good',            "0.03": 'medium-good',              "0.05": 'high-good',       "-0.01": 'low',   "-0.03": 'medium',  "-0.05": 'high' }),
         new TimelinesDataColumn('Deaths',                       'relative_change.deaths',           'percent',  { 0: 'zero',   "0.01": 'low',                 "0.03": 'medium',                   "0.05": 'high' }),
+        
+        new TimelinesDataColumn('Beds',                         'hospital_beds',                    'int',      { 0: 'zero',     1000: 'low-good',             10000: 'medium-good',              100000: 'high-good' }),
+        new TimelinesDataColumn('Normal Patients<br>currently', 'total.hosp_patients',              'int',      { 0: 'zero',      100: 'low',                   1000: 'medium',                    10000: 'high' }),
+        new TimelinesDataColumn('ICU Patients<br>currently',    'total.icu_patients',               'int',      { 0: 'zero',      100: 'low',                   1000: 'medium',                    10000: 'high' }),
 
         // new TimelinesDataColumn('Infections (new)',          'change.infected',                  'int',      { 0: 'zero',     1000: 'low',                  10000: 'medium',                   100000: 'high', }),
         // new TimelinesDataColumn('Active (new)',              'change.active',                    'int',      { 0: 'zero',     1000: 'low',                  10000: 'medium',                   100000: 'high',        "-100000": 'high-good', "-10000": 'medium-good', "-1000": 'low-good'  }),

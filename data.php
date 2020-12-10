@@ -69,6 +69,7 @@
 					"human_development_index" 	=> $human_development_index,
 				],
 				"hospital_beds" 				=> $hospital_beds,
+				"hosp_patients" 				=> [ "total" => [] ],
 				"icu_patients" 					=> [ "total" => [] ],
 				"stringency_index" 				=> [ "total" => [] ],
 				"cases"  						=> [ "total" => [], "new" => [], "new_smoothed" => [] ],
@@ -91,6 +92,7 @@
 		$rows[$iso]["tests"]["per_case"][$dt] 			= read_rounded($r, 'tests_per_case', 2, $headers);
 		$rows[$iso]["tests"]["positive_rate"][$dt] 		= read_rounded($r, 'positive_rate', 8, $headers);
 
+		$rows[$iso]["hosp_patients"]["total"][$dt] 		= read_int($r, 'hosp_patients', $headers);
 		$rows[$iso]["icu_patients"]["total"][$dt] 		= read_int($r, 'icu_patients', $headers);
 		$rows[$iso]["stringency_index"]["total"][$dt] 	= read_float($r, 'stringency_index', $headers);
 
@@ -124,6 +126,14 @@
 	function add_missing_dates(&$rows)
 	{
 		$dates = generate_dates_list();
+		$categories = [
+			"cases",
+			"deaths",
+			"tests",
+			"stringency_index",
+			"icu_patients",
+			"hosp_patients",
+		];
 
 		$iso_codes = array_keys($rows);
 		foreach ($iso_codes as $iso_code)
@@ -224,7 +234,8 @@
 			"deaths",
 			"tests",
 			"stringency_index",
-			"icu_patients"
+			"hosp_patients",
+			"icu_patients",
 
 		];
 		$iso_codes = array_keys($rows);
