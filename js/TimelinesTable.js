@@ -15,10 +15,13 @@ class TimelinesTable
             document.getElementById("chartTotals"), 
             Graph.generateData(
                 'Totals', 
+                $(this).attr('data-population').split(','), 
                 $(this).attr('data-infected').split(','), 
                 $(this).attr('data-recovered').split(','), 
                 $(this).attr('data-active').split(','), 
                 $(this).attr('data-deaths').split(','), 
+                $(this).attr('data-positive-rate').split(','), 
+                true, 
                 0, 
                 'right'
             )
@@ -27,10 +30,13 @@ class TimelinesTable
             document.getElementById("chartDaily"), 
             Graph.generateData(
                 'Daily Change', 
+                $(this).attr('data-population').split(','), 
                 $(this).attr('data-daily-infected').split(','), 
                 $(this).attr('data-daily-recovered').split(','), 
                 $(this).attr('data-daily-active').split(','),
                 $(this).attr('data-daily-deaths').split(','),
+                null,
+               false,
             )
         );
     }
@@ -76,6 +82,7 @@ class TimelinesTable
                 ' data-population="' + c.population + '" ' +
                 ' data-country="' + c.country + '" ' +
                 ' data-infected="' + c.infected.total + '" ' +
+                ' data-positive-rate="' + c.positive_rate.total + '" ' +
                 ' data-deaths="' + c.deaths.total + '" ' +
                 ' data-recovered="' + c.recovered.total + '" ' +
                 ' data-active="' + c.active.total + '" ' +

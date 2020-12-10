@@ -286,6 +286,20 @@ table {
         padding-bottom: 1vh;
     }
 
+.cbox {
+    width: 196px;
+    margin: 0px auto;
+    display: flex;
+}
+
+.cbox label {
+    color: white;
+    cursor: pointer;
+    width: 226px;
+    padding-top: 2px;
+    font-size: 10px;
+}
+
 @media only screen and (max-width: 1024px) {
     
     th:nth-child(11), 
