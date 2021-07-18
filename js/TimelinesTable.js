@@ -21,6 +21,8 @@ class TimelinesTable
                 $(this).attr('data-active').split(','), 
                 $(this).attr('data-deaths').split(','), 
                 $(this).attr('data-positive-rate').split(','), 
+                $(this).attr('data-hosp').split(','), 
+                $(this).attr('data-icu').split(','), 
                 true, 
                 0, 
                 'right'
@@ -36,6 +38,8 @@ class TimelinesTable
                 $(this).attr('data-daily-active').split(','),
                 $(this).attr('data-daily-deaths').split(','),
                 null,
+                $(this).attr('data-daily-hosp').split(','),
+                $(this).attr('data-daily-icu').split(','),
                false,
             )
         );
@@ -86,10 +90,14 @@ class TimelinesTable
                 ' data-deaths="' + c.deaths.total + '" ' +
                 ' data-recovered="' + c.recovered.total + '" ' +
                 ' data-active="' + c.active.total + '" ' +
+                ' data-hosp="' + c.hosp_patients.total + '" ' +
+                ' data-icu="' + c.icu_patients.total + '" ' +
                 ' data-daily-infected="' + c.infected.change + '" ' +
                 ' data-daily-deaths="' + c.deaths.change + '" ' +
                 ' data-daily-recovered="' + c.recovered.change + '" ' +
                 ' data-daily-active="' + c.active.change + '" ' +
+                ' data-daily-hosp="' + c.hosp_patients.change + '" ' +
+                ' data-daily-icu="' + c.icu_patients.change + '" ' +
                 ' data-tooltip="' + this.generateOverviewText(c) + '" ';
     }
 

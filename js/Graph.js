@@ -1,6 +1,6 @@
 class Graph
 {
-    static generateData(title, population, dataInfected, dataRecovered, dataActive, dataDeaths, dataPositiveRate, showSeverity, yAxisMin, position) 
+    static generateData(title, population, dataInfected, dataRecovered, dataActive, dataDeaths, dataPositiveRate, dataHospPatients, dataICUPatients, showSeverity, yAxisMin, position) 
     {
         population = parseInt(population);
         var labels = [];
@@ -21,6 +21,8 @@ class Graph
         var dd = dataDeaths.array().normalize();
         var ddrel = dataDeaths.array().divide(population).normalize();
         var dp = (dataPositiveRate != null ? dataPositiveRate.array() : []);
+        var dh = dataHospPatients.array().normalize();
+        var dhi = dataICUPatients.array().normalize();
 
         if (showSeverity) {
             for (var i = 0; i < dataInfected.length - 1; i++) {
@@ -28,11 +30,11 @@ class Graph
                         (
                               (parseFloat(di[i+1]) - parseFloat(di[i])) * (1 + darel[i]) // delta normalized infections (%population) * 3
                             + (parseFloat(dd[i+1]) - parseFloat(dd[i])) * (1 + ddrel[i]) // delta normalized deaths (%population) * 3
-                            + parseFloat(dp[i])/6                       // positive test rate (1/6)
-                            + darel[i]                                  // active cases (%population)
-                            + direl[i]                                  // total cases (%population)
-                            + ddrel[i]                                  // total deaths (%population)
-                        )
+                            + parseFloat(dp[i])/6                                        // positive test rate (1/6)
+                            + darel[i]                                                   // active cases (%population)
+                            // + direl[i]                                                   // total cases (%population)
+                            // + ddrel[i]                                                   // total deaths (%population)
+                        ) * 2.0
                    // )
                 );
             }
@@ -85,6 +87,26 @@ class Graph
                 data: norm ? dd : dataDeaths,
                 label: "Deaths",
                 borderColor: Config.graphColorDeaths,
+                borderWidth: 1,
+                fill: false
+            }, 
+            { 
+                pointStyle: 'circle',
+                pointRadius: 0,
+                pointHoverRadius: 2,
+                data: norm ? dh : dataHospPatients,
+                label: "Patients (hospital)",
+                borderColor: Config.graphColorHospitalPatients,
+                borderWidth: 1,
+                fill: false
+            },
+            { 
+                pointStyle: 'circle',
+                pointRadius: 0,
+                pointHoverRadius: 2,
+                data: norm ? dhi : dataICUPatients,
+                label: "Patients (ICU)",
+                borderColor: Config.graphColorICUPatients,
                 borderWidth: 1,
                 fill: false
             },

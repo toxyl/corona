@@ -138,7 +138,7 @@
 		$iso_codes = array_keys($rows);
 		foreach ($iso_codes as $iso_code)
 		{
-			foreach (["cases","deaths","tests","stringency_index"] as $category)
+			foreach ($categories as $category)
 			{
 				foreach ($rows["$iso_code"]["$category"] as $metric => $v2)
 				{

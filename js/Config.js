@@ -29,6 +29,8 @@ Config.data = {
         recovered: 0.2,
         active: 0.2,
         tests: 0.2,
+        hosp: 0.15,
+        icu: 0.15,
         new_cases_per_recovered: 0.1,
     }
 };
@@ -43,3 +45,5 @@ Config.graphColorDeaths = '#cc0000';
 Config.graphColorActive = '#00ccff';
 Config.graphColorRecovered = '#00cc00';
 Config.graphColorNewPerRecovered = '#33cccc';
+Config.graphColorHospitalPatients = '#FCA346';
+Config.graphColorICUPatients = '#FC4D46';
